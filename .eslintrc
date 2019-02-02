@@ -1,5 +1,6 @@
 {
   "env": {
+    "node": true,
     "es6": true
   },
   "extends": ["eslint:recommended", "plugin:prettier/recommended"],
@@ -14,5 +15,8 @@
         "arrayBracketSpacing": false
       }
     ]
+  },
+  "parserOptions": {
+    "sourceType": "module"
   }
 }
