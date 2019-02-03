@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Authentication from '../modules';
+import Header from '../components';
 
 class Register extends Component {
   state = {
@@ -10,6 +11,7 @@ class Register extends Component {
   render() {
     return (
       <div>
+        <Header />
         <input
           type="email"
           value={this.state.email}
