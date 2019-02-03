@@ -1,11 +1,20 @@
 import firebase, { providerGoogle } from '../firebase';
+import User from '../model/User';
 
-export const loginWithGoogle = async () => {
+export const loginWithGoogle = () => {
   firebase.auth().signInWithRedirect(providerGoogle);
-  await firebase.auth.getRedirectResult();
-  await firebase.auth.catch();
+};
+
+export const completeLoginWithGoogle = async () => {
+  const { user } = await firebase.auth().getRedirectResult();
+  if (user) {
+    User.createNewUser(user.uid);
+  }
 };
 
 export const loginWithEmail = async (email, password) => {
-  await firebase.auth().createUserWithEmailAndPassword(email, password);
+  const { user } = await firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password);
+  User.createNewUser(user.uid);
 };
