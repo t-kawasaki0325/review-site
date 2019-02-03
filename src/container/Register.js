@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Authentication from '../module/Authentication';
+import Authentication from '../module';
 
 class Register extends Component {
   state = {
