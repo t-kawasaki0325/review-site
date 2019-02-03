@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Register, Login } from './container';
+import { Register, Login } from './containers';
 
 const AppRouter = () => {
   return (

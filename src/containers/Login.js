@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Authentication from '../module';
+import Authentication from '../modules';
 
 class Login extends Component {
   state = {

@@ -1,5 +1,5 @@
 import firebase, { providerGoogle } from '../firebase';
-import User from '../model';
+import User from '../models';
 
 class Authentication {
   static loginWithGoogle = () => {
