@@ -7,17 +7,27 @@ class Authentication {
   };
 
   static completeLoginWithGoogle = async () => {
-    const { user } = await firebase.auth().getRedirectResult();
-    if (user) {
+    const result = await firebase.auth().getRedirectResult();
+    const { user } = result;
+
+    // ログインor会員登録でなければreturn
+    if (!user) return;
+
+    const isNewUser = result.additionalUserInfo.isNewUser;
+    if (isNewUser) {
       User.createNewUser(user.uid);
     }
   };
 
-  static loginWithEmail = async (email, password) => {
+  static signupWithEmail = async (email, password) => {
     const { user } = await firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password);
+      .signInWithEmailAndPassword(email, password);
     User.createNewUser(user.uid);
+  };
+
+  static loginWithEmail = (email, password) => {
+    firebase.auth().signInWithEmailAndPassword(email, password);
   };
 }
 

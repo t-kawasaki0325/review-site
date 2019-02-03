@@ -22,7 +22,10 @@ class Register extends Component {
         />
         <button
           onClick={() =>
-            Authentication.loginWithEmail(this.state.email, this.state.password)
+            Authentication.signupWithEmail(
+              this.state.email,
+              this.state.password
+            )
           }
         >
           login with email
