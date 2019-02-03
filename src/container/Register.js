@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { loginWithEmail, loginWithGoogle } from '../module/Authentication';
+import Authentication from '../module/Authentication';
 
 class Register extends Component {
   state = {
@@ -21,11 +21,15 @@ class Register extends Component {
           onChange={event => this.setState({ password: event.target.value })}
         />
         <button
-          onClick={() => loginWithEmail(this.state.email, this.state.password)}
+          onClick={() =>
+            Authentication.loginWithEmail(this.state.email, this.state.password)
+          }
         >
           login with email
         </button>
-        <button onClick={() => loginWithGoogle()}>login with google</button>
+        <button onClick={() => Authentication.loginWithGoogle()}>
+          login with google
+        </button>
       </div>
     );
   }
