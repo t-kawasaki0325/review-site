@@ -4,6 +4,7 @@
     "node": true,
     "es6": true
   },
+  "parser": "babel-eslint",
   "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "rules": {
     "react/jsx-uses-react": "error",
