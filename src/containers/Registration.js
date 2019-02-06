@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Authentication from '../modules';
 import { MemberInfo } from '../components';
+import icon from '../assets/icons-google.svg';
 
 const styles = theme => ({
   layout: {
@@ -34,8 +35,19 @@ const styles = theme => ({
   title: {
     margin: theme.spacing.unit * 2,
   },
+  text: {
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  button: {
+    textAlign: 'center',
+  },
   google: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 2,
+  },
+  icon: {
+    height: 30,
+    marginRight: 10,
   },
 });
 
@@ -81,15 +93,20 @@ class Checkout extends React.Component {
                 </Grid>
               </Grid>
               <MemberInfo />
-              <Button
-                fullWidth
-                variant="contained"
-                color="default"
-                className={classes.google}
-                onClick={() => Authentication.loginWithGoogle()}
-              >
-                Googleでログイン
-              </Button>
+              <Grid item xs={12} sm={12} className={classes.text}>
+                <Typography>または</Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} className={classes.button}>
+                <Button
+                  variant="contained"
+                  color="default"
+                  className={classes.google}
+                  onClick={() => Authentication.loginWithGoogle()}
+                >
+                  <img src={icon} className={classes.icon} alt="icon" />
+                  Googleでログイン
+                </Button>
+              </Grid>
             </React.Fragment>
           </Paper>
         </main>

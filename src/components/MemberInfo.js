@@ -14,11 +14,14 @@ import { SCALE, SERVICE_TYPE, DEPARTMENT, POSITION } from '../config';
 const styles = theme => ({
   buttons: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   button: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 8,
+    marginBottom: theme.spacing.unit * 2,
     marginLeft: theme.spacing.unit,
+    minWidth: 200,
+    fontSize: 18,
   },
   formControl: {
     minWidth: 200,
