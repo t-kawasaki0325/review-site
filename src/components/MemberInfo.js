@@ -13,6 +13,9 @@ import Authentication from '../modules';
 import { SCALE, SERVICE_TYPE, DEPARTMENT, POSITION } from '../config';
 
 const styles = theme => ({
+  container: {
+    marginTop: 30,
+  },
   buttons: {
     display: 'flex',
     justifyContent: 'center',
@@ -31,6 +34,8 @@ const styles = theme => ({
 
 class MemberInfo extends Component {
   state = {
+    email: '',
+    password: '',
     name: '',
     company: '',
     scale: 0,
@@ -39,11 +44,11 @@ class MemberInfo extends Component {
     position: 0,
   };
   render() {
-    const { classes, email, password } = this.props;
+    const { classes } = this.props;
 
     const info = {
-      email: email,
-      password: password,
+      email: this.state.email,
+      password: this.state.password,
       name: this.state.name,
       company: this.state.company,
       scale: this.state.scale,
@@ -54,7 +59,34 @@ class MemberInfo extends Component {
 
     return (
       <React.Fragment>
-        <Grid container spacing={24}>
+        <Grid container spacing={24} className={classes.container}>
+          <Grid item xs={12} sm={12}>
+            <Typography variant="h6" gutterBottom>
+              会員情報
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              type="email"
+              label="メールアドレス"
+              fullWidth
+              autoComplete="fname"
+              onChange={event => this.setState({ email: event.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              type="password"
+              label="パスワード"
+              fullWidth
+              autoComplete="lname"
+              onChange={event =>
+                this.setState({ password: event.target.value })
+              }
+            />
+          </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               required
