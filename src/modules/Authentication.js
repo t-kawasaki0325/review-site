@@ -19,11 +19,13 @@ class Authentication {
     }
   };
 
-  static signupWithEmail = async (email, password) => {
+  static signupWithEmail = async info => {
+    const { email, password } = info;
+
     const { user } = await firebase
       .auth()
       .signInWithEmailAndPassword(email, password);
-    User.createNewUser(user.uid);
+    User.createNewUser(user.uid, info);
   };
 
   static loginWithEmail = (email, password) => {

@@ -51,7 +51,12 @@ const styles = theme => ({
   },
 });
 
-class Checkout extends React.Component {
+class Registration extends React.Component {
+  state = {
+    email: '',
+    password: '',
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -80,6 +85,9 @@ class Checkout extends React.Component {
                     label="メールアドレス"
                     fullWidth
                     autoComplete="fname"
+                    onChange={event =>
+                      this.setState({ email: event.target.value })
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -89,10 +97,16 @@ class Checkout extends React.Component {
                     label="パスワード"
                     fullWidth
                     autoComplete="lname"
+                    onChange={event =>
+                      this.setState({ password: event.target.value })
+                    }
                   />
                 </Grid>
               </Grid>
-              <MemberInfo />
+              <MemberInfo
+                email={this.state.email}
+                password={this.state.password}
+              />
               <Grid item xs={12} sm={12} className={classes.text}>
                 <Typography>または</Typography>
               </Grid>
@@ -115,8 +129,8 @@ class Checkout extends React.Component {
   }
 }
 
-Checkout.propTypes = {
+Registration.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Checkout);
+export default withStyles(styles)(Registration);

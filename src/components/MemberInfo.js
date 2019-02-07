@@ -9,6 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import Authentication from '../modules';
 import { SCALE, SERVICE_TYPE, DEPARTMENT, POSITION } from '../config';
 
 const styles = theme => ({
@@ -30,16 +31,27 @@ const styles = theme => ({
 
 class MemberInfo extends Component {
   state = {
-    user: '',
+    name: '',
     company: '',
     scale: 0,
     serviceType: 0,
     department: 0,
     position: 0,
   };
-
   render() {
-    const { classes } = this.props;
+    const { classes, email, password } = this.props;
+
+    const info = {
+      email: email,
+      password: password,
+      name: this.state.name,
+      company: this.state.company,
+      scale: this.state.scale,
+      serviceType: this.state.serviceType,
+      department: this.state.department,
+      position: this.state.position,
+    };
+
     return (
       <React.Fragment>
         <Grid container spacing={24}>
@@ -49,7 +61,8 @@ class MemberInfo extends Component {
               label="ユーザー名"
               fullWidth
               autoComplete="fname"
-              value={this.state.user}
+              value={this.state.name}
+              onChange={event => this.setState({ name: event.target.value })}
             />
           </Grid>
           <Grid item xs={12} sm={12}>
@@ -64,12 +77,16 @@ class MemberInfo extends Component {
               fullWidth
               autoComplete="lname"
               value={this.state.company}
+              onChange={event => this.setState({ company: event.target.value })}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl required className={classes.formControl}>
               <InputLabel>会社規模</InputLabel>
-              <Select value={this.state.scale} onChange={this.handleChange}>
+              <Select
+                value={this.state.scale}
+                onChange={event => this.setState({ scale: event.target.value })}
+              >
                 {SCALE.map((element, index) => {
                   return (
                     <MenuItem key={index} value={index}>
@@ -85,7 +102,9 @@ class MemberInfo extends Component {
               <InputLabel>業種</InputLabel>
               <Select
                 value={this.state.serviceType}
-                onChange={this.handleChange}
+                onChange={event =>
+                  this.setState({ serviceType: event.target.value })
+                }
               >
                 {SERVICE_TYPE.map((element, index) => {
                   return (
@@ -102,7 +121,9 @@ class MemberInfo extends Component {
               <InputLabel>部署</InputLabel>
               <Select
                 value={this.state.department}
-                onChange={this.handleChange}
+                onChange={event =>
+                  this.setState({ department: event.target.value })
+                }
               >
                 {DEPARTMENT.map((element, index) => {
                   return (
@@ -117,7 +138,12 @@ class MemberInfo extends Component {
           <Grid item xs={12} sm={6}>
             <FormControl required className={classes.formControl}>
               <InputLabel>役職</InputLabel>
-              <Select value={this.state.position} onChange={this.handleChange}>
+              <Select
+                value={this.state.position}
+                onChange={event =>
+                  this.setState({ position: event.target.value })
+                }
+              >
                 {POSITION.map((element, index) => {
                   return (
                     <MenuItem key={index} value={index}>
@@ -133,7 +159,7 @@ class MemberInfo extends Component {
           <Button
             variant="contained"
             color="primary"
-            onClick={this.handleNext}
+            onClick={() => Authentication.signupWithEmail(info)}
             className={classes.button}
           >
             送信
