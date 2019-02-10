@@ -68,7 +68,7 @@ class Login extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, history } = this.props;
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -112,7 +112,8 @@ class Login extends Component {
               onClick={() =>
                 Authentication.loginWithEmail(
                   this.state.email,
-                  this.state.password
+                  this.state.password,
+                  history
                 )
               }
             >

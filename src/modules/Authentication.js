@@ -21,17 +21,30 @@ class Authentication {
     return history.push('/top');
   };
 
-  static signupWithEmail = async info => {
+  static createNewUser = (uid, info, history) => {
+    User.createNewUser(uid, info);
+    history.push('/top');
+  };
+
+  static signupWithEmail = async (info, history) => {
     const { email, password } = info;
 
     const { user } = await firebase
       .auth()
-      .signInWithEmailAndPassword(email, password);
+      .createUserWithEmailAndPassword(email, password);
     User.createNewUser(user.uid, info);
+    if (user) {
+      history.push('/top');
+    }
   };
 
-  static loginWithEmail = (email, password) => {
-    firebase.auth().signInWithEmailAndPassword(email, password);
+  static loginWithEmail = async (email, password, history) => {
+    const { user } = await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password);
+    if (user) {
+      history.push('/top');
+    }
   };
 }
 
