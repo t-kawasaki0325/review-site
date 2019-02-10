@@ -15,7 +15,7 @@ class Authentication {
 
     const isNewUser = result.additionalUserInfo.isNewUser;
     if (isNewUser) {
-      return history.push(`/register/${user.uid}`);
+      return history.push(`/registration/${user.uid}`);
     }
 
     return history.push('/top');

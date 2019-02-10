@@ -45,12 +45,12 @@ class MemberInfo extends Component {
   };
 
   isMailRegistrationPage(history) {
-    return history.location.pathname === '/register';
+    return history.location.pathname === '/registration';
   }
 
   registerUserInfo(history, info) {
     switch (history.location.pathname) {
-      case '/register':
+      case '/registration':
         Authentication.signupWithEmail(info, history);
         break;
       default: {
