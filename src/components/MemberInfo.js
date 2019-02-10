@@ -11,6 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import Authentication from '../modules';
 import { COMPANY, PATH } from '../config';
+import { UrlUtil } from '../utils';
 
 const styles = theme => ({
   container: {
@@ -44,21 +45,18 @@ class MemberInfo extends Component {
     position: 0,
   };
 
-  isMailRegistrationPage(history) {
-    return history.location.pathname === PATH.REGISTRATION;
-  }
-
   registerUserInfo(history, info) {
     switch (history.location.pathname) {
       case PATH.REGISTRATION:
         Authentication.signupWithEmail(info, history);
         break;
-      default: {
-        const url = history.location.pathname.split('/');
-        const uid = url[url.length - 1];
+      case UrlUtil.matchUserId(history.location.pathname): {
+        const uid = UrlUtil.baseUrl(history.location.pathname);
         Authentication.createNewUser(uid, info, history);
         break;
       }
+      default:
+        break;
     }
   }
 
@@ -84,7 +82,7 @@ class MemberInfo extends Component {
               会員情報
             </Typography>
           </Grid>
-          {this.isMailRegistrationPage(history) && (
+          {UrlUtil.isRegistrationPage(history) && (
             <Grid item xs={12} sm={6}>
               <TextField
                 required
@@ -96,7 +94,7 @@ class MemberInfo extends Component {
               />
             </Grid>
           )}
-          {this.isMailRegistrationPage(history) && (
+          {UrlUtil.isRegistrationPage(history) && (
             <Grid item xs={12} sm={6}>
               <TextField
                 required
