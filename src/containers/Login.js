@@ -61,6 +61,12 @@ class Login extends Component {
     email: '',
     password: '',
   };
+
+  componentDidMount() {
+    const { history } = this.props;
+    Authentication.completeLoginWithGoogle(history);
+  }
+
   render() {
     const { classes } = this.props;
     return (

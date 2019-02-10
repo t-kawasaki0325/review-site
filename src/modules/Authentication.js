@@ -6,7 +6,7 @@ class Authentication {
     firebase.auth().signInWithRedirect(providerGoogle);
   };
 
-  static completeLoginWithGoogle = async () => {
+  static completeLoginWithGoogle = async history => {
     const result = await firebase.auth().getRedirectResult();
     const { user } = result;
 
@@ -15,8 +15,10 @@ class Authentication {
 
     const isNewUser = result.additionalUserInfo.isNewUser;
     if (isNewUser) {
-      User.createNewUser(user.uid);
+      return history.push(`/register/${user.uid}`);
     }
+
+    return history.push('/top');
   };
 
   static signupWithEmail = async info => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -50,45 +50,51 @@ const styles = theme => ({
   },
 });
 
-const Registration = props => {
-  const { classes } = props;
+class Registration extends Component {
+  componentDidMount() {
+    const { history } = this.props;
+    Authentication.completeLoginWithGoogle(history);
+  }
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography
-            component="h1"
-            variant="h4"
-            align="center"
-            className={classes.title}
-          >
-            ユーザー登録
-          </Typography>
-          <React.Fragment>
-            <Grid container spacing={24} />
-            <MemberInfo />
-            <Grid item xs={12} sm={12} className={classes.text}>
-              <Typography>または</Typography>
-            </Grid>
-            <Grid item xs={12} sm={12} className={classes.button}>
-              <Button
-                variant="contained"
-                color="default"
-                className={classes.google}
-                onClick={() => Authentication.loginWithGoogle()}
-              >
-                <img src={icon} className={classes.icon} alt="icon" />
-                Googleでログイン
-              </Button>
-            </Grid>
-          </React.Fragment>
-        </Paper>
-      </main>
-    </React.Fragment>
-  );
-};
+  render() {
+    const { classes, history } = this.props;
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography
+              component="h1"
+              variant="h4"
+              align="center"
+              className={classes.title}
+            >
+              ユーザー登録
+            </Typography>
+            <React.Fragment>
+              <Grid container spacing={24} />
+              <MemberInfo history={history} />
+              <Grid item xs={12} sm={12} className={classes.text}>
+                <Typography>または</Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} className={classes.button}>
+                <Button
+                  variant="contained"
+                  color="default"
+                  className={classes.google}
+                  onClick={() => Authentication.loginWithGoogle()}
+                >
+                  <img src={icon} className={classes.icon} alt="icon" />
+                  Googleでログイン
+                </Button>
+              </Grid>
+            </React.Fragment>
+          </Paper>
+        </main>
+      </React.Fragment>
+    );
+  }
+}
 
 Registration.propTypes = {
   classes: PropTypes.object.isRequired,

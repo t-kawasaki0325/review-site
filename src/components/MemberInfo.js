@@ -10,6 +10,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import Authentication from '../modules';
+import User from '../models';
 import { SCALE, SERVICE_TYPE, DEPARTMENT, POSITION } from '../config';
 
 const styles = theme => ({
@@ -43,8 +44,27 @@ class MemberInfo extends Component {
     department: 0,
     position: 0,
   };
+
+  isMailRegistrationPage(history) {
+    return history.location.pathname === '/register';
+  }
+
+  registerUserInfo(history, info) {
+    switch (history.location.pathname) {
+      case '/register':
+        Authentication.signupWithEmail(info);
+        break;
+      default: {
+        const url = history.location.pathname.split('/');
+        const uid = url[url.length - 1];
+        User.createNewUser(uid, info);
+        break;
+      }
+    }
+  }
+
   render() {
-    const { classes } = this.props;
+    const { classes, history } = this.props;
 
     const info = {
       email: this.state.email,
@@ -65,28 +85,32 @@ class MemberInfo extends Component {
               会員情報
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              type="email"
-              label="メールアドレス"
-              fullWidth
-              autoComplete="fname"
-              onChange={event => this.setState({ email: event.target.value })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              type="password"
-              label="パスワード"
-              fullWidth
-              autoComplete="lname"
-              onChange={event =>
-                this.setState({ password: event.target.value })
-              }
-            />
-          </Grid>
+          {this.isMailRegistrationPage(history) && (
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                type="email"
+                label="メールアドレス"
+                fullWidth
+                autoComplete="fname"
+                onChange={event => this.setState({ email: event.target.value })}
+              />
+            </Grid>
+          )}
+          {this.isMailRegistrationPage(history) && (
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                type="password"
+                label="パスワード"
+                fullWidth
+                autoComplete="lname"
+                onChange={event =>
+                  this.setState({ password: event.target.value })
+                }
+              />
+            </Grid>
+          )}
           <Grid item xs={12} sm={6}>
             <TextField
               required
@@ -191,7 +215,7 @@ class MemberInfo extends Component {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => Authentication.signupWithEmail(info)}
+            onClick={() => this.registerUserInfo(history, info)}
             className={classes.button}
           >
             送信
