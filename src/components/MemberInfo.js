@@ -9,7 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import Authentication from '../modules';
+import { Authentication } from '../modules';
 import { COMPANY, PATH } from '../config';
 import { UrlUtil } from '../utils';
 

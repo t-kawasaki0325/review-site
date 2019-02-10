@@ -1,5 +1,5 @@
 import firebase, { providerGoogle } from '../firebase';
-import User from '../models';
+import { User } from '../models';
 import { PATH } from '../config';
 
 class Authentication {

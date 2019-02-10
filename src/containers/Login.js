@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import icon from '../assets/icons-google.svg';
-import Authentication from '../modules';
+import { Authentication } from '../modules';
 
 const styles = theme => ({
   main: {
