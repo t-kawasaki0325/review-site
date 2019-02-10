@@ -10,7 +10,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import Authentication from '../modules';
-import { SCALE, SERVICE_TYPE, DEPARTMENT, POSITION } from '../config';
+import { COMPANY, PATH } from '../config';
 
 const styles = theme => ({
   container: {
@@ -45,12 +45,12 @@ class MemberInfo extends Component {
   };
 
   isMailRegistrationPage(history) {
-    return history.location.pathname === '/registration';
+    return history.location.pathname === PATH.REGISTRATION;
   }
 
   registerUserInfo(history, info) {
     switch (history.location.pathname) {
-      case '/registration':
+      case PATH.REGISTRATION:
         Authentication.signupWithEmail(info, history);
         break;
       default: {
@@ -142,7 +142,7 @@ class MemberInfo extends Component {
                 value={this.state.scale}
                 onChange={event => this.setState({ scale: event.target.value })}
               >
-                {SCALE.map((element, index) => {
+                {COMPANY.SCALE.map((element, index) => {
                   return (
                     <MenuItem key={index} value={index}>
                       {element}
@@ -161,7 +161,7 @@ class MemberInfo extends Component {
                   this.setState({ serviceType: event.target.value })
                 }
               >
-                {SERVICE_TYPE.map((element, index) => {
+                {COMPANY.SERVICE_TYPE.map((element, index) => {
                   return (
                     <MenuItem key={index} value={index}>
                       {element}
@@ -180,7 +180,7 @@ class MemberInfo extends Component {
                   this.setState({ department: event.target.value })
                 }
               >
-                {DEPARTMENT.map((element, index) => {
+                {COMPANY.DEPARTMENT.map((element, index) => {
                   return (
                     <MenuItem key={index} value={index}>
                       {element}
@@ -199,7 +199,7 @@ class MemberInfo extends Component {
                   this.setState({ position: event.target.value })
                 }
               >
-                {POSITION.map((element, index) => {
+                {COMPANY.POSITION.map((element, index) => {
                   return (
                     <MenuItem key={index} value={index}>
                       {element}

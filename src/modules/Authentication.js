@@ -1,5 +1,6 @@
 import firebase, { providerGoogle } from '../firebase';
 import User from '../models';
+import { PATH } from '../config';
 
 class Authentication {
   static loginWithGoogle = () => {
@@ -15,15 +16,15 @@ class Authentication {
 
     const isNewUser = result.additionalUserInfo.isNewUser;
     if (isNewUser) {
-      return history.push(`/registration/${user.uid}`);
+      return history.push(`${PATH.REGISTRATION}/${user.uid}`);
     }
 
-    return history.push('/top');
+    return history.push(PATH.TOP);
   };
 
   static createNewUser = (uid, info, history) => {
     User.createNewUser(uid, info);
-    history.push('/top');
+    history.push(PATH.TOP);
   };
 
   static signupWithEmail = async (info, history) => {
@@ -34,7 +35,7 @@ class Authentication {
       .createUserWithEmailAndPassword(email, password);
     User.createNewUser(user.uid, info);
     if (user) {
-      history.push('/top');
+      history.push(PATH.TOP);
     }
   };
 
@@ -43,7 +44,7 @@ class Authentication {
       .auth()
       .signInWithEmailAndPassword(email, password);
     if (user) {
-      history.push('/top');
+      history.push(PATH.TOP);
     }
   };
 }
