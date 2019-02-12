@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Registration, Login, UserInfo, Top } from './containers';
+import { Registration, Login, UserInfo, Top, RegisterSass } from './containers';
 import { PATH } from './config';
 
 const AppRouter = () => {
@@ -11,6 +11,11 @@ const AppRouter = () => {
         <Route path={PATH.REGISTRATION} exact component={Registration} />
         <Route path={PATH.REGISTRATION_ADDTION} exact component={UserInfo} />
         <Route path={PATH.TOP} exact component={Top} />
+        <Route
+          path={PATH.AUTHOR_REGISTER_SASS}
+          exact
+          component={RegisterSass}
+        />
       </Switch>
     </Router>
   );

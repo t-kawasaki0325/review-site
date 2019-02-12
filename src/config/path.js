@@ -3,6 +3,7 @@ export const PATH = {
   TOP: '/top',
   REGISTRATION: '/registration',
   REGISTRATION_ADDTION: '/registration/:id',
+  AUTHOR_REGISTER_SASS: '/registersass',
 };
 
 export default PATH;
