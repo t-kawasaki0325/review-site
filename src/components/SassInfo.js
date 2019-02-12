@@ -9,6 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import { Saas } from '../modules';
 import { COMPANY, SAAS } from '../config';
 
 const styles = theme => ({
@@ -37,12 +38,21 @@ class SassInfo extends Component {
     scale: 0,
     serviceType: 0,
     region: 0,
-    saas: '',
+    name: '',
     category: 0,
   };
 
   render() {
     const { classes } = this.props;
+
+    const info = {
+      company: this.state.company,
+      scale: this.state.scale,
+      serviceType: this.state.serviceType,
+      region: this.state.region,
+      name: this.state.name,
+      category: this.state.category,
+    };
 
     return (
       <React.Fragment>
@@ -126,8 +136,8 @@ class SassInfo extends Component {
               required
               label="SaaS名"
               fullWidth
-              value={this.state.company}
-              onChange={event => this.setState({ saas: event.target.value })}
+              value={this.state.name}
+              onChange={event => this.setState({ name: event.target.value })}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -154,6 +164,7 @@ class SassInfo extends Component {
           <Button
             variant="contained"
             color="primary"
+            onClick={() => Saas.registerProduct(info)}
             className={classes.button}
           >
             送信
