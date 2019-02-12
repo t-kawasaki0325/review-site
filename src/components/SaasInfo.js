@@ -32,7 +32,7 @@ const styles = theme => ({
   },
 });
 
-class SassInfo extends Component {
+class SaasInfo extends Component {
   state = {
     company: '',
     scale: 0,
@@ -175,4 +175,4 @@ class SassInfo extends Component {
   }
 }
 
-export default withStyle(styles)(SassInfo);
+export default withStyle(styles)(SaasInfo);

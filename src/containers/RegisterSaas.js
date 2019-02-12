@@ -4,7 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { SassInfo } from '../components';
+import { SaasInfo } from '../components';
 
 const styles = theme => ({
   layout: {
@@ -36,7 +36,7 @@ const styles = theme => ({
   },
 });
 
-const RegisterSass = props => {
+const RegisterSaas = props => {
   const { classes } = props;
 
   return (
@@ -50,10 +50,10 @@ const RegisterSass = props => {
             align="center"
             className={classes.title}
           >
-            Sass登録
+            Saas登録
           </Typography>
           <React.Fragment>
-            <SassInfo history={props.history} />
+            <SaasInfo history={props.history} />
           </React.Fragment>
         </Paper>
       </main>
@@ -61,8 +61,8 @@ const RegisterSass = props => {
   );
 };
 
-RegisterSass.propTypes = {
+RegisterSaas.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(RegisterSass);
+export default withStyles(styles)(RegisterSaas);

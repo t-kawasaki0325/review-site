@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Registration, Login, UserInfo, Top, RegisterSass } from './containers';
+import { Registration, Login, UserInfo, Top, RegisterSaas } from './containers';
 import { PATH } from './config';
 
 const AppRouter = () => {
@@ -12,9 +12,9 @@ const AppRouter = () => {
         <Route path={PATH.REGISTRATION_ADDTION} exact component={UserInfo} />
         <Route path={PATH.TOP} exact component={Top} />
         <Route
-          path={PATH.AUTHOR_REGISTER_SASS}
+          path={PATH.AUTHOR_REGISTER_SAAS}
           exact
-          component={RegisterSass}
+          component={RegisterSaas}
         />
       </Switch>
     </Router>
