@@ -39,6 +39,7 @@ class MemberInfo extends Component {
     password: '',
     name: '',
     company: '',
+    region: 0,
     scale: 0,
     serviceType: 0,
     department: 0,
@@ -68,6 +69,7 @@ class MemberInfo extends Component {
       password: this.state.password,
       name: this.state.name,
       company: this.state.company,
+      region: this.state.region,
       scale: this.state.scale,
       serviceType: this.state.serviceType,
       department: this.state.department,
@@ -132,6 +134,25 @@ class MemberInfo extends Component {
               value={this.state.company}
               onChange={event => this.setState({ company: event.target.value })}
             />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl required className={classes.formControl}>
+              <InputLabel>会社所在地</InputLabel>
+              <Select
+                value={this.state.region}
+                onChange={event =>
+                  this.setState({ region: event.target.value })
+                }
+              >
+                {COMPANY.REGION.map((element, index) => {
+                  return (
+                    <MenuItem key={index} value={index}>
+                      {element}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl required className={classes.formControl}>
