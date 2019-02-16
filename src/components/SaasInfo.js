@@ -111,9 +111,9 @@ class SaasInfo extends Component {
             <FormControl required className={classes.formControl}>
               <InputLabel>会社所在地</InputLabel>
               <Select
-                value={this.state.serviceType}
+                value={this.state.region}
                 onChange={event =>
-                  this.setState({ serviceType: event.target.value })
+                  this.setState({ region: event.target.value })
                 }
               >
                 {COMPANY.REGION.map((element, index) => {
