@@ -9,9 +9,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { Authentication } from '../modules';
-import { COMPANY, PATH } from '../config';
-import { UrlUtil } from '../utils';
+import { Saas } from '../modules';
+import { COMPANY, SAAS } from '../config';
 
 const styles = theme => ({
   container: {
@@ -33,93 +32,31 @@ const styles = theme => ({
   },
 });
 
-class MemberInfo extends Component {
+class SaasInfo extends Component {
   state = {
-    email: '',
-    password: '',
-    name: '',
     company: '',
-    region: 0,
     scale: 0,
     serviceType: 0,
-    department: 0,
-    position: 0,
+    region: 0,
+    name: '',
+    category: 0,
   };
 
-  registerUserInfo(history, info) {
-    switch (history.location.pathname) {
-      case PATH.REGISTRATION:
-        Authentication.signupWithEmail(info, history);
-        break;
-      case UrlUtil.matchUserId(history.location.pathname): {
-        const uid = UrlUtil.baseUrl(history.location.pathname);
-        Authentication.createNewUser(uid, info, history);
-        break;
-      }
-      default:
-        break;
-    }
-  }
-
   render() {
-    const { classes, history } = this.props;
+    const { classes } = this.props;
 
     const info = {
-      email: this.state.email,
-      password: this.state.password,
-      name: this.state.name,
       company: this.state.company,
-      region: this.state.region,
       scale: this.state.scale,
       serviceType: this.state.serviceType,
-      department: this.state.department,
-      position: this.state.position,
+      region: this.state.region,
+      name: this.state.name,
+      category: this.state.category,
     };
 
     return (
       <React.Fragment>
         <Grid container spacing={24} className={classes.container}>
-          <Grid item xs={12} sm={12}>
-            <Typography variant="h6" gutterBottom>
-              会員情報
-            </Typography>
-          </Grid>
-          {UrlUtil.isRegistrationPage(history) && (
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                type="email"
-                label="メールアドレス"
-                fullWidth
-                autoComplete="fname"
-                onChange={event => this.setState({ email: event.target.value })}
-              />
-            </Grid>
-          )}
-          {UrlUtil.isRegistrationPage(history) && (
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                type="password"
-                label="パスワード"
-                fullWidth
-                autoComplete="lname"
-                onChange={event =>
-                  this.setState({ password: event.target.value })
-                }
-              />
-            </Grid>
-          )}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              label="ユーザー名"
-              fullWidth
-              autoComplete="fname"
-              value={this.state.name}
-              onChange={event => this.setState({ name: event.target.value })}
-            />
-          </Grid>
           <Grid item xs={12} sm={12}>
             <Typography variant="h6" gutterBottom>
               会社情報
@@ -130,29 +67,9 @@ class MemberInfo extends Component {
               required
               label="会社名"
               fullWidth
-              autoComplete="lname"
               value={this.state.company}
               onChange={event => this.setState({ company: event.target.value })}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl required className={classes.formControl}>
-              <InputLabel>会社所在地</InputLabel>
-              <Select
-                value={this.state.region}
-                onChange={event =>
-                  this.setState({ region: event.target.value })
-                }
-              >
-                {COMPANY.REGION.map((element, index) => {
-                  return (
-                    <MenuItem key={index} value={index}>
-                      {element}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl required className={classes.formControl}>
@@ -192,14 +109,14 @@ class MemberInfo extends Component {
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl required className={classes.formControl}>
-              <InputLabel>部署</InputLabel>
+              <InputLabel>会社所在地</InputLabel>
               <Select
-                value={this.state.department}
+                value={this.state.serviceType}
                 onChange={event =>
-                  this.setState({ department: event.target.value })
+                  this.setState({ serviceType: event.target.value })
                 }
               >
-                {COMPANY.DEPARTMENT.map((element, index) => {
+                {COMPANY.REGION.map((element, index) => {
                   return (
                     <MenuItem key={index} value={index}>
                       {element}
@@ -209,16 +126,30 @@ class MemberInfo extends Component {
               </Select>
             </FormControl>
           </Grid>
+          <Grid item xs={12} sm={12}>
+            <Typography variant="h6" gutterBottom>
+              Saas情報
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              label="SaaS名"
+              fullWidth
+              value={this.state.name}
+              onChange={event => this.setState({ name: event.target.value })}
+            />
+          </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl required className={classes.formControl}>
-              <InputLabel>役職</InputLabel>
+              <InputLabel>製品カテゴリ</InputLabel>
               <Select
-                value={this.state.position}
+                value={this.state.category}
                 onChange={event =>
-                  this.setState({ position: event.target.value })
+                  this.setState({ category: event.target.value })
                 }
               >
-                {COMPANY.POSITION.map((element, index) => {
+                {SAAS.CATEGORY.map((element, index) => {
                   return (
                     <MenuItem key={index} value={index}>
                       {element}
@@ -233,7 +164,7 @@ class MemberInfo extends Component {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => this.registerUserInfo(history, info)}
+            onClick={() => Saas.registerProduct(info)}
             className={classes.button}
           >
             送信
@@ -244,4 +175,4 @@ class MemberInfo extends Component {
   }
 }
 
-export default withStyle(styles)(MemberInfo);
+export default withStyle(styles)(SaasInfo);
