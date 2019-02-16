@@ -95,10 +95,41 @@ class SaasList extends Component {
     this.setState({ snapshot: snapshot });
   };
 
+  handleChange = (key, event) => {
+    this.setState({ [key]: event.target.value });
+  };
+
   render() {
     const { classes, history } = this.props;
     const snapshot = this.state.snapshot;
     const sortList = this.state.sortList;
+
+    const searchCell = [
+      {
+        label: '製品カテゴリ',
+        value: this.state.category,
+        key: 'category',
+        list: SAAS.CATEGORY,
+      },
+      {
+        label: '業種',
+        value: this.state.serviceType,
+        key: 'serviceType',
+        list: COMPANY.SERVICE_TYPE,
+      },
+      {
+        label: '会社規模',
+        value: this.state.scale,
+        key: 'scale',
+        list: COMPANY.SCALE,
+      },
+      {
+        label: '会社地域',
+        value: this.state.region,
+        key: 'region',
+        list: COMPANY.REGION,
+      },
+    ];
 
     return (
       <React.Fragment>
@@ -113,108 +144,34 @@ class SaasList extends Component {
           <Paper className={classes.searchList}>
             <Table>
               <TableBody>
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Typography>製品カテゴリ</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel>製品カテゴリ</InputLabel>
-                      <Select
-                        value={this.state.category}
-                        onChange={e =>
-                          this.setState({ category: parseInt(e.target.value) })
-                        }
-                      >
-                        {SAAS.CATEGORY.map((element, index) => {
-                          return (
-                            <MenuItem key={index} value={index}>
-                              {element}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>業種</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel>業種</InputLabel>
-                      <Select
-                        value={this.state.serviceType}
-                        onChange={e =>
-                          this.setState({
-                            serviceType: parseInt(e.target.value),
-                          })
-                        }
-                      >
-                        {COMPANY.SERVICE_TYPE.map((element, index) => {
-                          return (
-                            <MenuItem key={index} value={index}>
-                              {element}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>会社規模</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel>会社規模</InputLabel>
-                      <Select
-                        value={this.state.scale}
-                        onChange={e =>
-                          this.setState({
-                            scale: parseInt(e.target.value),
-                          })
-                        }
-                      >
-                        {COMPANY.SCALE.map((element, index) => {
-                          return (
-                            <MenuItem key={index} value={index}>
-                              {element}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>会社地域</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel>会社地域</InputLabel>
-                      <Select
-                        value={this.state.region}
-                        onChange={e =>
-                          this.setState({
-                            region: parseInt(e.target.value),
-                          })
-                        }
-                      >
-                        {COMPANY.REGION.map((element, index) => {
-                          return (
-                            <MenuItem key={index} value={index}>
-                              {element}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </TableCell>
-                </TableRow>
+                {searchCell.map((data, index) => {
+                  return (
+                    <TableRow key={index}>
+                      <TableCell component="th" scope="row">
+                        <Typography>{data.label}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl className={classes.formControl}>
+                          <InputLabel>{data.label}</InputLabel>
+                          <Select
+                            value={data.value}
+                            onChange={event =>
+                              this.handleChange(data.key, event)
+                            }
+                          >
+                            {data.list.map((element, index) => {
+                              return (
+                                <MenuItem key={index} value={index}>
+                                  {element}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
             <Grid container spacing={24}>
