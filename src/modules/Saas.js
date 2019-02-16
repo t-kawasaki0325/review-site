@@ -5,8 +5,8 @@ class Saas {
     Product.registerProduct(info);
   };
 
-  static sortedData = sortBy => {
-    return Product.getSortedData(sortBy);
+  static searchSaas = (sortBy, query) => {
+    return Product.getSearchData(sortBy, query);
   };
 }
 
