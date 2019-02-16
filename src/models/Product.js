@@ -15,11 +15,16 @@ class Product {
       name: name,
       category: category,
       companyRef: companyRef,
+      numOfReviews: 0,
+      point: 0,
     });
   }
 
-  static getAllProducts = async () => {
-    return await db.collection('product').get();
+  static getSortedData = async sortBy => {
+    return await db
+      .collection('product')
+      .orderBy(sortBy, 'desc')
+      .get();
   };
 }
 

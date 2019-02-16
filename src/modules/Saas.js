@@ -5,8 +5,8 @@ class Saas {
     Product.registerProduct(info);
   };
 
-  static getAllSaas = () => {
-    return Product.getAllProducts();
+  static sortedData = sortBy => {
+    return Product.getSortedData(sortBy);
   };
 }
 
