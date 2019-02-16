@@ -7,7 +7,7 @@ const AppRouter = () => {
   return (
     <Router>
       <Switch>
-        <Route path={PATH.ROOT} exact component={Login} />
+        <Route path={PATH.LOGIN} exact component={Login} />
         <Route path={PATH.REGISTRATION} exact component={Registration} />
         <Route path={PATH.REGISTRATION_ADDTION} exact component={UserInfo} />
         <Route path={PATH.TOP} exact component={Top} />
