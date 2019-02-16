@@ -20,7 +20,7 @@ class SaasList extends Component {
     await this.searchSaas();
   }
 
-  searchSaas = async (sortBy = this.state.sortBy) => {
+  searchSaas = async () => {
     const query = {
       name: this.state.name,
       category: this.state.category,
@@ -29,7 +29,7 @@ class SaasList extends Component {
       companyRegion: this.state.region,
     };
 
-    const snapshot = await Saas.searchSaas(sortBy, query);
+    const snapshot = await Saas.searchSaas(this.state.sortBy, query);
     this.setState({ snapshot: snapshot });
   };
 
@@ -96,9 +96,9 @@ class SaasList extends Component {
         <button onClick={() => this.searchSaas()}>submit</button>
         <select
           value={this.state.sortBy}
-          onChange={e => {
-            this.setState({ sortBy: e.target.value });
-            this.searchSaas(e.target.value);
+          onChange={async e => {
+            await this.setState({ sortBy: e.target.value });
+            this.searchSaas();
           }}
         >
           {sortList &&
