@@ -17,6 +17,10 @@ class Product {
       companyRef: companyRef,
     });
   }
+
+  static getAllProducts = async () => {
+    return await db.collection('product').get();
+  };
 }
 
 export default Product;
