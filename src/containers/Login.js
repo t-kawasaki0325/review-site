@@ -67,8 +67,25 @@ class Login extends Component {
     Authentication.completeLoginWithGoogle(history);
   }
 
+  handleChange = event => {
+    this.setState({ [event.target.type]: event.target.value });
+  };
+
   render() {
     const { classes, history } = this.props;
+    const formList = [
+      {
+        title: 'メールアドレス',
+        value: this.state.email,
+        type: 'email',
+      },
+      {
+        title: 'パスワード',
+        value: this.state.password,
+        type: 'password',
+      },
+    ];
+
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -80,30 +97,22 @@ class Login extends Component {
             ログイン
           </Typography>
           <div className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">メールアドレス</InputLabel>
-              <Input
-                id="email"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                value={this.state.email}
-                onChange={event => this.setState({ email: event.target.value })}
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">パスワード</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={this.state.password}
-                onChange={event =>
-                  this.setState({ password: event.target.value })
-                }
-              />
-            </FormControl>
+            {formList.map((element, index) => {
+              return (
+                <FormControl key={index} margin="normal" required fullWidth>
+                  <InputLabel htmlFor={element.type}>
+                    {element.title}
+                  </InputLabel>
+                  <Input
+                    type={element.type}
+                    autoComplete={element.type}
+                    autoFocus
+                    value={element.value}
+                    onChange={event => this.handleChange(event)}
+                  />
+                </FormControl>
+              );
+            })}
             <Button
               fullWidth
               variant="contained"
