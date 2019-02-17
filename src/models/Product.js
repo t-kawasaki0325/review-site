@@ -1,4 +1,6 @@
 import { db } from '../firebase';
+import { SAAS } from '../config';
+import { ModelUtil } from '../utils';
 
 class Product {
   static async registerProduct(info) {
@@ -16,7 +18,7 @@ class Product {
       category: category,
       companyRef: companyRef,
       numOfReviews: 0,
-      point: 0,
+      point: Object.assign(ModelUtil.initializeKeys(SAAS.RADAR), { total: 0 }),
       companyRegion: region,
       companyScale: scale,
       companyServiceType: serviceType,
