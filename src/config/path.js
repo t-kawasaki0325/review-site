@@ -6,6 +6,7 @@ export const PATH = {
   REGISTRATION_ADDTION: '/registration/:id',
   AUTHOR_REGISTER_SAAS: '/registersaas',
   SAAS_LIST: '/saas_list',
+  SAAS_DETAIL: '/saas_top/:id',
 };
 
 export default PATH;
