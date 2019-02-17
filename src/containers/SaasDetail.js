@@ -55,25 +55,25 @@ class SaasDetail extends Component {
     const data = [
       {
         subject: `${SAAS.RADAR.sales}: ${saas && saas.point.sales}`,
-        value: `${saas && saas.point.sales}`,
+        value: parseInt(`${saas && saas.point.sales}`),
       },
       {
         subject: `${SAAS.RADAR.support}: ${saas && saas.point.support}`,
-        value: `${saas && saas.point.support}`,
+        value: parseInt(`${saas && saas.point.support}`),
       },
       {
         subject: `${SAAS.RADAR.recommendation}: ${saas &&
           saas.point.recommendation}`,
-        value: `${saas && saas.point.recommendation}`,
+        value: parseInt(`${saas && saas.point.recommendation}`),
       },
       {
         subject: `${SAAS.RADAR.utilization}: ${saas && saas.point.utilization}`,
-        value: `${saas && saas.point.utilization}`,
+        value: parseInt(`${saas && saas.point.utilization}`),
       },
       {
         subject: `${SAAS.RADAR.satisfaction}: ${saas &&
           saas.point.satisfaction}`,
-        value: `${saas && saas.point.satisfaction}`,
+        value: parseInt(`${saas && saas.point.satisfaction}`),
       },
     ];
 
