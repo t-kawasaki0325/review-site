@@ -11,6 +11,9 @@ class UrlUtil {
   static matchUserId = url => {
     return url.match(/^\/registration\/[a-zA-Z0-9]{28}/ || {}).input;
   };
+  static changeBaseUrl = (url, id) => {
+    return url.replace(UrlUtil.baseUrl(url), id);
+  };
 }
 
 export default UrlUtil;
