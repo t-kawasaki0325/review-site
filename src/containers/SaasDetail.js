@@ -12,6 +12,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
 
 import { Header } from '../components';
 import { Saas } from '../modules';
@@ -34,24 +35,40 @@ const styles = theme => ({
     fontSize: 20,
     marginLeft: 10,
   },
+  reviewContainer: {
+    marginTop: theme.spacing.unit * 4,
+    marginBottom: theme.spacing.unit * 4,
+    padding: theme.spacing.unit * 4,
+  },
 });
 
 class SaasDetail extends Component {
   state = {
     saas: '',
+    review: [],
   };
 
   async componentDidMount() {
     const { history } = this.props;
+
+    // SaaSの取得
     const snapshot = await Saas.sassInfoById(
       UrlUtil.baseUrl(history.location.pathname)
     );
     this.setState({ saas: snapshot.data() });
+
+    // reviewの取得
+    snapshot.data().review.forEach(async ref => {
+      const review = await ref.get();
+      this.setState({ review: this.state.review.concat(review.data()) });
+    });
   }
 
   render() {
     const { history, classes } = this.props;
     const saas = this.state.saas;
+    const review = this.state.review;
+
     const data = [
       {
         subject: `${SAAS.RADAR.sales}: ${saas && saas.point.sales}`,
@@ -153,6 +170,44 @@ class SaasDetail extends Component {
               </Grid>
             </Grid>
           </Paper>
+          {review.length &&
+            review.map((element, index) => {
+              const pointKeys = Object.keys(element.point);
+
+              return (
+                <Paper key={index} className={classes.reviewContainer}>
+                  <Grid container spacing={24}>
+                    <Grid item xs={12} sm={12}>
+                      <Typography component="h1" variant="h5" gutterBottom>
+                        {element.title}
+                      </Typography>
+                      <Divider />
+                      <Grid item xs={12} sm={12}>
+                        <StarRatings
+                          rating={element.score}
+                          starRatedColor="blue"
+                          numberOfStars={5}
+                          starDimension="25px"
+                          starSpacing="2px"
+                        />
+                        <span className={classes.pointText}>
+                          {element.score}
+                        </span>
+                      </Grid>
+
+                      <Typography gutterBottom>
+                        {pointKeys.map(key => {
+                          return `${SAAS.RADAR[key]}: ${element.point[key]} `;
+                        })}
+                      </Typography>
+                      <Typography component="h1" variant="h6">
+                        {element.content}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Paper>
+              );
+            })}
         </main>
       </React.Fragment>
     );
