@@ -61,6 +61,10 @@ class MemberInfo extends Component {
     }
   }
 
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
   render() {
     const { classes, history } = this.props;
 
@@ -76,6 +80,52 @@ class MemberInfo extends Component {
       position: this.state.position,
     };
 
+    const companySelectMenu = [
+      {
+        label: '会社所在地',
+        key: 'region',
+        value: this.state.region,
+        list: COMPANY.REGION,
+      },
+      {
+        label: '会社規模',
+        key: 'scale',
+        value: this.state.scale,
+        list: COMPANY.SCALE,
+      },
+      {
+        label: '業種',
+        key: 'serviceType',
+        value: this.state.serviceType,
+        list: COMPANY.SERVICE_TYPE,
+      },
+      {
+        label: '部署',
+        key: 'department',
+        value: this.state.department,
+        list: COMPANY.DEPARTMENT,
+      },
+      {
+        label: '役職',
+        key: 'position',
+        value: this.state.position,
+        list: COMPANY.POSITION,
+      },
+    ];
+
+    const emailAndPassword = [
+      {
+        label: 'メールアドレス',
+        key: 'email',
+        value: this.state.email,
+      },
+      {
+        label: 'パスワード',
+        key: 'password',
+        value: this.state.password,
+      },
+    ];
+
     return (
       <React.Fragment>
         <Grid container spacing={24} className={classes.container}>
@@ -84,32 +134,23 @@ class MemberInfo extends Component {
               会員情報
             </Typography>
           </Grid>
-          {UrlUtil.isRegistrationPage(history) && (
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                type="email"
-                label="メールアドレス"
-                fullWidth
-                autoComplete="fname"
-                onChange={event => this.setState({ email: event.target.value })}
-              />
-            </Grid>
-          )}
-          {UrlUtil.isRegistrationPage(history) && (
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                type="password"
-                label="パスワード"
-                fullWidth
-                autoComplete="lname"
-                onChange={event =>
-                  this.setState({ password: event.target.value })
-                }
-              />
-            </Grid>
-          )}
+          {emailAndPassword.map((element, index) => {
+            return (
+              UrlUtil.isRegistrationPage(history) && (
+                <Grid key={index} item xs={12} sm={6}>
+                  <TextField
+                    required
+                    name={element.key}
+                    value={element.value}
+                    type={element.key}
+                    label={element.label}
+                    fullWidth
+                    onChange={event => this.handleChange(event)}
+                  />
+                </Grid>
+              )
+            );
+          })}
           <Grid item xs={12} sm={6}>
             <TextField
               required
@@ -130,104 +171,32 @@ class MemberInfo extends Component {
               required
               label="会社名"
               fullWidth
-              autoComplete="lname"
               value={this.state.company}
               onChange={event => this.setState({ company: event.target.value })}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl required className={classes.formControl}>
-              <InputLabel>会社所在地</InputLabel>
-              <Select
-                value={this.state.region}
-                onChange={event =>
-                  this.setState({ region: event.target.value })
-                }
-              >
-                {COMPANY.REGION.map((element, index) => {
-                  return (
-                    <MenuItem key={index} value={index}>
-                      {element}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl required className={classes.formControl}>
-              <InputLabel>会社規模</InputLabel>
-              <Select
-                value={this.state.scale}
-                onChange={event => this.setState({ scale: event.target.value })}
-              >
-                {COMPANY.SCALE.map((element, index) => {
-                  return (
-                    <MenuItem key={index} value={index}>
-                      {element}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl required className={classes.formControl}>
-              <InputLabel>業種</InputLabel>
-              <Select
-                value={this.state.serviceType}
-                onChange={event =>
-                  this.setState({ serviceType: event.target.value })
-                }
-              >
-                {COMPANY.SERVICE_TYPE.map((element, index) => {
-                  return (
-                    <MenuItem key={index} value={index}>
-                      {element}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl required className={classes.formControl}>
-              <InputLabel>部署</InputLabel>
-              <Select
-                value={this.state.department}
-                onChange={event =>
-                  this.setState({ department: event.target.value })
-                }
-              >
-                {COMPANY.DEPARTMENT.map((element, index) => {
-                  return (
-                    <MenuItem key={index} value={index}>
-                      {element}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl required className={classes.formControl}>
-              <InputLabel>役職</InputLabel>
-              <Select
-                value={this.state.position}
-                onChange={event =>
-                  this.setState({ position: event.target.value })
-                }
-              >
-                {COMPANY.POSITION.map((element, index) => {
-                  return (
-                    <MenuItem key={index} value={index}>
-                      {element}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </Grid>
+          {companySelectMenu.map((companyInfo, index) => {
+            return (
+              <Grid key={index} item xs={12} sm={6}>
+                <FormControl required className={classes.formControl}>
+                  <InputLabel>{companyInfo.label}</InputLabel>
+                  <Select
+                    name={companyInfo.key}
+                    value={companyInfo.value}
+                    onChange={event => this.handleChange(event)}
+                  >
+                    {companyInfo.list.map((element, index) => {
+                      return (
+                        <MenuItem key={index} value={index}>
+                          {element}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+            );
+          })}
         </Grid>
         <div className={classes.buttons}>
           <Button
