@@ -20,6 +20,7 @@ class Product {
       companyRegion: region,
       companyScale: scale,
       companyServiceType: serviceType,
+      review: [],
     });
   }
 

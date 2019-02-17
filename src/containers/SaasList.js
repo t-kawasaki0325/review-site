@@ -226,10 +226,9 @@ class SaasList extends Component {
                           {saas.name}
                         </Typography>
                       </Link>
-                      {saas.board && saas.review && (
+                      {saas.review && (
                         <Typography>
-                          トピック数：{saas.board.length}　レビュー数：
-                          {saas.review.length}
+                          レビュー数：{saas.review.length}
                         </Typography>
                       )}
                     </Grid>
