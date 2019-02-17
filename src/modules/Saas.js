@@ -8,6 +8,10 @@ class Saas {
   static searchSaas = (sortBy, query) => {
     return Product.getSearchData(sortBy, query);
   };
+
+  static sassInfoById = id => {
+    return Product.getInfoById(id);
+  };
 }
 
 export default Saas;

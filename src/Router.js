@@ -7,6 +7,7 @@ import {
   Top,
   RegisterSaas,
   SaasList,
+  SaasDetail,
 } from './containers';
 import { PATH } from './config';
 
@@ -24,6 +25,7 @@ const AppRouter = () => {
           component={RegisterSaas}
         />
         <Route path={PATH.SAAS_LIST} exact component={SaasList} />
+        <Route path={PATH.SAAS_DETAIL} exact component={SaasDetail} />
       </Switch>
     </Router>
   );

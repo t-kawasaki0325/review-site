@@ -17,8 +17,9 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import { Saas } from '../modules';
-import { SAAS, COMPANY } from '../config';
+import { SAAS, COMPANY, PATH } from '../config';
 import { Header } from '../components';
+import { UrlUtil } from '../utils';
 
 const styles = theme => ({
   layout: {
@@ -209,6 +210,7 @@ class SaasList extends Component {
           {snapshot &&
             snapshot.docs.map(doc => {
               const saas = doc.data();
+
               return (
                 <Paper key={doc.id} className={classes.saas}>
                   <Grid container spacing={24}>
@@ -216,16 +218,21 @@ class SaasList extends Component {
                       <Typography className={classes.title}>
                         {SAAS.CATEGORY[saas.category]}
                       </Typography>
-                      <Link to="/" style={{ textDecoration: 'none' }}>
-                        <Typography
-                          component="h1"
-                          variant="h5"
-                          color="primary"
-                          className={classes.saasTitle}
+                      <Typography
+                        component="h1"
+                        variant="h5"
+                        className={classes.saasTitle}
+                      >
+                        <Link
+                          to={UrlUtil.changeBaseUrl(
+                            PATH.SAAS_DETAIL,
+                            doc.ref.id
+                          )}
+                          style={{ textDecoration: 'none' }}
                         >
                           {saas.name}
-                        </Typography>
-                      </Link>
+                        </Link>
+                      </Typography>
                       {saas.review && (
                         <Typography>
                           レビュー数：{saas.review.length}
@@ -234,13 +241,13 @@ class SaasList extends Component {
                     </Grid>
                     <Grid item xs={12} sm={12}>
                       <StarRatings
-                        rating={saas.point}
+                        rating={saas.point.total}
                         starRatedColor="blue"
                         numberOfStars={5}
                         starDimension="30px"
                         starSpacing="2px"
                       />
-                      {saas.point}
+                      {saas.point.total}
                     </Grid>
                   </Grid>
                 </Paper>
