@@ -15,8 +15,34 @@ class Product {
       name: name,
       category: category,
       companyRef: companyRef,
+      numOfReviews: 0,
+      point: 0,
+      companyRegion: region,
+      companyScale: scale,
+      companyServiceType: serviceType,
+      review: [],
     });
   }
+
+  static getSearchData = async (sortBy, query) => {
+    const { category, companyServiceType, companyScale, companyRegion } = query;
+
+    let collection = db.collection('product');
+
+    if (category) collection = collection.where('category', '==', category);
+    if (companyServiceType)
+      collection = collection.where(
+        'companyServiceType',
+        '==',
+        companyServiceType
+      );
+    if (companyScale)
+      collection = collection.where('companyScale', '==', companyScale);
+    if (companyRegion)
+      collection = collection.where('companyRegion', '==', companyRegion);
+
+    return await collection.orderBy(sortBy, 'desc').get();
+  };
 }
 
 export default Product;

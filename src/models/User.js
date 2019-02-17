@@ -1,17 +1,31 @@
 import { db } from '../firebase';
 
 class User {
-  static createNewUser(uid, info) {
-    const { name, company, scale, serviceType, department, position } = info;
+  static async createNewUser(uid, info) {
+    const {
+      name,
+      company,
+      scale,
+      serviceType,
+      department,
+      position,
+      region,
+    } = info;
+
+    const ref = await db.collection('company').add({
+      name: company,
+      scale: scale,
+      serviceType: serviceType,
+      region: region,
+    });
+
     db.collection('user')
       .doc(uid)
       .set({
         name: name,
-        company: company,
-        scale: scale,
-        serviceType: serviceType,
-        department: department,
         position: position,
+        department: department,
+        companyRef: ref,
       });
   }
 }

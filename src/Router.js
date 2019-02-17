@@ -1,6 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Registration, Login, UserInfo, Top, RegisterSaas } from './containers';
+import {
+  Registration,
+  Login,
+  UserInfo,
+  Top,
+  RegisterSaas,
+  SaasList,
+} from './containers';
 import { PATH } from './config';
 
 const AppRouter = () => {
@@ -16,6 +23,7 @@ const AppRouter = () => {
           exact
           component={RegisterSaas}
         />
+        <Route path={PATH.SAAS_LIST} exact component={SaasList} />
       </Switch>
     </Router>
   );
