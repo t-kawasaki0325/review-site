@@ -13,6 +13,13 @@ const SAAS = {
     point: '点数の高い順',
     recentlyReviewed: '最近レビューされた順',
   },
+  RADAR: {
+    sales: '営業対応',
+    support: 'サポート対応',
+    utilization: '活用度合い',
+    recommendation: '他人への推奨度合い',
+    satisfaction: '満足度',
+  },
 };
 
 export default SAAS;

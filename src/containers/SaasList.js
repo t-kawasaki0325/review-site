@@ -241,13 +241,13 @@ class SaasList extends Component {
                     </Grid>
                     <Grid item xs={12} sm={12}>
                       <StarRatings
-                        rating={saas.point}
+                        rating={saas.point.total}
                         starRatedColor="blue"
                         numberOfStars={5}
                         starDimension="30px"
                         starSpacing="2px"
                       />
-                      {saas.point}
+                      {saas.point.total}
                     </Grid>
                   </Grid>
                 </Paper>
