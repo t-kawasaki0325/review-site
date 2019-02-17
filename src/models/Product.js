@@ -43,6 +43,13 @@ class Product {
 
     return await collection.orderBy(sortBy, 'desc').get();
   };
+
+  static getInfoById = async id => {
+    return await db
+      .collection('product')
+      .doc(id)
+      .get();
+  };
 }
 
 export default Product;
