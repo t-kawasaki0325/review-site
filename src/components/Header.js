@@ -6,6 +6,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
+import { PATH } from '../config';
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -16,7 +18,7 @@ const styles = {
 };
 
 const Header = props => {
-  const { classes } = props;
+  const { classes, history } = props;
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -24,8 +26,15 @@ const Header = props => {
           <Typography variant="h6" color="inherit" className={classes.grow}>
             Review Site
           </Typography>
-          <Button color="inherit">ユーザー登録（無料）</Button>
-          <Button color="inherit">ログイン</Button>
+          <Button
+            color="inherit"
+            onClick={() => history.push(PATH.REGISTRATION)}
+          >
+            ユーザー登録（無料）
+          </Button>
+          <Button color="inherit" onClick={() => history.push(PATH.LOGIN)}>
+            ログイン
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

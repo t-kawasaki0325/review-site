@@ -6,8 +6,9 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+
 import { Authentication } from '../modules';
-import { MemberInfo } from '../components';
+import { MemberInfo, Header } from '../components';
 import icon from '../assets/icons-google.svg';
 
 const styles = theme => ({
@@ -60,8 +61,9 @@ class Registration extends Component {
     const { classes, history } = this.props;
     return (
       <React.Fragment>
-        <CssBaseline />
+        <Header history={history} />
         <main className={classes.layout}>
+          <CssBaseline />
           <Paper className={classes.paper}>
             <Typography
               component="h1"

@@ -11,6 +11,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import icon from '../assets/icons-google.svg';
+
+import { Header } from '../components';
 import { Authentication } from '../modules';
 
 const styles = theme => ({
@@ -87,60 +89,63 @@ class Login extends Component {
     ];
 
     return (
-      <main className={classes.main}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            ログイン
-          </Typography>
-          <div className={classes.form}>
-            {formList.map((element, index) => {
-              return (
-                <FormControl key={index} margin="normal" required fullWidth>
-                  <InputLabel htmlFor={element.type}>
-                    {element.title}
-                  </InputLabel>
-                  <Input
-                    type={element.type}
-                    autoComplete={element.type}
-                    autoFocus
-                    value={element.value}
-                    onChange={event => this.handleChange(event)}
-                  />
-                </FormControl>
-              );
-            })}
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={() =>
-                Authentication.loginWithEmail(
-                  this.state.email,
-                  this.state.password,
-                  history
-                )
-              }
-            >
+      <React.Fragment>
+        <Header history={history} />
+        <main className={classes.main}>
+          <CssBaseline />
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
               ログイン
-            </Button>
-            <Typography className={classes.text}>または</Typography>
-            <Button
-              fullWidth
-              variant="contained"
-              color="default"
-              onClick={() => Authentication.loginWithGoogle()}
-            >
-              <img src={icon} className={classes.icon} alt="icon" />
-              Googleでログイン
-            </Button>
-          </div>
-        </Paper>
-      </main>
+            </Typography>
+            <div className={classes.form}>
+              {formList.map((element, index) => {
+                return (
+                  <FormControl key={index} margin="normal" required fullWidth>
+                    <InputLabel htmlFor={element.type}>
+                      {element.title}
+                    </InputLabel>
+                    <Input
+                      type={element.type}
+                      autoComplete={element.type}
+                      autoFocus
+                      value={element.value}
+                      onChange={event => this.handleChange(event)}
+                    />
+                  </FormControl>
+                );
+              })}
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={() =>
+                  Authentication.loginWithEmail(
+                    this.state.email,
+                    this.state.password,
+                    history
+                  )
+                }
+              >
+                ログイン
+              </Button>
+              <Typography className={classes.text}>または</Typography>
+              <Button
+                fullWidth
+                variant="contained"
+                color="default"
+                onClick={() => Authentication.loginWithGoogle()}
+              >
+                <img src={icon} className={classes.icon} alt="icon" />
+                Googleでログイン
+              </Button>
+            </div>
+          </Paper>
+        </main>
+      </React.Fragment>
     );
   }
 }
