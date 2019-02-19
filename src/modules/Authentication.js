@@ -47,6 +47,18 @@ class Authentication {
       history.push(PATH.TOP);
     }
   };
+
+  static fetchUserId = () => {
+    return new Promise((resolve, reject) => {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          resolve(user.uid);
+        } else {
+          reject(Error('It broke'));
+        }
+      });
+    });
+  };
 }
 
 export default Authentication;
