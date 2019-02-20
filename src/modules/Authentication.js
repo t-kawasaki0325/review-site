@@ -49,15 +49,28 @@ class Authentication {
   };
 
   static fetchUserId = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
           resolve(user.uid);
         } else {
-          reject(Error('It broke'));
+          resolve(null);
         }
       });
     });
+  };
+
+  static transitionLoginIfNotLogin = async history => {
+    const uid = await Authentication.fetchUserId();
+    if (uid) {
+      return uid;
+    }
+
+    history.push(PATH.LOGIN);
+  };
+
+  static fetchUserDataById = id => {
+    return User.fetchById(id);
   };
 }
 

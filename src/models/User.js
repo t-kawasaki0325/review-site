@@ -28,6 +28,13 @@ class User {
         companyRef: ref,
       });
   }
+
+  static fetchById = async uid => {
+    return db
+      .collection('user')
+      .doc(uid)
+      .get();
+  };
 }
 
 export default User;
