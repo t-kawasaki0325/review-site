@@ -7,7 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import { Authentication } from '../modules';
-import { MemberInfo } from '../components';
+import { MemberInfo, CompanyInfo } from '../components';
+import { UrlUtil } from '../utils';
 
 const styles = theme => ({
   layout: {
@@ -95,6 +96,9 @@ class UserInfo extends Component {
               <MemberInfo
                 history={history}
                 name={this.state.name}
+                handleChange={event => this.handleChange(event)}
+              />
+              <CompanyInfo
                 department={this.state.department}
                 position={this.state.position}
                 company={this.state.company}
@@ -107,7 +111,10 @@ class UserInfo extends Component {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => Authentication.signupWithEmail(info, history)}
+                  onClick={() => {
+                    const uid = UrlUtil.baseUrl(history.location.pathname);
+                    Authentication.createNewUser(uid, info, history);
+                  }}
                   className={classes.button}
                 >
                   送信

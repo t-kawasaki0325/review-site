@@ -6,7 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import { MemberInfo, Header } from '../components';
+import { MemberInfo, CompanyInfo, Header } from '../components';
 
 const styles = theme => ({
   layout: {
@@ -101,6 +101,9 @@ class Mypage extends Component {
             <MemberInfo
               history={history}
               name={this.state.name}
+              handleChange={event => this.handleChange(event)}
+            />
+            <CompanyInfo
               department={this.state.department}
               position={this.state.position}
               company={this.state.company}

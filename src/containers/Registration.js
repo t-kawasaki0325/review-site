@@ -8,8 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import { Authentication } from '../modules';
-import { MemberInfo, Header } from '../components';
-import { UrlUtil } from '../utils';
+import { MemberInfo, CompanyInfo, Header } from '../components';
 import icon from '../assets/icons-google.svg';
 
 const styles = theme => ({
@@ -50,6 +49,9 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     minWidth: 200,
     fontSize: 18,
+  },
+  center: {
+    textAlign: 'center',
   },
   google: {
     marginTop: theme.spacing.unit * 2,
@@ -116,6 +118,12 @@ class Registration extends Component {
               <MemberInfo
                 history={history}
                 name={this.state.name}
+                email={this.state.email}
+                password={this.state.password}
+                handleChange={event => this.handleChange(event)}
+              />
+              <CompanyInfo
+                history={history}
                 department={this.state.department}
                 position={this.state.position}
                 company={this.state.company}
@@ -137,15 +145,12 @@ class Registration extends Component {
               <Grid item xs={12} sm={12} className={classes.text}>
                 <Typography>または</Typography>
               </Grid>
-              <Grid item xs={12} sm={12} className={classes.button}>
+              <Grid item xs={12} sm={12} className={classes.center}>
                 <Button
                   variant="contained"
                   color="default"
                   className={classes.google}
-                  onClick={() => {
-                    const uid = UrlUtil.baseUrl(history.location.pathname);
-                    Authentication.createNewUser(uid, info, history);
-                  }}
+                  onClick={() => Authentication.loginWithGoogle()}
                 >
                   <img src={icon} className={classes.icon} alt="icon" />
                   Googleでログイン
