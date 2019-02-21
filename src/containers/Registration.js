@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 
 import { Authentication } from '../modules';
 import { MemberInfo, Header } from '../components';
+import { UrlUtil } from '../utils';
 import icon from '../assets/icons-google.svg';
 
 const styles = theme => ({
@@ -39,8 +40,16 @@ const styles = theme => ({
     textAlign: 'center',
     fontSize: 18,
   },
+  buttons: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
   button: {
-    textAlign: 'center',
+    marginTop: theme.spacing.unit * 8,
+    marginBottom: theme.spacing.unit * 2,
+    marginLeft: theme.spacing.unit,
+    minWidth: 200,
+    fontSize: 18,
   },
   google: {
     marginTop: theme.spacing.unit * 2,
@@ -52,13 +61,42 @@ const styles = theme => ({
 });
 
 class Registration extends Component {
+  state = {
+    email: '',
+    password: '',
+    name: '',
+    department: '',
+    position: '',
+    company: '',
+    region: '',
+    scale: '',
+    serviceType: '',
+  };
+
   componentDidMount() {
     const { history } = this.props;
     Authentication.completeLoginWithGoogle(history);
   }
 
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
   render() {
     const { classes, history } = this.props;
+
+    const info = {
+      email: this.state.email,
+      password: this.state.password,
+      name: this.state.name,
+      company: this.state.company,
+      region: this.state.region,
+      scale: this.state.scale,
+      serviceType: this.state.serviceType,
+      department: this.state.department,
+      position: this.state.position,
+    };
+
     return (
       <React.Fragment>
         <Header history={history} />
@@ -75,7 +113,27 @@ class Registration extends Component {
             </Typography>
             <React.Fragment>
               <Grid container spacing={24} />
-              <MemberInfo history={history} />
+              <MemberInfo
+                history={history}
+                name={this.state.name}
+                department={this.state.department}
+                position={this.state.position}
+                company={this.state.company}
+                region={this.state.region}
+                scale={this.state.scale}
+                serviceType={this.state.serviceType}
+                handleChange={event => this.handleChange(event)}
+              />
+              <div className={classes.buttons}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => Authentication.signupWithEmail(info, history)}
+                  className={classes.button}
+                >
+                  送信
+                </Button>
+              </div>
               <Grid item xs={12} sm={12} className={classes.text}>
                 <Typography>または</Typography>
               </Grid>
@@ -84,7 +142,10 @@ class Registration extends Component {
                   variant="contained"
                   color="default"
                   className={classes.google}
-                  onClick={() => Authentication.loginWithGoogle()}
+                  onClick={() => {
+                    const uid = UrlUtil.baseUrl(history.location.pathname);
+                    Authentication.createNewUser(uid, info, history);
+                  }}
                 >
                   <img src={icon} className={classes.icon} alt="icon" />
                   Googleでログイン
