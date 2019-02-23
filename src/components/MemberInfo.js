@@ -17,11 +17,23 @@ const styles = () => ({
 });
 
 const MemberInfo = props => {
-  const { classes, history, email, password, name, handleChange } = props;
+  const {
+    classes,
+    history,
+    email,
+    password,
+    name,
+    handleChange,
+    message,
+  } = props;
   const emailAndPassword = [
     {
       component: (
-        <Email value={email} handleChange={event => handleChange(event)} />
+        <Email
+          value={email}
+          handleChange={event => handleChange(event)}
+          message={message.email}
+        />
       ),
     },
     {
@@ -29,6 +41,7 @@ const MemberInfo = props => {
         <Password
           value={password}
           handleChange={event => handleChange(event)}
+          message={message.password}
         />
       ),
     },
@@ -61,6 +74,11 @@ const MemberInfo = props => {
             value={name}
             onChange={event => handleChange(event)}
           />
+          {message.name && (
+            <Typography style={{ color: '#d50000', marginTop: 5 }}>
+              {message.name}
+            </Typography>
+          )}
         </Grid>
       </Grid>
     </React.Fragment>

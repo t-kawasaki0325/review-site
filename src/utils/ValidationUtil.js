@@ -1,12 +1,14 @@
 class ValidationUtil {
-  static formValidate = (key, value) => {
-    switch (key) {
+  static formValidate = (type, value) => {
+    switch (type) {
       case 'email':
         return ValidationUtil.emailValidation(value);
       case 'password':
         return ValidationUtil.passwordValidation(value);
+      case 'text':
+        return ValidationUtil.textValidation(value);
       default:
-        break;
+        return ValidationUtil.selectValidation(value);
     }
   };
 
@@ -22,6 +24,18 @@ class ValidationUtil {
   static passwordValidation = password => {
     if (!password) return 'パスワードを入力してください';
     if (password.length < 6) return 'パスワードは6文字以上で入力してください';
+
+    return '';
+  };
+
+  static textValidation = text => {
+    if (!text) return '不正な入力値です';
+
+    return '';
+  };
+
+  static selectValidation = option => {
+    if (option === 0) return '「選択なし」は選択できません';
 
     return '';
   };

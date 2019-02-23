@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 import { Authentication } from '../modules';
 import { MemberInfo, CompanyInfo } from '../components';
-import { UrlUtil } from '../utils';
+import { UrlUtil, ValidationUtil } from '../utils';
 
 const styles = theme => ({
   layout: {
@@ -53,31 +53,67 @@ const styles = theme => ({
 
 class UserInfo extends Component {
   state = {
-    name: '',
-    department: '',
-    position: '',
-    company: '',
-    region: '',
-    scale: '',
-    serviceType: '',
+    info: {
+      name: '',
+      department: '',
+      position: '',
+      company: '',
+      region: '',
+      scale: '',
+      serviceType: '',
+    },
+    message: {
+      name: '',
+      department: '',
+      position: '',
+      company: '',
+      region: '',
+      scale: '',
+      serviceType: '',
+    },
   };
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    const key = event.target.name;
+    const type = event.target.type;
+    const value = event.target.value;
+
+    this.setState({
+      info: { ...this.state.info, [key]: value },
+    });
+    this.setState({
+      message: {
+        ...this.state.message,
+        [key]: ValidationUtil.formValidate(type, value),
+      },
+    });
+  };
+
+  canSubmit = () => {
+    const i = this.state.info;
+    const m = this.state.message;
+
+    const infoValid =
+      !i.name ||
+      !i.department ||
+      !i.position ||
+      !i.company ||
+      !i.region ||
+      !i.scale ||
+      !i.serviceType;
+    const messageValid =
+      !!m.name ||
+      !!m.department ||
+      !!m.position ||
+      !!m.company ||
+      !!m.region ||
+      !!m.scale ||
+      !!m.serviceType;
+    return infoValid || messageValid;
   };
 
   render() {
     const { classes, history } = this.props;
-
-    const info = {
-      name: this.state.name,
-      company: this.state.company,
-      region: this.state.region,
-      scale: this.state.scale,
-      serviceType: this.state.serviceType,
-      department: this.state.department,
-      position: this.state.position,
-    };
 
     return (
       <React.Fragment>
@@ -95,25 +131,28 @@ class UserInfo extends Component {
             <React.Fragment>
               <MemberInfo
                 history={history}
-                name={this.state.name}
+                name={this.state.info.name}
                 handleChange={event => this.handleChange(event)}
+                message={this.state.message}
               />
               <CompanyInfo
-                department={this.state.department}
-                position={this.state.position}
-                company={this.state.company}
-                region={this.state.region}
-                scale={this.state.scale}
-                serviceType={this.state.serviceType}
+                department={this.state.info.department}
+                position={this.state.info.position}
+                company={this.state.info.company}
+                region={this.state.info.region}
+                scale={this.state.info.scale}
+                serviceType={this.state.info.serviceType}
                 handleChange={event => this.handleChange(event)}
+                message={this.state.message}
               />
               <div className={classes.buttons}>
                 <Button
+                  disabled={this.canSubmit()}
                   variant="contained"
                   color="primary"
                   onClick={() => {
                     const uid = UrlUtil.baseUrl(history.location.pathname);
-                    Authentication.createNewUser(uid, info, history);
+                    Authentication.createNewUser(uid, this.state.info, history);
                   }}
                   className={classes.button}
                 >

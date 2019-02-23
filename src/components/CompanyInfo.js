@@ -40,6 +40,7 @@ const CompanyInfo = props => {
     position,
     company,
     handleChange,
+    message,
   } = props;
 
   const companySelectMenu = [
@@ -48,30 +49,35 @@ const CompanyInfo = props => {
       key: 'region',
       value: region,
       list: COMPANY.REGION,
+      message: message.region,
     },
     {
       label: '会社規模',
       key: 'scale',
       value: scale,
       list: COMPANY.SCALE,
+      message: message.scale,
     },
     {
       label: '業種',
       key: 'serviceType',
       value: serviceType,
       list: COMPANY.SERVICE_TYPE,
+      message: message.serviceType,
     },
     {
       label: '部署',
       key: 'department',
       value: department,
       list: COMPANY.DEPARTMENT,
+      message: message.department,
     },
     {
       label: '役職',
       key: 'position',
       value: position,
       list: COMPANY.POSITION,
+      message: message.position,
     },
   ];
 
@@ -92,6 +98,11 @@ const CompanyInfo = props => {
             value={company}
             onChange={event => handleChange(event)}
           />
+          {message.company && (
+            <Typography style={{ color: '#d50000', marginTop: 5 }}>
+              {message.company}
+            </Typography>
+          )}
         </Grid>
         {companySelectMenu.map((companyInfo, index) => {
           return (
@@ -111,6 +122,11 @@ const CompanyInfo = props => {
                     );
                   })}
                 </Select>
+                {companyInfo.message && (
+                  <Typography style={{ color: '#d50000', marginTop: 5 }}>
+                    {companyInfo.message}
+                  </Typography>
+                )}
               </FormControl>
             </Grid>
           );

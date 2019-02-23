@@ -92,7 +92,7 @@ class Login extends Component {
     const info = this.state.info;
     const message = this.state.message;
 
-    const infoValid = !info.email && !info.password;
+    const infoValid = !info.email || !info.password;
     const messageValid = !!message.email || !!message.password;
     return infoValid || messageValid;
   };

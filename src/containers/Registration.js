@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 
 import { Authentication } from '../modules';
 import { MemberInfo, CompanyInfo, Header } from '../components';
+import { ValidationUtil } from '../utils';
 import icon from '../assets/icons-google.svg';
 
 const styles = theme => ({
@@ -64,15 +65,28 @@ const styles = theme => ({
 
 class Registration extends Component {
   state = {
-    email: '',
-    password: '',
-    name: '',
-    department: '',
-    position: '',
-    company: '',
-    region: '',
-    scale: '',
-    serviceType: '',
+    info: {
+      email: '',
+      password: '',
+      name: '',
+      department: '',
+      position: '',
+      company: '',
+      region: '',
+      scale: '',
+      serviceType: '',
+    },
+    message: {
+      email: '',
+      password: '',
+      name: '',
+      department: '',
+      position: '',
+      company: '',
+      region: '',
+      scale: '',
+      serviceType: '',
+    },
   };
 
   componentDidMount() {
@@ -81,23 +95,50 @@ class Registration extends Component {
   }
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    const key = event.target.name;
+    const type = event.target.type;
+    const value = event.target.value;
+
+    this.setState({
+      info: { ...this.state.info, [key]: value },
+    });
+    this.setState({
+      message: {
+        ...this.state.message,
+        [key]: ValidationUtil.formValidate(type, value),
+      },
+    });
+  };
+
+  canSubmit = () => {
+    const i = this.state.info;
+    const m = this.state.message;
+
+    const infoValid =
+      !i.email ||
+      !i.password ||
+      !i.name ||
+      !i.department ||
+      !i.position ||
+      !i.company ||
+      !i.region ||
+      !i.scale ||
+      !i.serviceType;
+    const messageValid =
+      !!m.email ||
+      !!m.password ||
+      !!m.name ||
+      !!m.department ||
+      !!m.position ||
+      !!m.company ||
+      !!m.region ||
+      !!m.scale ||
+      !!m.serviceType;
+    return infoValid || messageValid;
   };
 
   render() {
     const { classes, history } = this.props;
-
-    const info = {
-      email: this.state.email,
-      password: this.state.password,
-      name: this.state.name,
-      company: this.state.company,
-      region: this.state.region,
-      scale: this.state.scale,
-      serviceType: this.state.serviceType,
-      department: this.state.department,
-      position: this.state.position,
-    };
 
     return (
       <React.Fragment>
@@ -117,26 +158,31 @@ class Registration extends Component {
               <Grid container spacing={24} />
               <MemberInfo
                 history={history}
-                name={info.name}
-                email={info.email}
-                password={info.password}
+                name={this.state.info.name}
+                email={this.state.info.email}
+                password={this.state.info.password}
                 handleChange={event => this.handleChange(event)}
+                message={this.state.message}
               />
               <CompanyInfo
                 history={history}
-                department={info.department}
-                position={info.position}
-                company={info.company}
-                region={info.region}
-                scale={info.scale}
-                serviceType={info.serviceType}
+                department={this.state.info.department}
+                position={this.state.info.position}
+                company={this.state.info.company}
+                region={this.state.info.region}
+                scale={this.state.info.scale}
+                serviceType={this.state.info.serviceType}
                 handleChange={event => this.handleChange(event)}
+                message={this.state.message}
               />
               <div className={classes.buttons}>
                 <Button
+                  disabled={this.canSubmit()}
                   variant="contained"
                   color="primary"
-                  onClick={() => Authentication.signupWithEmail(info, history)}
+                  onClick={() =>
+                    Authentication.signupWithEmail(this.state.info, history)
+                  }
                   className={classes.button}
                 >
                   送信

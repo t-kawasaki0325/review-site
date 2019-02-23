@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { MemberInfo, CompanyInfo, Header } from '../components';
 import { Authentication } from '../modules';
+import { ValidationUtil } from '../utils';
 
 const styles = theme => ({
   layout: {
@@ -59,14 +60,25 @@ const styles = theme => ({
 
 class Mypage extends Component {
   state = {
-    uid: '',
-    name: '',
-    department: '',
-    position: '',
-    company: '',
-    region: '',
-    scale: '',
-    serviceType: '',
+    info: {
+      uid: '',
+      name: '',
+      department: '',
+      position: '',
+      company: '',
+      region: '',
+      scale: '',
+      serviceType: '',
+    },
+    message: {
+      name: '',
+      department: '',
+      position: '',
+      company: '',
+      region: '',
+      scale: '',
+      serviceType: '',
+    },
   };
 
   async componentDidMount() {
@@ -76,33 +88,61 @@ class Mypage extends Component {
     const companySnapshot = await user.companyRef.get();
     const company = companySnapshot.data();
 
-    this.setState({ uid: uid });
-    this.setState({ name: user.name });
-    this.setState({ department: user.department });
-    this.setState({ position: user.position });
-    this.setState({ company: company.name });
-    this.setState({ region: company.region });
-    this.setState({ scale: company.scale });
-    this.setState({ serviceType: company.serviceType });
+    const info = {
+      uid: uid,
+      name: user.name,
+      department: user.department,
+      position: user.position,
+      company: company.name,
+      region: company.region,
+      scale: company.scale,
+      serviceType: company.serviceType,
+    };
+
+    this.setState({ info: info });
   }
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    const key = event.target.name;
+    const type = event.target.type;
+    const value = event.target.value;
+
+    this.setState({
+      info: { ...this.state.info, [key]: value },
+    });
+    this.setState({
+      message: {
+        ...this.state.message,
+        [key]: ValidationUtil.formValidate(type, value),
+      },
+    });
+  };
+
+  canSubmit = () => {
+    const i = this.state.info;
+    const m = this.state.message;
+
+    const infoValid =
+      !i.name ||
+      !i.department ||
+      !i.position ||
+      !i.company ||
+      !i.region ||
+      !i.scale ||
+      !i.serviceType;
+    const messageValid =
+      !!m.name ||
+      !!m.department ||
+      !!m.position ||
+      !!m.company ||
+      !!m.region ||
+      !!m.scale ||
+      !!m.serviceType;
+    return infoValid || messageValid;
   };
 
   render() {
     const { classes, history } = this.props;
-
-    const info = {
-      uid: this.state.uid,
-      name: this.state.name,
-      company: this.state.company,
-      region: this.state.region,
-      scale: this.state.scale,
-      serviceType: this.state.serviceType,
-      department: this.state.department,
-      position: this.state.position,
-    };
 
     return (
       <React.Fragment>
@@ -120,23 +160,26 @@ class Mypage extends Component {
             </Typography>
             <MemberInfo
               history={history}
-              name={info.name}
+              name={this.state.info.name}
               handleChange={event => this.handleChange(event)}
+              message={this.state.message}
             />
             <CompanyInfo
-              company={info.company}
-              region={info.region}
-              scale={info.scale}
-              serviceType={info.serviceType}
-              position={info.position}
-              department={info.department}
+              company={this.state.info.company}
+              region={this.state.info.region}
+              scale={this.state.info.scale}
+              serviceType={this.state.info.serviceType}
+              position={this.state.info.position}
+              department={this.state.info.department}
               handleChange={event => this.handleChange(event)}
+              message={this.state.message}
             />
             <div className={classes.buttons}>
               <Button
+                disabled={this.canSubmit()}
                 variant="contained"
                 color="primary"
-                onClick={() => Authentication.updateUserInfo(info)}
+                onClick={() => Authentication.updateUserInfo(this.state.info)}
                 className={classes.button}
               >
                 送信
