@@ -23,7 +23,7 @@ class Authentication {
   };
 
   static createNewUser = (uid, info, history) => {
-    User.createNewUser(uid, info);
+    User.fillData(uid, info);
     history.push(PATH.TOP);
   };
 
@@ -33,7 +33,7 @@ class Authentication {
     const { user } = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password);
-    User.createNewUser(user.uid, info);
+    User.fillData(user.uid, info);
     if (user) {
       history.push(PATH.TOP);
     }
@@ -71,6 +71,11 @@ class Authentication {
 
   static fetchUserDataById = id => {
     return User.fetchById(id);
+  };
+
+  static updateUserInfo = info => {
+    const { uid } = info;
+    User.fillData(uid, info);
   };
 }
 

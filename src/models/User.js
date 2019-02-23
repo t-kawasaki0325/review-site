@@ -1,7 +1,7 @@
 import { db } from '../firebase';
 
 class User {
-  static async createNewUser(uid, info) {
+  static async fillData(uid, info) {
     const {
       name,
       company,

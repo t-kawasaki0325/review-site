@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import { MemberInfo, CompanyInfo, Header } from '../components';
+import { Authentication } from '../modules';
 
 const styles = theme => ({
   layout: {
@@ -58,6 +59,7 @@ const styles = theme => ({
 
 class Mypage extends Component {
   state = {
+    uid: '',
     name: '',
     department: '',
     position: '',
@@ -67,6 +69,23 @@ class Mypage extends Component {
     serviceType: '',
   };
 
+  async componentDidMount() {
+    const uid = await Authentication.transitionLoginIfNotLogin();
+    const userSnapshot = await Authentication.fetchUserDataById(uid);
+    const user = userSnapshot.data();
+    const companySnapshot = await user.companyRef.get();
+    const company = companySnapshot.data();
+
+    this.setState({ uid: uid });
+    this.setState({ name: user.name });
+    this.setState({ department: user.department });
+    this.setState({ position: user.position });
+    this.setState({ company: company.name });
+    this.setState({ region: company.region });
+    this.setState({ scale: company.scale });
+    this.setState({ serviceType: company.serviceType });
+  }
+
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -75,6 +94,7 @@ class Mypage extends Component {
     const { classes, history } = this.props;
 
     const info = {
+      uid: this.state.uid,
       name: this.state.name,
       company: this.state.company,
       region: this.state.region,
@@ -104,19 +124,19 @@ class Mypage extends Component {
               handleChange={event => this.handleChange(event)}
             />
             <CompanyInfo
-              department={this.state.department}
-              position={this.state.position}
               company={this.state.company}
               region={this.state.region}
               scale={this.state.scale}
               serviceType={this.state.serviceType}
+              position={this.state.position}
+              department={this.state.department}
               handleChange={event => this.handleChange(event)}
             />
             <div className={classes.buttons}>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => this.registerUserInfo(history, info)}
+                onClick={() => Authentication.updateUserInfo(info)}
                 className={classes.button}
               >
                 送信
