@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 
-import { Authentication } from '../modules';
 import { MemberInfo, CompanyInfo, Header } from '../components';
+import { Authentication } from '../modules';
 import { ValidationUtil } from '../utils';
-import icon from '../assets/icons-google.svg';
 
 const styles = theme => ({
   layout: {
@@ -33,13 +31,6 @@ const styles = theme => ({
       padding: theme.spacing.unit * 3,
     },
   },
-  title: {
-    margin: theme.spacing.unit * 2,
-  },
-  text: {
-    textAlign: 'center',
-    fontSize: 18,
-  },
   buttons: {
     display: 'flex',
     justifyContent: 'center',
@@ -51,8 +42,12 @@ const styles = theme => ({
     minWidth: 200,
     fontSize: 18,
   },
-  center: {
+  title: {
+    margin: theme.spacing.unit * 2,
+  },
+  text: {
     textAlign: 'center',
+    fontSize: 18,
   },
   google: {
     marginTop: theme.spacing.unit * 2,
@@ -63,11 +58,10 @@ const styles = theme => ({
   },
 });
 
-class Registration extends Component {
+class Mypage extends Component {
   state = {
     info: {
-      email: '',
-      password: '',
+      uid: '',
       name: '',
       department: '',
       position: '',
@@ -77,8 +71,6 @@ class Registration extends Component {
       serviceType: '',
     },
     message: {
-      email: '',
-      password: '',
       name: '',
       department: '',
       position: '',
@@ -89,9 +81,25 @@ class Registration extends Component {
     },
   };
 
-  componentDidMount() {
-    const { history } = this.props;
-    Authentication.completeLoginWithGoogle(history);
+  async componentDidMount() {
+    const uid = await Authentication.transitionLoginIfNotLogin();
+    const userSnapshot = await Authentication.fetchUserDataById(uid);
+    const user = userSnapshot.data();
+    const companySnapshot = await user.companyRef.get();
+    const company = companySnapshot.data();
+
+    const info = {
+      uid: uid,
+      name: user.name,
+      department: user.department,
+      position: user.position,
+      company: company.name,
+      region: company.region,
+      scale: company.scale,
+      serviceType: company.serviceType,
+    };
+
+    this.setState({ info: info });
   }
 
   handleChange = event => {
@@ -115,8 +123,6 @@ class Registration extends Component {
     const m = this.state.message;
 
     const infoValid =
-      !i.email ||
-      !i.password ||
       !i.name ||
       !i.department ||
       !i.position ||
@@ -125,8 +131,6 @@ class Registration extends Component {
       !i.scale ||
       !i.serviceType;
     const messageValid =
-      !!m.email ||
-      !!m.password ||
       !!m.name ||
       !!m.department ||
       !!m.position ||
@@ -143,8 +147,8 @@ class Registration extends Component {
     return (
       <React.Fragment>
         <Header history={history} />
+        <CssBaseline />
         <main className={classes.layout}>
-          <CssBaseline />
           <Paper className={classes.paper}>
             <Typography
               component="h1"
@@ -152,57 +156,35 @@ class Registration extends Component {
               align="center"
               className={classes.title}
             >
-              ユーザー登録
+              マイページ編集
             </Typography>
-            <React.Fragment>
-              <Grid container spacing={24} />
-              <MemberInfo
-                history={history}
-                name={this.state.info.name}
-                email={this.state.info.email}
-                password={this.state.info.password}
-                handleChange={event => this.handleChange(event)}
-                message={this.state.message}
-              />
-              <CompanyInfo
-                history={history}
-                department={this.state.info.department}
-                position={this.state.info.position}
-                company={this.state.info.company}
-                region={this.state.info.region}
-                scale={this.state.info.scale}
-                serviceType={this.state.info.serviceType}
-                handleChange={event => this.handleChange(event)}
-                message={this.state.message}
-              />
-              <div className={classes.buttons}>
-                <Button
-                  disabled={this.canSubmit()}
-                  variant="contained"
-                  color="primary"
-                  onClick={() =>
-                    Authentication.signupWithEmail(this.state.info, history)
-                  }
-                  className={classes.button}
-                >
-                  送信
-                </Button>
-              </div>
-              <Grid item xs={12} sm={12} className={classes.text}>
-                <Typography>または</Typography>
-              </Grid>
-              <Grid item xs={12} sm={12} className={classes.center}>
-                <Button
-                  variant="contained"
-                  color="default"
-                  className={classes.google}
-                  onClick={() => Authentication.loginWithGoogle()}
-                >
-                  <img src={icon} className={classes.icon} alt="icon" />
-                  Googleでログイン
-                </Button>
-              </Grid>
-            </React.Fragment>
+            <MemberInfo
+              history={history}
+              name={this.state.info.name}
+              handleChange={event => this.handleChange(event)}
+              message={this.state.message}
+            />
+            <CompanyInfo
+              company={this.state.info.company}
+              region={this.state.info.region}
+              scale={this.state.info.scale}
+              serviceType={this.state.info.serviceType}
+              position={this.state.info.position}
+              department={this.state.info.department}
+              handleChange={event => this.handleChange(event)}
+              message={this.state.message}
+            />
+            <div className={classes.buttons}>
+              <Button
+                disabled={this.canSubmit()}
+                variant="contained"
+                color="primary"
+                onClick={() => Authentication.updateUserInfo(this.state.info)}
+                className={classes.button}
+              >
+                送信
+              </Button>
+            </div>
           </Paper>
         </main>
       </React.Fragment>
@@ -210,8 +192,8 @@ class Registration extends Component {
   }
 }
 
-Registration.propTypes = {
+Mypage.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Registration);
+export default withStyles(styles)(Mypage);

@@ -1,7 +1,7 @@
 import { db } from '../firebase';
 
 class User {
-  static async createNewUser(uid, info) {
+  static async fillData(uid, info) {
     const {
       name,
       company,
@@ -28,6 +28,13 @@ class User {
         companyRef: ref,
       });
   }
+
+  static fetchById = async uid => {
+    return db
+      .collection('user')
+      .doc(uid)
+      .get();
+  };
 }
 
 export default User;

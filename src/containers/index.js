@@ -5,3 +5,4 @@ export { default as Top } from './Top';
 export { default as RegisterSaas } from './RegisterSaas';
 export { default as SaasList } from './SaasList';
 export { default as SaasDetail } from './SaasDetail';
+export { default as Mypage } from './Mypage';

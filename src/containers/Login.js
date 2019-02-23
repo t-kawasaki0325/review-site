@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import icon from '../assets/icons-google.svg';
+
+import { Header, Email, Password } from '../components';
 import { Authentication } from '../modules';
+import { ValidationUtil } from '../utils';
 
 const styles = theme => ({
   main: {
@@ -58,8 +58,14 @@ const styles = theme => ({
 
 class Login extends Component {
   state = {
-    email: '',
-    password: '',
+    info: {
+      email: '',
+      password: '',
+    },
+    message: {
+      email: '',
+      password: '',
+    },
   };
 
   componentDidMount() {
@@ -68,79 +74,85 @@ class Login extends Component {
   }
 
   handleChange = event => {
-    this.setState({ [event.target.type]: event.target.value });
+    const key = event.target.name;
+    const value = event.target.value;
+
+    this.setState({
+      info: { ...this.state.info, [key]: value },
+    });
+    this.setState({
+      message: {
+        ...this.state.message,
+        [key]: ValidationUtil.formValidate(key, value),
+      },
+    });
+  };
+
+  canSubmit = () => {
+    const info = this.state.info;
+    const message = this.state.message;
+
+    const infoValid = !info.email || !info.password;
+    const messageValid = !!message.email || !!message.password;
+    return infoValid || messageValid;
   };
 
   render() {
     const { classes, history } = this.props;
-    const formList = [
-      {
-        title: 'メールアドレス',
-        value: this.state.email,
-        type: 'email',
-      },
-      {
-        title: 'パスワード',
-        value: this.state.password,
-        type: 'password',
-      },
-    ];
 
     return (
-      <main className={classes.main}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            ログイン
-          </Typography>
-          <div className={classes.form}>
-            {formList.map((element, index) => {
-              return (
-                <FormControl key={index} margin="normal" required fullWidth>
-                  <InputLabel htmlFor={element.type}>
-                    {element.title}
-                  </InputLabel>
-                  <Input
-                    type={element.type}
-                    autoComplete={element.type}
-                    autoFocus
-                    value={element.value}
-                    onChange={event => this.handleChange(event)}
-                  />
-                </FormControl>
-              );
-            })}
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={() =>
-                Authentication.loginWithEmail(
-                  this.state.email,
-                  this.state.password,
-                  history
-                )
-              }
-            >
+      <React.Fragment>
+        <Header history={history} />
+        <main className={classes.main}>
+          <CssBaseline />
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
               ログイン
-            </Button>
-            <Typography className={classes.text}>または</Typography>
-            <Button
-              fullWidth
-              variant="contained"
-              color="default"
-              onClick={() => Authentication.loginWithGoogle()}
-            >
-              <img src={icon} className={classes.icon} alt="icon" />
-              Googleでログイン
-            </Button>
-          </div>
-        </Paper>
-      </main>
+            </Typography>
+            <div className={classes.form}>
+              <Email
+                value={this.state.info.email}
+                handleChange={event => this.handleChange(event)}
+                message={this.state.message.email}
+              />
+              <Password
+                value={this.state.info.password}
+                handleChange={event => this.handleChange(event)}
+                message={this.state.message.password}
+              />
+              <Button
+                disabled={this.canSubmit()}
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={() =>
+                  Authentication.loginWithEmail(
+                    this.state.info.email,
+                    this.state.info.password,
+                    history
+                  )
+                }
+              >
+                ログイン
+              </Button>
+              <Typography className={classes.text}>または</Typography>
+              <Button
+                fullWidth
+                variant="contained"
+                color="default"
+                onClick={() => Authentication.loginWithGoogle()}
+              >
+                <img src={icon} className={classes.icon} alt="icon" />
+                Googleでログイン
+              </Button>
+            </div>
+          </Paper>
+        </main>
+      </React.Fragment>
     );
   }
 }
