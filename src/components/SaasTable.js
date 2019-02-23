@@ -33,14 +33,20 @@ const styles = theme => ({
 });
 
 const SaasTable = props => {
-  const { classes, saas, doc } = props;
+  const { classes, saas, doc, size } = props;
+
   return (
     <Grid container spacing={24}>
       <Grid item xs={12} sm={12}>
         <Typography className={classes.title}>
           {SAAS.CATEGORY[saas.category]}
         </Typography>
-        <Typography component="h1" variant="h5" className={classes.saasTitle}>
+        <Typography
+          component="h1"
+          variant="h5"
+          className={classes.saasTitle}
+          style={size === 'small' ? { fontSize: 18 } : { fontSize: 24 }}
+        >
           <Link
             to={UrlUtil.changeBaseUrl(PATH.SAAS_DETAIL, doc.ref.id)}
             style={{ textDecoration: 'none' }}
@@ -57,7 +63,7 @@ const SaasTable = props => {
           rating={saas.point.total}
           starRatedColor="blue"
           numberOfStars={5}
-          starDimension="30px"
+          starDimension={size === 'small' ? '20' : '30'}
           starSpacing="2px"
         />
         {saas.point.total}
