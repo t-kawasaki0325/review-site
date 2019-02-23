@@ -120,16 +120,16 @@ class Mypage extends Component {
             </Typography>
             <MemberInfo
               history={history}
-              name={this.state.name}
+              name={info.name}
               handleChange={event => this.handleChange(event)}
             />
             <CompanyInfo
-              company={this.state.company}
-              region={this.state.region}
-              scale={this.state.scale}
-              serviceType={this.state.serviceType}
-              position={this.state.position}
-              department={this.state.department}
+              company={info.company}
+              region={info.region}
+              scale={info.scale}
+              serviceType={info.serviceType}
+              position={info.position}
+              department={info.department}
               handleChange={event => this.handleChange(event)}
             />
             <div className={classes.buttons}>

@@ -3,16 +3,13 @@ import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import icon from '../assets/icons-google.svg';
 
-import { Header } from '../components';
+import { Header, Email, Password } from '../components';
 import { Authentication } from '../modules';
 
 const styles = theme => ({
@@ -70,23 +67,11 @@ class Login extends Component {
   }
 
   handleChange = event => {
-    this.setState({ [event.target.type]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
     const { classes, history } = this.props;
-    const formList = [
-      {
-        title: 'メールアドレス',
-        value: this.state.email,
-        type: 'email',
-      },
-      {
-        title: 'パスワード',
-        value: this.state.password,
-        type: 'password',
-      },
-    ];
 
     return (
       <React.Fragment>
@@ -101,22 +86,14 @@ class Login extends Component {
               ログイン
             </Typography>
             <div className={classes.form}>
-              {formList.map((element, index) => {
-                return (
-                  <FormControl key={index} margin="normal" required fullWidth>
-                    <InputLabel htmlFor={element.type}>
-                      {element.title}
-                    </InputLabel>
-                    <Input
-                      type={element.type}
-                      autoComplete={element.type}
-                      autoFocus
-                      value={element.value}
-                      onChange={event => this.handleChange(event)}
-                    />
-                  </FormControl>
-                );
-              })}
+              <Email
+                value={this.state.email}
+                handleChange={event => this.handleChange(event)}
+              />
+              <Password
+                value={this.state.password}
+                handleChange={event => this.handleChange(event)}
+              />
               <Button
                 fullWidth
                 variant="contained"

@@ -117,19 +117,19 @@ class Registration extends Component {
               <Grid container spacing={24} />
               <MemberInfo
                 history={history}
-                name={this.state.name}
-                email={this.state.email}
-                password={this.state.password}
+                name={info.name}
+                email={info.email}
+                password={info.password}
                 handleChange={event => this.handleChange(event)}
               />
               <CompanyInfo
                 history={history}
-                department={this.state.department}
-                position={this.state.position}
-                company={this.state.company}
-                region={this.state.region}
-                scale={this.state.scale}
-                serviceType={this.state.serviceType}
+                department={info.department}
+                position={info.position}
+                company={info.company}
+                region={info.region}
+                scale={info.scale}
+                serviceType={info.serviceType}
                 handleChange={event => this.handleChange(event)}
               />
               <div className={classes.buttons}>

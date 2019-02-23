@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import withStyle from '@material-ui/core/styles/withStyles';
 
 import { UrlUtil } from '../utils';
+import { Email, Password } from '../components';
 
 const styles = () => ({
   container: {
@@ -17,17 +18,19 @@ const styles = () => ({
 
 const MemberInfo = props => {
   const { classes, history, email, password, name, handleChange } = props;
-
   const emailAndPassword = [
     {
-      label: 'メールアドレス',
-      key: 'email',
-      value: email,
+      component: (
+        <Email value={email} handleChange={event => handleChange(event)} />
+      ),
     },
     {
-      label: 'パスワード',
-      key: 'password',
-      value: password,
+      component: (
+        <Password
+          value={password}
+          handleChange={event => handleChange(event)}
+        />
+      ),
     },
   ];
 
@@ -43,15 +46,7 @@ const MemberInfo = props => {
           return (
             UrlUtil.isRegistrationPage(history) && (
               <Grid key={index} item xs={12} sm={6}>
-                <TextField
-                  required
-                  name={element.key}
-                  value={element.value}
-                  type={element.key}
-                  label={element.label}
-                  fullWidth
-                  onChange={event => handleChange(event)}
-                />
+                {element.component}
               </Grid>
             )
           );
