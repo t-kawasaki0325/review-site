@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import StarRatings from 'react-star-ratings';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -17,9 +15,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import { Saas } from '../modules';
-import { SAAS, COMPANY, PATH } from '../config';
-import { Header } from '../components';
-import { UrlUtil } from '../utils';
+import { SAAS, COMPANY } from '../config';
+import { Header, SaasTable } from '../components';
 
 const styles = theme => ({
   layout: {
@@ -214,43 +211,7 @@ class SaasList extends Component {
 
               return (
                 <Paper key={doc.id} className={classes.saas}>
-                  <Grid container spacing={24}>
-                    <Grid item xs={12} sm={12}>
-                      <Typography className={classes.title}>
-                        {SAAS.CATEGORY[saas.category]}
-                      </Typography>
-                      <Typography
-                        component="h1"
-                        variant="h5"
-                        className={classes.saasTitle}
-                      >
-                        <Link
-                          to={UrlUtil.changeBaseUrl(
-                            PATH.SAAS_DETAIL,
-                            doc.ref.id
-                          )}
-                          style={{ textDecoration: 'none' }}
-                        >
-                          {saas.name}
-                        </Link>
-                      </Typography>
-                      {saas.review && (
-                        <Typography>
-                          レビュー数：{saas.review.length}
-                        </Typography>
-                      )}
-                    </Grid>
-                    <Grid item xs={12} sm={12}>
-                      <StarRatings
-                        rating={saas.point.total}
-                        starRatedColor="blue"
-                        numberOfStars={5}
-                        starDimension="30px"
-                        starSpacing="2px"
-                      />
-                      {saas.point.total}
-                    </Grid>
-                  </Grid>
+                  <SaasTable doc={doc} saas={saas} />
                 </Paper>
               );
             })}
