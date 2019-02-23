@@ -1,4 +1,4 @@
-import { Product } from '../models';
+import { Product, PopularItem } from '../models';
 
 class Saas {
   static registerProduct = info => {
@@ -24,6 +24,10 @@ class Saas {
 
   static sassInfoById = id => {
     return Product.getInfoById(id);
+  };
+
+  static recentlyManyReviewed = () => {
+    return PopularItem.manyReviewed();
   };
 }
 
