@@ -11,6 +11,7 @@ import icon from '../assets/icons-google.svg';
 
 import { Header, Email, Password } from '../components';
 import { Authentication } from '../modules';
+import { ValidationUtil } from '../utils';
 
 const styles = theme => ({
   main: {
@@ -57,8 +58,14 @@ const styles = theme => ({
 
 class Login extends Component {
   state = {
-    email: '',
-    password: '',
+    info: {
+      email: '',
+      password: '',
+    },
+    message: {
+      email: '',
+      password: '',
+    },
   };
 
   componentDidMount() {
@@ -67,7 +74,27 @@ class Login extends Component {
   }
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    const key = event.target.name;
+    const value = event.target.value;
+
+    this.setState({
+      info: { ...this.state.info, [key]: value },
+    });
+    this.setState({
+      message: {
+        ...this.state.message,
+        [key]: ValidationUtil.formValidate(key, value),
+      },
+    });
+  };
+
+  canSubmit = () => {
+    const info = this.state.info;
+    const message = this.state.message;
+
+    const infoValid = !info.email && !info.password;
+    const messageValid = !!message.email || !!message.password;
+    return infoValid || messageValid;
   };
 
   render() {
@@ -87,22 +114,25 @@ class Login extends Component {
             </Typography>
             <div className={classes.form}>
               <Email
-                value={this.state.email}
+                value={this.state.info.email}
                 handleChange={event => this.handleChange(event)}
+                message={this.state.message.email}
               />
               <Password
-                value={this.state.password}
+                value={this.state.info.password}
                 handleChange={event => this.handleChange(event)}
+                message={this.state.message.password}
               />
               <Button
+                disabled={this.canSubmit()}
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
                 onClick={() =>
                   Authentication.loginWithEmail(
-                    this.state.email,
-                    this.state.password,
+                    this.state.info.email,
+                    this.state.info.password,
                     history
                   )
                 }
