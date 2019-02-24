@@ -40,11 +40,22 @@ class Authentication {
   };
 
   static loginWithEmail = async (email, password, history) => {
-    const { user } = await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password);
-    if (user) {
-      history.push(PATH.TOP);
+    try {
+      const { user } = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+      if (user) {
+        history.push(PATH.TOP);
+      }
+    } catch (e) {
+      switch (e.code) {
+        case 'auth/network-request-failed':
+          return 'ネットワーク接続がありません';
+        case 'auth/wrong-password':
+          return 'メールアドレスとパスワードが一致しません';
+        default:
+          return 'エラーが発生しました。再度お試しください';
+      }
     }
   };
 
