@@ -12,7 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Saas } from '../modules';
 import { COMPANY, SAAS } from '../config';
-import { Error } from '../components';
+import { Message } from '../components';
 
 const styles = theme => ({
   container: {
@@ -191,7 +191,9 @@ class SaasInfo extends Component {
             <CircularProgress size={24} className={classes.buttonProgress} />
           )}
         </div>
-        {this.state.message && <Error type="info" error={this.state.message} />}
+        {this.state.message && (
+          <Message type="info" error={this.state.message} />
+        )}
       </React.Fragment>
     );
   }

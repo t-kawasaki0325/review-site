@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 
-const Error = props => {
+const Message = props => {
   const { error, type } = props;
   let color;
   let background;
@@ -33,4 +33,4 @@ const Error = props => {
   );
 };
 
-export default Error;
+export default Message;

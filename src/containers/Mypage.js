@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { MemberInfo, CompanyInfo, Header, Error } from '../components';
+import { MemberInfo, CompanyInfo, Header, Message } from '../components';
 import { Authentication } from '../modules';
 import { ValidationUtil } from '../utils';
 
@@ -166,7 +166,9 @@ class Mypage extends Component {
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
-            {this.state.error && <Error type="info" error={this.state.error} />}
+            {this.state.error && (
+              <Message type="info" error={this.state.error} />
+            )}
             <Typography
               component="h1"
               variant="h4"

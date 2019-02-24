@@ -10,7 +10,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import icon from '../assets/icons-google.svg';
 
-import { Header, Email, Password, Error } from '../components';
+import { Header, Email, Password, Message } from '../components';
 import { Authentication } from '../modules';
 import { ValidationUtil } from '../utils';
 
@@ -133,7 +133,9 @@ class Login extends Component {
         <main className={classes.main}>
           <CssBaseline />
           <Paper className={classes.paper}>
-            {this.state.error && <Error error={this.state.error} />}
+            {this.state.error && (
+              <Message error={this.state.error} type="error" />
+            )}
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />
             </Avatar>

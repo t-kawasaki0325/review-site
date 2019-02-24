@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Authentication } from '../modules';
-import { MemberInfo, CompanyInfo, Header, Error } from '../components';
+import { MemberInfo, CompanyInfo, Header, Message } from '../components';
 import { ValidationUtil } from '../utils';
 import icon from '../assets/icons-google.svg';
 
@@ -168,7 +168,9 @@ class Registration extends Component {
         <main className={classes.layout}>
           <CssBaseline />
           <Paper className={classes.paper}>
-            {this.state.error && <Error error={this.state.error} />}
+            {this.state.error && (
+              <Message error={this.state.error} type="error" />
+            )}
             <Typography
               component="h1"
               variant="h4"
