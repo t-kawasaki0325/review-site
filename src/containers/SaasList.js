@@ -193,9 +193,10 @@ class SaasList extends Component {
           <FormControl className={classes.formControl}>
             <Select
               value={this.state.sortBy}
-              onChange={e =>
-                this.setState({ sortBy: parseInt(e.target.value) })
-              }
+              onChange={e => {
+                this.setState({ sortBy: e.target.value });
+                this.searchSaas();
+              }}
             >
               {sortList &&
                 sortList.map(element => {
