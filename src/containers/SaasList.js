@@ -67,7 +67,7 @@ const styles = theme => ({
 
 class SaasList extends Component {
   state = {
-    snapshot: '',
+    snapshotList: '',
     sortBy: '',
     sortList: '',
     name: '',
@@ -92,8 +92,8 @@ class SaasList extends Component {
       companyRegion: this.state.region,
     };
 
-    const snapshot = await Saas.searchSaas(this.state.sortBy, query);
-    this.setState({ snapshot: snapshot });
+    const snapshotList = await Saas.searchSaas(this.state.sortBy, query);
+    this.setState({ snapshotList: snapshotList });
   };
 
   handleChange = (key, event) => {
@@ -102,7 +102,7 @@ class SaasList extends Component {
 
   render() {
     const { classes, history } = this.props;
-    const snapshot = this.state.snapshot;
+    const snapshotList = this.state.snapshotList;
     const sortList = this.state.sortList;
 
     const searchCell = [
@@ -193,9 +193,10 @@ class SaasList extends Component {
           <FormControl className={classes.formControl}>
             <Select
               value={this.state.sortBy}
-              onChange={e =>
-                this.setState({ sortBy: parseInt(e.target.value) })
-              }
+              onChange={e => {
+                this.setState({ sortBy: e.target.value });
+                this.searchSaas();
+              }}
             >
               {sortList &&
                 sortList.map(element => {
@@ -207,8 +208,8 @@ class SaasList extends Component {
                 })}
             </Select>
           </FormControl>
-          {snapshot &&
-            snapshot.docs.map(doc => {
+          {snapshotList &&
+            snapshotList.map(doc => {
               const saas = doc.data();
 
               return (

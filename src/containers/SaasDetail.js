@@ -170,7 +170,7 @@ class SaasDetail extends Component {
               </Grid>
             </Grid>
           </Paper>
-          {review.length &&
+          {!!review.length &&
             review.map((element, index) => {
               const pointKeys = Object.keys(element.point);
 

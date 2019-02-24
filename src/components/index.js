@@ -4,3 +4,4 @@ export { default as SaasInfo } from './SaasInfo';
 export { default as CompanyInfo } from './CompanyInfo';
 export { default as Email } from './Email';
 export { default as Password } from './Password';
+export { default as Message } from './Message';

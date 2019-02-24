@@ -30,21 +30,43 @@ class Authentication {
   static signupWithEmail = async (info, history) => {
     const { email, password } = info;
 
-    const { user } = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password);
-    User.fillData(user.uid, info);
-    if (user) {
-      history.push(PATH.TOP);
+    try {
+      const { user } = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      User.fillData(user.uid, info);
+      if (user) {
+        history.push(PATH.TOP);
+      }
+    } catch (e) {
+      switch (e.code) {
+        case 'auth/network-request-failed':
+          return 'ネットワーク接続がありません';
+        case 'auth/email-already-in-use':
+          return '既にユーザーが存在します';
+        default:
+          return 'エラーが発生しました。再度お試しください';
+      }
     }
   };
 
   static loginWithEmail = async (email, password, history) => {
-    const { user } = await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password);
-    if (user) {
-      history.push(PATH.TOP);
+    try {
+      const { user } = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+      if (user) {
+        history.push(PATH.TOP);
+      }
+    } catch (e) {
+      switch (e.code) {
+        case 'auth/network-request-failed':
+          return 'ネットワーク接続がありません';
+        case 'auth/wrong-password':
+          return 'メールアドレスとパスワードが一致しません';
+        default:
+          return 'エラーが発生しました。再度お試しください';
+      }
     }
   };
 
@@ -76,6 +98,7 @@ class Authentication {
   static updateUserInfo = info => {
     const { uid } = info;
     User.fillData(uid, info);
+    return '登録が完了しました';
   };
 }
 

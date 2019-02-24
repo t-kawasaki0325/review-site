@@ -7,9 +7,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import icon from '../assets/icons-google.svg';
 
-import { Header, Email, Password } from '../components';
+import { Header, Email, Password, Message } from '../components';
 import { Authentication } from '../modules';
 import { ValidationUtil } from '../utils';
 
@@ -41,9 +42,20 @@ const styles = theme => ({
     width: '100%',
     marginTop: theme.spacing.unit,
   },
-  submit: {
+  wrapper: {
+    margin: theme.spacing.unit,
     marginTop: theme.spacing.unit * 3,
+    position: 'relative',
+  },
+  submit: {
     fontSize: 18,
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
   text: {
     textAlign: 'center',
@@ -66,11 +78,14 @@ class Login extends Component {
       email: '',
       password: '',
     },
+    loading: true,
+    error: '',
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { history } = this.props;
-    Authentication.completeLoginWithGoogle(history);
+    await Authentication.completeLoginWithGoogle(history);
+    this.setState({ loading: false });
   }
 
   handleChange = event => {
@@ -94,7 +109,19 @@ class Login extends Component {
 
     const infoValid = !info.email || !info.password;
     const messageValid = !!message.email || !!message.password;
-    return infoValid || messageValid;
+    return infoValid || messageValid || this.state.loading;
+  };
+
+  loginWithEmail = async () => {
+    const { history } = this.props;
+
+    this.setState({ loading: true });
+    const message = await Authentication.loginWithEmail(
+      this.state.info.email,
+      this.state.info.password,
+      history
+    );
+    this.setState({ error: message, loading: false });
   };
 
   render() {
@@ -106,6 +133,9 @@ class Login extends Component {
         <main className={classes.main}>
           <CssBaseline />
           <Paper className={classes.paper}>
+            {this.state.error && (
+              <Message error={this.state.error} type="error" />
+            )}
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />
             </Avatar>
@@ -123,22 +153,24 @@ class Login extends Component {
                 handleChange={event => this.handleChange(event)}
                 message={this.state.message.password}
               />
-              <Button
-                disabled={this.canSubmit()}
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={() =>
-                  Authentication.loginWithEmail(
-                    this.state.info.email,
-                    this.state.info.password,
-                    history
-                  )
-                }
-              >
-                ログイン
-              </Button>
+              <div className={classes.wrapper}>
+                <Button
+                  disabled={this.canSubmit()}
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={() => this.loginWithEmail()}
+                >
+                  ログイン
+                </Button>
+                {this.state.loading && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
+              </div>
               <Typography className={classes.text}>または</Typography>
               <Button
                 fullWidth
