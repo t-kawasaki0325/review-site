@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -36,30 +36,31 @@ const styles = theme => ({
   },
 });
 
-const RegisterSaas = props => {
-  const { classes } = props;
-
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography
-            component="h1"
-            variant="h4"
-            align="center"
-            className={classes.title}
-          >
-            Saas登録
-          </Typography>
-          <React.Fragment>
-            <SaasInfo history={props.history} />
-          </React.Fragment>
-        </Paper>
-      </main>
-    </React.Fragment>
-  );
-};
+class RegisterSaas extends Component {
+  render() {
+    const { classes, history } = this.props;
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography
+              component="h1"
+              variant="h4"
+              align="center"
+              className={classes.title}
+            >
+              Saas登録
+            </Typography>
+            <React.Fragment>
+              <SaasInfo history={history} />
+            </React.Fragment>
+          </Paper>
+        </main>
+      </React.Fragment>
+    );
+  }
+}
 
 RegisterSaas.propTypes = {
   classes: PropTypes.object.isRequired,

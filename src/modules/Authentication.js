@@ -30,12 +30,23 @@ class Authentication {
   static signupWithEmail = async (info, history) => {
     const { email, password } = info;
 
-    const { user } = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password);
-    User.fillData(user.uid, info);
-    if (user) {
-      history.push(PATH.TOP);
+    try {
+      const { user } = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      User.fillData(user.uid, info);
+      if (user) {
+        history.push(PATH.TOP);
+      }
+    } catch (e) {
+      switch (e.code) {
+        case 'auth/network-request-failed':
+          return 'ネットワーク接続がありません';
+        case 'auth/email-already-in-use':
+          return '既にユーザーが存在します';
+        default:
+          return 'エラーが発生しました。再度お試しください';
+      }
     }
   };
 

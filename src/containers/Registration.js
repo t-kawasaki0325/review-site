@@ -6,9 +6,10 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Authentication } from '../modules';
-import { MemberInfo, CompanyInfo, Header } from '../components';
+import { MemberInfo, CompanyInfo, Header, Error } from '../components';
 import { ValidationUtil } from '../utils';
 import icon from '../assets/icons-google.svg';
 
@@ -43,13 +44,20 @@ const styles = theme => ({
   buttons: {
     display: 'flex',
     justifyContent: 'center',
+    margin: theme.spacing.unit,
+    marginTop: theme.spacing.unit * 8,
+    position: 'relative',
   },
   button: {
-    marginTop: theme.spacing.unit * 8,
-    marginBottom: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit,
     minWidth: 200,
     fontSize: 18,
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
   center: {
     textAlign: 'center',
@@ -87,11 +95,14 @@ class Registration extends Component {
       scale: '',
       serviceType: '',
     },
+    loading: true,
+    error: '',
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { history } = this.props;
-    Authentication.completeLoginWithGoogle(history);
+    await Authentication.completeLoginWithGoogle(history);
+    this.setState({ loading: false });
   }
 
   handleChange = event => {
@@ -134,7 +145,18 @@ class Registration extends Component {
       !!m.region ||
       !!m.scale ||
       !!m.serviceType;
-    return infoValid || messageValid;
+    return infoValid || messageValid || this.state.loading;
+  };
+
+  signupWithEmail = async () => {
+    const { history } = this.props;
+
+    this.setState({ loading: true });
+    const error = await Authentication.signupWithEmail(
+      this.state.info,
+      history
+    );
+    this.setState({ error: error, loading: false });
   };
 
   render() {
@@ -146,6 +168,7 @@ class Registration extends Component {
         <main className={classes.layout}>
           <CssBaseline />
           <Paper className={classes.paper}>
+            {this.state.error && <Error error={this.state.error} />}
             <Typography
               component="h1"
               variant="h4"
@@ -180,13 +203,17 @@ class Registration extends Component {
                   disabled={this.canSubmit()}
                   variant="contained"
                   color="primary"
-                  onClick={() =>
-                    Authentication.signupWithEmail(this.state.info, history)
-                  }
+                  onClick={() => this.signupWithEmail()}
                   className={classes.button}
                 >
                   送信
                 </Button>
+                {this.state.loading && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
               </div>
               <Grid item xs={12} sm={12} className={classes.text}>
                 <Typography>または</Typography>

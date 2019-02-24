@@ -8,6 +8,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Saas } from '../modules';
 import { COMPANY, SAAS } from '../config';
@@ -19,13 +20,20 @@ const styles = theme => ({
   buttons: {
     display: 'flex',
     justifyContent: 'center',
+    margin: theme.spacing.unit,
+    marginTop: theme.spacing.unit * 8,
+    position: 'relative',
   },
   button: {
-    marginTop: theme.spacing.unit * 8,
-    marginBottom: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit,
     minWidth: 200,
     fontSize: 18,
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
   formControl: {
     minWidth: 200,
@@ -40,6 +48,14 @@ class SaasInfo extends Component {
     region: 0,
     name: '',
     category: 0,
+    loading: false,
+    error: '',
+  };
+
+  registerSaas = async info => {
+    this.setState({ loading: true });
+    await Saas.registerProduct(info);
+    this.setState({ loading: false });
   };
 
   render() {
@@ -162,13 +178,17 @@ class SaasInfo extends Component {
         </Grid>
         <div className={classes.buttons}>
           <Button
+            disabled={this.state.loading}
             variant="contained"
             color="primary"
-            onClick={() => Saas.registerProduct(info)}
+            onClick={() => this.registerSaas(info)}
             className={classes.button}
           >
             送信
           </Button>
+          {this.state.loading && (
+            <CircularProgress size={24} className={classes.buttonProgress} />
+          )}
         </div>
       </React.Fragment>
     );

@@ -5,8 +5,9 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { MemberInfo, CompanyInfo, Header } from '../components';
+import { MemberInfo, CompanyInfo, Header, Error } from '../components';
 import { Authentication } from '../modules';
 import { ValidationUtil } from '../utils';
 
@@ -34,13 +35,20 @@ const styles = theme => ({
   buttons: {
     display: 'flex',
     justifyContent: 'center',
+    margin: theme.spacing.unit,
+    marginTop: theme.spacing.unit * 8,
+    position: 'relative',
   },
   button: {
-    marginTop: theme.spacing.unit * 8,
-    marginBottom: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit,
     minWidth: 200,
     fontSize: 18,
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
   title: {
     margin: theme.spacing.unit * 2,
@@ -79,6 +87,8 @@ class Mypage extends Component {
       scale: '',
       serviceType: '',
     },
+    loading: true,
+    error: '',
   };
 
   async componentDidMount() {
@@ -99,7 +109,7 @@ class Mypage extends Component {
       serviceType: company.serviceType,
     };
 
-    this.setState({ info: info });
+    this.setState({ info: info, loading: false });
   }
 
   handleChange = event => {
@@ -138,7 +148,13 @@ class Mypage extends Component {
       !!m.region ||
       !!m.scale ||
       !!m.serviceType;
-    return infoValid || messageValid;
+    return infoValid || messageValid || this.state.loading;
+  };
+
+  updateUserInfo = async () => {
+    this.setState({ loading: true });
+    await Authentication.updateUserInfo(this.state.info);
+    this.setState({ loading: false });
   };
 
   render() {
@@ -150,6 +166,7 @@ class Mypage extends Component {
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
+            {this.state.error && <Error error={this.state.error} />}
             <Typography
               component="h1"
               variant="h4"
@@ -179,11 +196,17 @@ class Mypage extends Component {
                 disabled={this.canSubmit()}
                 variant="contained"
                 color="primary"
-                onClick={() => Authentication.updateUserInfo(this.state.info)}
+                onClick={() => this.updateUserInfo()}
                 className={classes.button}
               >
                 送信
               </Button>
+              {this.state.loading && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
             </div>
           </Paper>
         </main>
