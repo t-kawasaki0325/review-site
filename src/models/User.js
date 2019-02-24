@@ -12,21 +12,28 @@ class User {
       region,
     } = info;
 
-    const ref = await db.collection('company').add({
+    const batch = db.batch();
+
+    const userRef = db.collection('user').doc(uid);
+    const companyRef = db.collection('company').doc();
+
+    const companyData = {
       name: company,
       scale: scale,
       serviceType: serviceType,
       region: region,
-    });
+    };
 
-    db.collection('user')
-      .doc(uid)
-      .set({
-        name: name,
-        position: position,
-        department: department,
-        companyRef: ref,
-      });
+    const userData = {
+      name: name,
+      position: position,
+      department: department,
+      companyRef: companyRef,
+    };
+
+    batch.set(userRef, userData);
+    batch.set(companyRef, companyData);
+    batch.commit();
   }
 
   static fetchById = async uid => {

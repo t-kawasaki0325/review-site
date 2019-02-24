@@ -6,14 +6,19 @@ class Product {
   static async registerProduct(info) {
     const { company, serviceType, scale, region, name, category } = info;
 
-    const companyRef = await db.collection('company').add({
+    const batch = db.batch();
+
+    const productRef = db.collection('product').doc();
+    const companyRef = db.collection('company').doc();
+
+    const companyData = {
       name: company,
       service_type: serviceType,
       scale: scale,
       region: region,
-    });
+    };
 
-    db.collection('product').add({
+    const productData = {
       name: name,
       category: category,
       companyRef: companyRef,
@@ -23,7 +28,11 @@ class Product {
       companyScale: scale,
       companyServiceType: serviceType,
       review: [],
-    });
+    };
+
+    batch.set(companyRef, companyData);
+    batch.set(productRef, productData);
+    batch.commit();
 
     return '登録が完了しました';
   }
