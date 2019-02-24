@@ -57,6 +57,14 @@ class SaasInfo extends Component {
     this.setState({ loading: true });
     const message = await Saas.registerProduct(info);
     this.setState({ loading: false, message: message });
+    this.setState({
+      company: '',
+      scale: 0,
+      serviceType: 0,
+      region: 0,
+      name: '',
+      category: 0,
+    });
   };
 
   render() {
