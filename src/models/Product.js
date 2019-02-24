@@ -28,24 +28,11 @@ class Product {
     return '登録が完了しました';
   }
 
-  static getSearchData = async (sortBy, query) => {
-    const { category, companyServiceType, companyScale, companyRegion } = query;
-
-    let collection = db.collection('product');
-
-    if (category) collection = collection.where('category', '==', category);
-    if (companyServiceType)
-      collection = collection.where(
-        'companyServiceType',
-        '==',
-        companyServiceType
-      );
-    if (companyScale)
-      collection = collection.where('companyScale', '==', companyScale);
-    if (companyRegion)
-      collection = collection.where('companyRegion', '==', companyRegion);
-
-    return await collection.orderBy(sortBy, 'desc').get();
+  static getSearchData = async sortBy => {
+    return await db
+      .collection('product')
+      .orderBy(sortBy, 'desc')
+      .get();
   };
 
   static getInfoById = async id => {
