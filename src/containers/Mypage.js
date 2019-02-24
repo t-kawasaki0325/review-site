@@ -153,8 +153,8 @@ class Mypage extends Component {
 
   updateUserInfo = async () => {
     this.setState({ loading: true });
-    await Authentication.updateUserInfo(this.state.info);
-    this.setState({ loading: false });
+    const message = await Authentication.updateUserInfo(this.state.info);
+    this.setState({ loading: false, error: message });
   };
 
   render() {
@@ -166,7 +166,7 @@ class Mypage extends Component {
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
-            {this.state.error && <Error error={this.state.error} />}
+            {this.state.error && <Error type="info" error={this.state.error} />}
             <Typography
               component="h1"
               variant="h4"

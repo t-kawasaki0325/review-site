@@ -98,6 +98,7 @@ class Authentication {
   static updateUserInfo = info => {
     const { uid } = info;
     User.fillData(uid, info);
+    return '登録が完了しました';
   };
 }
 

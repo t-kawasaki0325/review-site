@@ -2,7 +2,7 @@ import { Product } from '../models';
 
 class Saas {
   static registerProduct = info => {
-    Product.registerProduct(info);
+    return Product.registerProduct(info);
   };
 
   static searchSaas = (sortBy, query) => {

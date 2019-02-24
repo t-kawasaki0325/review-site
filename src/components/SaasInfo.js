@@ -12,6 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Saas } from '../modules';
 import { COMPANY, SAAS } from '../config';
+import { Error } from '../components';
 
 const styles = theme => ({
   container: {
@@ -49,13 +50,13 @@ class SaasInfo extends Component {
     name: '',
     category: 0,
     loading: false,
-    error: '',
+    message: '',
   };
 
   registerSaas = async info => {
     this.setState({ loading: true });
-    await Saas.registerProduct(info);
-    this.setState({ loading: false });
+    const message = await Saas.registerProduct(info);
+    this.setState({ loading: false, message: message });
   };
 
   render() {
@@ -190,6 +191,7 @@ class SaasInfo extends Component {
             <CircularProgress size={24} className={classes.buttonProgress} />
           )}
         </div>
+        {this.state.message && <Error type="info" error={this.state.message} />}
       </React.Fragment>
     );
   }

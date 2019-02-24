@@ -24,6 +24,8 @@ class Product {
       companyServiceType: serviceType,
       review: [],
     });
+
+    return '登録が完了しました';
   }
 
   static getSearchData = async (sortBy, query) => {
