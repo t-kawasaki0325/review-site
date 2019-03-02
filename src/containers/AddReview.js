@@ -63,7 +63,6 @@ const styles = theme => ({
 class AddReview extends Component {
   state = {
     info: {
-      id: '',
       recommendation: '',
       sales: '',
       support: '',
@@ -83,6 +82,7 @@ class AddReview extends Component {
       fromNow: '',
       content: '',
     },
+    saasId: '',
     message: {},
     loading: false,
   };
@@ -90,7 +90,7 @@ class AddReview extends Component {
   componentDidMount() {
     const { history } = this.props;
     const saasId = UrlUtil.baseUrl(history.location.pathname);
-    this.setState({ info: { ...this.state.info, id: saasId } });
+    this.setState({ info: { ...this.state.info }, saasId: saasId });
   }
 
   handleChange = event => {
@@ -111,7 +111,7 @@ class AddReview extends Component {
 
   confirmReview = () => {
     const { history } = this.props;
-    history.push(PATH.CONFIRM_REVIEW, { info: this.state.info });
+    history.push(PATH.CONFIRM_REVIEW, { state: this.state });
   };
 
   render() {

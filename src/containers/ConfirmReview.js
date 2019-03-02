@@ -60,7 +60,7 @@ class ConfirmReview extends Component {
 
   render() {
     const { classes, history } = this.props;
-    const { info } = this.props.location.state;
+    const { saasId, info } = this.props.location.state.state;
 
     const reviewCell = [
       {
@@ -198,7 +198,7 @@ class ConfirmReview extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => Evaluation.addReview(info)}
+              onClick={() => Evaluation.addReview(saasId, info)}
               className={classes.button}
             >
               この内容で確定する

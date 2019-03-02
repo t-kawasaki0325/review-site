@@ -28,6 +28,7 @@ class Product {
       companyScale: scale,
       companyServiceType: serviceType,
       review: [],
+      recentlyReviewed: 0,
     };
 
     batch.set(companyRef, companyData);
