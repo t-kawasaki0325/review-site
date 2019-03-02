@@ -56,9 +56,11 @@ class ConfirmReview extends Component {
   state = {
     loading: false,
   };
+
   render() {
     const { classes, history } = this.props;
     const { info } = this.props.location.state;
+
     const reviewCell = [
       {
         label: SAAS.RADAR.sales,
@@ -85,54 +87,54 @@ class ConfirmReview extends Component {
     const untilAdopt = [
       {
         label: REVIEW.UNTIL_ADOPTED_TITLE.OPPORTUNITY,
-        value: info.opportunity,
+        answer: REVIEW.UNTIL_ADOPTED.OPPORTUNITY[info.opportunity],
       },
       {
         label: REVIEW.UNTIL_ADOPTED_TITLE.FIRST_CONTACT,
-        value: info.firstContact,
+        answer: REVIEW.UNTIL_ADOPTED.FIRST_CONTACT[info.firstContact],
       },
       {
         label: REVIEW.UNTIL_ADOPTED_TITLE.REASON,
-        value: info.considerationReason,
+        answer: REVIEW.UNTIL_ADOPTED.REASON[info.considerationReason],
       },
       {
         label: REVIEW.UNTIL_ADOPTED_TITLE.PERIOD,
-        value: info.considerationPeriod,
+        answer: REVIEW.UNTIL_ADOPTED.PERIOD[info.considerationPeriod],
       },
       {
         label: REVIEW.UNTIL_ADOPTED_TITLE.OTHER_SAAS,
-        value: info.otherSaas,
+        answer: info.otherSaas,
       },
     ];
 
     const adopting = [
       {
         label: REVIEW.BEING_ADOPTED_TITLE.IS_DISCOUNTED,
-        value: info.isDiscounted,
+        answer: REVIEW.BEING_ADOPTED.IS_DISCOUNTED[info.isDiscounted],
       },
       {
         label: REVIEW.BEING_ADOPTED_TITLE.DISCOUNT_RATE,
-        value: info.discountRate,
+        answer: REVIEW.BEING_ADOPTED.DISCOUNT_RATE[info.discountRate],
       },
       {
         label: REVIEW.BEING_ADOPTED_TITLE.ONBOADING_PERIOD,
-        value: info.onboadingPeriod,
+        answer: REVIEW.BEING_ADOPTED.ONBOADING_PERIOD[info.onboadingPeriod],
       },
       {
         label: REVIEW.BEING_ADOPTED_TITLE.PRICE,
-        value: info.price,
+        answer: REVIEW.BEING_ADOPTED.PRICE[info.price],
       },
       {
         label: REVIEW.BEING_ADOPTED_TITLE.PERIOD,
-        value: info.period,
+        answer: REVIEW.BEING_ADOPTED.PERIOD[info.period],
       },
       {
         label: REVIEW.BEING_ADOPTED_TITLE.FROM_NOW,
-        value: info.fromNow,
+        answer: REVIEW.BEING_ADOPTED.FROM_NOW[info.fromNow],
       },
       {
         label: REVIEW.BEING_ADOPTED_TITLE.ONBOADING_SYSTEM,
-        value: info.onboadingSystem,
+        answer: info.onboadingSystem,
       },
     ];
 
