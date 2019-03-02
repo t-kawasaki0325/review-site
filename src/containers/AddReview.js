@@ -5,6 +5,9 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Header, TableSelect, TableText } from '../components';
 import { ValidationUtil } from '../utils';
@@ -13,8 +16,7 @@ import { SAAS, REVIEW } from '../config';
 const styles = theme => ({
   layout: {
     width: 'auto',
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 2,
     [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
       width: 1000,
       marginLeft: 'auto',
@@ -36,6 +38,26 @@ const styles = theme => ({
   textField: {
     minWidth: 220,
   },
+  textArea: {
+    width: '100%',
+  },
+  buttonWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    margin: theme.spacing.unit * 8,
+    position: 'relative',
+  },
+  button: {
+    minWidth: 300,
+    fontSize: 24,
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 });
 
 class AddReview extends Component {
@@ -54,10 +76,13 @@ class AddReview extends Component {
       isDiscounted: '',
       discountRate: '',
       onboadingPeriod: '',
+      price: '',
       period: '',
       onboadingSystem: '',
+      fromNow: '',
     },
     message: {},
+    loading: false,
   };
 
   handleChange = event => {
@@ -255,6 +280,34 @@ class AddReview extends Component {
                 </TableBody>
               </Table>
             </Paper>
+          </div>
+          <div className={classes.container}>
+            <Typography component="h1" variant="h6" gutterBottom>
+              ご自由にレビューを記載してください(100字以上)
+            </Typography>
+            <Paper className={classes.paper}>
+              <TextField
+                className={classes.textArea}
+                placeholder="ご自由にレビューをお書きください"
+                multiline={true}
+                rows={4}
+                rowsMax={10}
+              />
+            </Paper>
+          </div>
+          <div className={classes.buttonWrapper}>
+            <Button
+              disabled={this.state.loading}
+              variant="contained"
+              color="primary"
+              onClick={() => this.confirmReview()}
+              className={classes.button}
+            >
+              確認ページへ進む
+            </Button>
+            {this.state.loading && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}
           </div>
         </main>
       </React.Fragment>
