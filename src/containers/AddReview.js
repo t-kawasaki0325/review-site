@@ -32,14 +32,13 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 6,
   },
   paper: {
-    marginBottom: theme.spacing.unit * 3,
     padding: theme.spacing.unit * 2,
   },
   container: {
     marginTop: 30,
   },
   formControl: {
-    minWidth: 200,
+    minWidth: 220,
   },
 });
 
@@ -51,6 +50,10 @@ class AddReview extends Component {
       support: '',
       utilization: '',
       satisfaction: '',
+      opportunity: '',
+      firstContact: '',
+      considerationReason: '',
+      considerationPeriod: '',
     },
     message: {},
   };
@@ -107,51 +110,118 @@ class AddReview extends Component {
       },
     ];
 
+    const untilAdopt = [
+      {
+        label: 'サービスを知ったきっかけ',
+        value: this.state.info.opportunity,
+        key: 'opportunity',
+        list: REVIEW.UNTIL_ADOPT.OPPORTUNITY,
+      },
+      {
+        label: '企業との初回接点',
+        value: this.state.info.firstContact,
+        key: 'firstContact',
+        list: REVIEW.UNTIL_ADOPT.FIRST_CONTACT,
+      },
+      {
+        label: '検討理由',
+        value: this.state.info.considerationReason,
+        key: 'considerationReason',
+        list: REVIEW.UNTIL_ADOPT.REASON,
+      },
+      {
+        label: '検討期間',
+        value: this.state.info.considerationPeriod,
+        key: 'considerationPeriod',
+        list: REVIEW.UNTIL_ADOPT.PERIOD,
+      },
+    ];
+
     return (
       <React.Fragment>
         <Header history={history} />
         <CssBaseline />
         <main className={classes.layout}>
           <div className={classes.appBarSpacer} />
-          <Typography component="h1" variant="h4" className={classes.title}>
-            SaaS評価レポート
-          </Typography>
-          <Typography component="h1" variant="h6" gutterBottom>
-            全体的な満足度
-          </Typography>
-          <Paper className={classes.paper}>
-            <Table>
-              <TableBody>
-                {reviewCell.map((data, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell component="th" scope="row">
-                        <Typography>{data.label}</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl className={classes.formControl}>
-                          <InputLabel>{data.label}</InputLabel>
-                          <Select
-                            name={data.key}
-                            value={data.value}
-                            onChange={event => this.handleChange(event)}
-                          >
-                            {data.list.map((element, index) => {
-                              return (
-                                <MenuItem key={index} value={index}>
-                                  {element}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </Paper>
+          <div className={classes.container}>
+            <Typography component="h1" variant="h4" className={classes.title}>
+              SaaS評価レポート
+            </Typography>
+            <Typography component="h1" variant="h6" gutterBottom>
+              全体的な満足度
+            </Typography>
+            <Paper className={classes.paper}>
+              <Table>
+                <TableBody>
+                  {reviewCell.map((data, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell component="th" scope="row">
+                          <Typography>{data.label}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <FormControl className={classes.formControl}>
+                            <InputLabel>{data.label}</InputLabel>
+                            <Select
+                              name={data.key}
+                              value={data.value}
+                              onChange={event => this.handleChange(event)}
+                            >
+                              {data.list.map((element, index) => {
+                                return (
+                                  <MenuItem key={index} value={index}>
+                                    {element}
+                                  </MenuItem>
+                                );
+                              })}
+                            </Select>
+                          </FormControl>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </Paper>
+          </div>
+          <div className={classes.container}>
+            <Typography component="h1" variant="h6" gutterBottom>
+              対象のSaaSを導入するまで
+            </Typography>
+            <Paper className={classes.paper}>
+              <Table>
+                <TableBody>
+                  {untilAdopt.map((data, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell component="th" scope="row">
+                          <Typography>{data.label}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <FormControl className={classes.formControl}>
+                            <InputLabel>{data.label}</InputLabel>
+                            <Select
+                              name={data.key}
+                              value={data.value}
+                              onChange={event => this.handleChange(event)}
+                            >
+                              {data.list.map((element, index) => {
+                                return (
+                                  <MenuItem key={index} value={index}>
+                                    {element}
+                                  </MenuItem>
+                                );
+                              })}
+                            </Select>
+                          </FormControl>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </Paper>
+          </div>
         </main>
       </React.Fragment>
     );
