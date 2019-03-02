@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { TableConfirm, Header } from '../components';
+import { Evaluation } from '../modules';
 import { SAAS, REVIEW } from '../config';
 
 const styles = theme => ({
@@ -197,7 +198,7 @@ class ConfirmReview extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => this.confirmReview()}
+              onClick={() => Evaluation.addReview(info)}
               className={classes.button}
             >
               この内容で確定する
