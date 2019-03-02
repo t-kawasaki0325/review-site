@@ -49,6 +49,11 @@ class AddReview extends Component {
       considerationReason: '',
       considerationPeriod: '',
       otherSaas: '',
+      isDiscounted: '',
+      discountRate: '',
+      onboadingPeriod: '',
+      period: '',
+      onboadingSystem: '',
     },
     message: {},
   };
@@ -140,6 +145,53 @@ class AddReview extends Component {
       },
     ];
 
+    const adopting = [
+      {
+        label: '割引の有無',
+        value: this.state.info.isDiscounted,
+        key: 'isDiscounted',
+        list: REVIEW.BEING_ADOPTED.IS_DISCOUNTED,
+      },
+      {
+        label: '割引率',
+        value: this.state.info.discountRate,
+        key: 'discountRate',
+        list: REVIEW.BEING_ADOPTED.DISCOUNT_RATE,
+      },
+      {
+        label: 'オンボーディング期間',
+        value: this.state.info.onboadingPeriod,
+        key: 'onboadingPeriod',
+        list: REVIEW.BEING_ADOPTED.ONBOADING_PERIOD,
+      },
+      {
+        label: '購入した価格',
+        value: this.state.info.price,
+        key: 'isDiscounted',
+        list: REVIEW.BEING_ADOPTED.PRICE,
+      },
+      {
+        label: '導入時期',
+        value: this.state.info.period,
+        key: 'period',
+        list: REVIEW.BEING_ADOPTED.PERIOD,
+      },
+      {
+        label: '今後の契約予定',
+        value: this.state.info.fromNow,
+        key: 'fromNow',
+        list: REVIEW.BEING_ADOPTED.FROM_NOW,
+      },
+    ];
+
+    const adoptingText = [
+      {
+        label: 'オンボーディング体制',
+        value: this.state.info.onboadingSystem,
+        key: 'onboadingSystem',
+      },
+    ];
+
     return (
       <React.Fragment>
         <Header history={history} />
@@ -181,6 +233,21 @@ class AddReview extends Component {
                   />
                 </TableBody>
               </Table>
+            </Paper>
+          </div>
+          <div className={classes.container}>
+            <Typography component="h1" variant="h6" gutterBottom>
+              サービス導入にあたって
+            </Typography>
+            <Paper className={classes.paper}>
+              <TableSelect
+                list={adopting}
+                handleChange={event => this.handleChange(event)}
+              />
+              <TableText
+                list={adoptingText}
+                handleChange={event => this.handleChange(event)}
+              />
             </Paper>
           </div>
         </main>
