@@ -3,6 +3,11 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import TextField from '@material-ui/core/TextField';
 
 import { Header, TableSelect } from '../components';
 import { ValidationUtil } from '../utils';
@@ -29,7 +34,7 @@ const styles = theme => ({
   container: {
     marginTop: 30,
   },
-  formControl: {
+  textField: {
     minWidth: 220,
   },
 });
@@ -46,6 +51,7 @@ class AddReview extends Component {
       firstContact: '',
       considerationReason: '',
       considerationPeriod: '',
+      otherSaas: '',
     },
     message: {},
   };
@@ -135,10 +141,10 @@ class AddReview extends Component {
         <CssBaseline />
         <main className={classes.layout}>
           <div className={classes.appBarSpacer} />
+          <Typography component="h1" variant="h4" className={classes.title}>
+            SaaS評価レポート
+          </Typography>
           <div className={classes.container}>
-            <Typography component="h1" variant="h4" className={classes.title}>
-              SaaS評価レポート
-            </Typography>
             <Typography component="h1" variant="h6" gutterBottom>
               全体的な満足度
             </Typography>
@@ -158,6 +164,25 @@ class AddReview extends Component {
                 list={untilAdopt}
                 handleChange={event => this.handleChange(event)}
               />
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      <Typography>他に検討したサービス</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        className={classes.textField}
+                        name="otherSaas"
+                        label="他に検討したサービス"
+                        fullWidth
+                        value={this.state.otherSaas}
+                        onChange={event => this.handleChange(event)}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </Paper>
           </div>
         </main>
