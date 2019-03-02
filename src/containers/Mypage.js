@@ -53,17 +53,6 @@ const styles = theme => ({
   title: {
     margin: theme.spacing.unit * 2,
   },
-  text: {
-    textAlign: 'center',
-    fontSize: 18,
-  },
-  google: {
-    marginTop: theme.spacing.unit * 2,
-  },
-  icon: {
-    height: 30,
-    marginRight: 10,
-  },
 });
 
 class Mypage extends Component {
