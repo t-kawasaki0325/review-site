@@ -8,6 +8,7 @@ export const PATH = {
   SAAS_LIST: '/saas_list',
   SAAS_DETAIL: '/saas_top/:id',
   MYPAGE: '/mypage',
+  ADD_REVIEW: '/saas_review/add_review',
 };
 
 export default PATH;

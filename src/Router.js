@@ -9,6 +9,7 @@ import {
   SaasList,
   SaasDetail,
   Mypage,
+  AddReview,
 } from './containers';
 import { PATH } from './config';
 
@@ -28,6 +29,7 @@ const AppRouter = () => {
         <Route path={PATH.SAAS_LIST} exact component={SaasList} />
         <Route path={PATH.SAAS_DETAIL} exact component={SaasDetail} />
         <Route path={PATH.MYPAGE} exact component={Mypage} />
+        <Route path={PATH.ADD_REVIEW} exact component={AddReview} />
       </Switch>
     </Router>
   );
