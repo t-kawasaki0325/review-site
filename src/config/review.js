@@ -12,6 +12,13 @@ const REVIEW = {
     REASON: ['業務の効率化', 'その他'],
     PERIOD: ['1ヶ月以内', '1~3ヶ月', '半年以内', '半年以上'],
   },
+  UNTIL_ADOPTED_TITLE: {
+    OPPORTUNITY: 'サービスを知ったきっかけ',
+    FIRST_CONTACT: '企業との初回接点',
+    REASON: '検討理由',
+    PERIOD: '検討期間',
+    OTHER_SAAS: '他に検討したサービス',
+  },
   BEING_ADOPTED: {
     IS_DISCOUNTED: ['有り', '無し'],
     DISCOUNT_RATE: ['0%', '0~10%', '10~30%', '30~50%', '50%以上'],
@@ -19,6 +26,15 @@ const REVIEW = {
     PRICE: ['~1万/月', '1~5万/月', '5~10万/月', '10万~'],
     PERIOD: ['1ヶ月前', '1~3ヶ月前', '3ヶ月~半年前', '半年~1年前', '1年以上前'],
     FROM_NOW: ['継続', '解約'],
+  },
+  BEING_ADOPTED_TITLE: {
+    IS_DISCOUNTED: '割引の有無',
+    DISCOUNT_RATE: '割引率',
+    ONBOADING_PERIOD: 'オンボーディング期間',
+    PRICE: '購入した価格',
+    PERIOD: '導入時期',
+    FROM_NOW: '今後の契約予定',
+    ONBOADING_SYSTEM: 'オンボーディング体制',
   },
 };
 

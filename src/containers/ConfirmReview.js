@@ -84,54 +84,54 @@ class ConfirmReview extends Component {
 
     const untilAdopt = [
       {
-        label: 'サービスを知ったきっかけ',
+        label: REVIEW.UNTIL_ADOPTED_TITLE.OPPORTUNITY,
         value: info.opportunity,
       },
       {
-        label: '企業との初回接点',
+        label: REVIEW.UNTIL_ADOPTED_TITLE.FIRST_CONTACT,
         value: info.firstContact,
       },
       {
-        label: '検討理由',
+        label: REVIEW.UNTIL_ADOPTED_TITLE.REASON,
         value: info.considerationReason,
       },
       {
-        label: '検討期間',
+        label: REVIEW.UNTIL_ADOPTED_TITLE.PERIOD,
         value: info.considerationPeriod,
       },
       {
-        label: '他に検討したサービス',
+        label: REVIEW.UNTIL_ADOPTED_TITLE.OTHER_SAAS,
         value: info.otherSaas,
       },
     ];
 
     const adopting = [
       {
-        label: '割引の有無',
+        label: REVIEW.BEING_ADOPTED_TITLE.IS_DISCOUNTED,
         value: info.isDiscounted,
       },
       {
-        label: '割引率',
+        label: REVIEW.BEING_ADOPTED_TITLE.DISCOUNT_RATE,
         value: info.discountRate,
       },
       {
-        label: 'オンボーディング期間',
+        label: REVIEW.BEING_ADOPTED_TITLE.ONBOADING_PERIOD,
         value: info.onboadingPeriod,
       },
       {
-        label: '購入した価格',
+        label: REVIEW.BEING_ADOPTED_TITLE.PRICE,
         value: info.price,
       },
       {
-        label: '導入時期',
+        label: REVIEW.BEING_ADOPTED_TITLE.PERIOD,
         value: info.period,
       },
       {
-        label: '今後の契約予定',
+        label: REVIEW.BEING_ADOPTED_TITLE.FROM_NOW,
         value: info.fromNow,
       },
       {
-        label: 'オンボーディング体制',
+        label: REVIEW.BEING_ADOPTED_TITLE.ONBOADING_SYSTEM,
         value: info.onboadingSystem,
       },
     ];

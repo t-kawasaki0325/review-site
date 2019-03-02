@@ -152,25 +152,25 @@ class AddReview extends Component {
 
     const untilAdopt = [
       {
-        label: 'サービスを知ったきっかけ',
+        label: REVIEW.UNTIL_ADOPTED_TITLE.OPPORTUNITY,
         value: this.state.info.opportunity,
         key: 'opportunity',
         list: REVIEW.UNTIL_ADOPTED.OPPORTUNITY,
       },
       {
-        label: '企業との初回接点',
+        label: REVIEW.UNTIL_ADOPTED_TITLE.FIRST_CONTACT,
         value: this.state.info.firstContact,
         key: 'firstContact',
         list: REVIEW.UNTIL_ADOPTED.FIRST_CONTACT,
       },
       {
-        label: '検討理由',
+        label: REVIEW.UNTIL_ADOPTED_TITLE.REASON,
         value: this.state.info.considerationReason,
         key: 'considerationReason',
         list: REVIEW.UNTIL_ADOPTED.REASON,
       },
       {
-        label: '検討期間',
+        label: REVIEW.UNTIL_ADOPTED_TITLE.PERIOD,
         value: this.state.info.considerationPeriod,
         key: 'considerationPeriod',
         list: REVIEW.UNTIL_ADOPTED.PERIOD,
@@ -179,7 +179,7 @@ class AddReview extends Component {
 
     const untilAdoptText = [
       {
-        label: '他に検討したサービス',
+        label: REVIEW.UNTIL_ADOPTED_TITLE.OTHER_SAAS,
         value: this.state.info.otherSaas,
         key: 'otherSaas',
       },
@@ -187,37 +187,37 @@ class AddReview extends Component {
 
     const adopting = [
       {
-        label: '割引の有無',
+        label: REVIEW.BEING_ADOPTED_TITLE.IS_DISCOUNTED,
         value: this.state.info.isDiscounted,
         key: 'isDiscounted',
         list: REVIEW.BEING_ADOPTED.IS_DISCOUNTED,
       },
       {
-        label: '割引率',
+        label: REVIEW.BEING_ADOPTED_TITLE.DISCOUNT_RATE,
         value: this.state.info.discountRate,
         key: 'discountRate',
         list: REVIEW.BEING_ADOPTED.DISCOUNT_RATE,
       },
       {
-        label: 'オンボーディング期間',
+        label: REVIEW.BEING_ADOPTED_TITLE.ONBOADING_PERIOD,
         value: this.state.info.onboadingPeriod,
         key: 'onboadingPeriod',
         list: REVIEW.BEING_ADOPTED.ONBOADING_PERIOD,
       },
       {
-        label: '購入した価格',
+        label: REVIEW.BEING_ADOPTED_TITLE.PRICE,
         value: this.state.info.price,
-        key: 'isDiscounted',
+        key: 'price',
         list: REVIEW.BEING_ADOPTED.PRICE,
       },
       {
-        label: '導入時期',
+        label: REVIEW.BEING_ADOPTED_TITLE.PERIOD,
         value: this.state.info.period,
         key: 'period',
         list: REVIEW.BEING_ADOPTED.PERIOD,
       },
       {
-        label: '今後の契約予定',
+        label: REVIEW.BEING_ADOPTED_TITLE.FROM_NOW,
         value: this.state.info.fromNow,
         key: 'fromNow',
         list: REVIEW.BEING_ADOPTED.FROM_NOW,
@@ -226,7 +226,7 @@ class AddReview extends Component {
 
     const adoptingText = [
       {
-        label: 'オンボーディング体制',
+        label: REVIEW.BEING_ADOPTED_TITLE.ONBOADING_SYSTEM,
         value: this.state.info.onboadingSystem,
         key: 'onboadingSystem',
       },
