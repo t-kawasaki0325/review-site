@@ -3,16 +3,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 
-import { Header } from '../components';
+import { Header, TableSelect } from '../components';
 import { ValidationUtil } from '../utils';
 import { SAAS, REVIEW } from '../config';
 
@@ -151,37 +143,10 @@ class AddReview extends Component {
               全体的な満足度
             </Typography>
             <Paper className={classes.paper}>
-              <Table>
-                <TableBody>
-                  {reviewCell.map((data, index) => {
-                    return (
-                      <TableRow key={index}>
-                        <TableCell component="th" scope="row">
-                          <Typography>{data.label}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <FormControl className={classes.formControl}>
-                            <InputLabel>{data.label}</InputLabel>
-                            <Select
-                              name={data.key}
-                              value={data.value}
-                              onChange={event => this.handleChange(event)}
-                            >
-                              {data.list.map((element, index) => {
-                                return (
-                                  <MenuItem key={index} value={index}>
-                                    {element}
-                                  </MenuItem>
-                                );
-                              })}
-                            </Select>
-                          </FormControl>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
+              <TableSelect
+                list={reviewCell}
+                handleChange={event => this.handleChange(event)}
+              />
             </Paper>
           </div>
           <div className={classes.container}>
@@ -189,37 +154,10 @@ class AddReview extends Component {
               対象のSaaSを導入するまで
             </Typography>
             <Paper className={classes.paper}>
-              <Table>
-                <TableBody>
-                  {untilAdopt.map((data, index) => {
-                    return (
-                      <TableRow key={index}>
-                        <TableCell component="th" scope="row">
-                          <Typography>{data.label}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <FormControl className={classes.formControl}>
-                            <InputLabel>{data.label}</InputLabel>
-                            <Select
-                              name={data.key}
-                              value={data.value}
-                              onChange={event => this.handleChange(event)}
-                            >
-                              {data.list.map((element, index) => {
-                                return (
-                                  <MenuItem key={index} value={index}>
-                                    {element}
-                                  </MenuItem>
-                                );
-                              })}
-                            </Select>
-                          </FormControl>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
+              <TableSelect
+                list={untilAdopt}
+                handleChange={event => this.handleChange(event)}
+              />
             </Paper>
           </div>
         </main>
