@@ -12,6 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Header, TableSelect, TableText } from '../components';
 import { ValidationUtil, UrlUtil } from '../utils';
 import { SAAS, REVIEW, PATH } from '../config';
+import { Saas } from '../modules';
 
 const styles = theme => ({
   layout: {
@@ -83,14 +84,19 @@ class AddReview extends Component {
       content: '',
     },
     saasId: '',
+    name: '',
     message: {},
     loading: false,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { history } = this.props;
     const saasId = UrlUtil.baseUrl(history.location.pathname);
-    this.setState({ info: { ...this.state.info }, saasId: saasId });
+    const saas = await Saas.sassInfoById(saasId);
+    if (!saas.data()) {
+      return history.push(PATH.SAAS_LIST);
+    }
+    this.setState({ saasId: saasId, name: saas.data().name });
   }
 
   handleChange = event => {
@@ -239,7 +245,7 @@ class AddReview extends Component {
         <main className={classes.layout}>
           <div className={classes.appBarSpacer} />
           <Typography component="h1" variant="h4" className={classes.title}>
-            SaaS評価レポート
+            {this.state.name} 評価レポート
           </Typography>
           <div className={classes.container}>
             <Typography component="h1" variant="h6" gutterBottom>
@@ -258,7 +264,7 @@ class AddReview extends Component {
           </div>
           <div className={classes.container}>
             <Typography component="h1" variant="h6" gutterBottom>
-              対象のSaaSを導入するまで
+              サービスを導入するまで
             </Typography>
             <Paper className={classes.paper}>
               <Table>
