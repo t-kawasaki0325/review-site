@@ -10,8 +10,8 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Header, TableSelect, TableText } from '../components';
-import { ValidationUtil } from '../utils';
-import { SAAS, REVIEW } from '../config';
+import { ValidationUtil, UrlUtil } from '../utils';
+import { SAAS, REVIEW, PATH } from '../config';
 
 const styles = theme => ({
   layout: {
@@ -63,6 +63,7 @@ const styles = theme => ({
 class AddReview extends Component {
   state = {
     info: {
+      id: '',
       recommendation: '',
       sales: '',
       support: '',
@@ -80,10 +81,17 @@ class AddReview extends Component {
       period: '',
       onboadingSystem: '',
       fromNow: '',
+      content: '',
     },
     message: {},
     loading: false,
   };
+
+  componentDidMount() {
+    const { history } = this.props;
+    const saasId = UrlUtil.baseUrl(history.location.pathname);
+    this.setState({ info: { ...this.state.info, id: saasId } });
+  }
 
   handleChange = event => {
     const key = event.target.name;
@@ -99,6 +107,11 @@ class AddReview extends Component {
         [key]: ValidationUtil.formValidate(type, value),
       },
     });
+  };
+
+  confirmReview = () => {
+    const { history } = this.props;
+    history.push(PATH.CONFIRM_REVIEW, { info: this.state.info });
   };
 
   render() {
@@ -288,7 +301,10 @@ class AddReview extends Component {
             <Paper className={classes.paper}>
               <TextField
                 className={classes.textArea}
+                name="content"
+                value={this.state.info.content}
                 placeholder="ご自由にレビューをお書きください"
+                onChange={event => this.handleChange(event)}
                 multiline={true}
                 rows={4}
                 rowsMax={10}
