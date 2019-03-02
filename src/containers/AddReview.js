@@ -5,11 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import TextField from '@material-ui/core/TextField';
 
-import { Header, TableSelect } from '../components';
+import { Header, TableSelect, TableText } from '../components';
 import { ValidationUtil } from '../utils';
 import { SAAS, REVIEW } from '../config';
 
@@ -113,25 +110,33 @@ class AddReview extends Component {
         label: 'サービスを知ったきっかけ',
         value: this.state.info.opportunity,
         key: 'opportunity',
-        list: REVIEW.UNTIL_ADOPT.OPPORTUNITY,
+        list: REVIEW.UNTIL_ADOPTED.OPPORTUNITY,
       },
       {
         label: '企業との初回接点',
         value: this.state.info.firstContact,
         key: 'firstContact',
-        list: REVIEW.UNTIL_ADOPT.FIRST_CONTACT,
+        list: REVIEW.UNTIL_ADOPTED.FIRST_CONTACT,
       },
       {
         label: '検討理由',
         value: this.state.info.considerationReason,
         key: 'considerationReason',
-        list: REVIEW.UNTIL_ADOPT.REASON,
+        list: REVIEW.UNTIL_ADOPTED.REASON,
       },
       {
         label: '検討期間',
         value: this.state.info.considerationPeriod,
         key: 'considerationPeriod',
-        list: REVIEW.UNTIL_ADOPT.PERIOD,
+        list: REVIEW.UNTIL_ADOPTED.PERIOD,
+      },
+    ];
+
+    const untilAdoptText = [
+      {
+        label: '他に検討したサービス',
+        value: this.state.info.otherSaas,
+        key: 'otherSaas',
       },
     ];
 
@@ -149,10 +154,14 @@ class AddReview extends Component {
               全体的な満足度
             </Typography>
             <Paper className={classes.paper}>
-              <TableSelect
-                list={reviewCell}
-                handleChange={event => this.handleChange(event)}
-              />
+              <Table>
+                <TableBody>
+                  <TableSelect
+                    list={reviewCell}
+                    handleChange={event => this.handleChange(event)}
+                  />
+                </TableBody>
+              </Table>
             </Paper>
           </div>
           <div className={classes.container}>
@@ -160,27 +169,16 @@ class AddReview extends Component {
               対象のSaaSを導入するまで
             </Typography>
             <Paper className={classes.paper}>
-              <TableSelect
-                list={untilAdopt}
-                handleChange={event => this.handleChange(event)}
-              />
               <Table>
                 <TableBody>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      <Typography>他に検討したサービス</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        className={classes.textField}
-                        name="otherSaas"
-                        label="他に検討したサービス"
-                        fullWidth
-                        value={this.state.otherSaas}
-                        onChange={event => this.handleChange(event)}
-                      />
-                    </TableCell>
-                  </TableRow>
+                  <TableSelect
+                    list={untilAdopt}
+                    handleChange={event => this.handleChange(event)}
+                  />
+                  <TableText
+                    list={untilAdoptText}
+                    handleChange={event => this.handleChange(event)}
+                  />
                 </TableBody>
               </Table>
             </Paper>

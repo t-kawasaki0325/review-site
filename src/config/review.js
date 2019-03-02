@@ -6,7 +6,7 @@ const REVIEW = {
     '満足',
     '非常に満足',
   ],
-  UNTIL_ADOPT: {
+  UNTIL_ADOPTED: {
     OPPORTUNITY: ['web', '広告', 'イベント', '他社からの紹介', 'その他'],
     FIRST_CONTACT: ['web', '電話', 'メール', 'その他'],
     REASON: ['業務の効率化', 'その他'],

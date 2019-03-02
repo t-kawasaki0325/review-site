@@ -3,18 +3,15 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 
 const styles = () => ({
-  formControl: {
+  textField: {
     minWidth: 220,
   },
 });
 
-const TableSelect = props => {
+const TableText = props => {
   const { list, classes, handleChange, message } = props;
   return (
     <React.Fragment>
@@ -25,22 +22,14 @@ const TableSelect = props => {
               <Typography>{data.label}</Typography>
             </TableCell>
             <TableCell>
-              <FormControl className={classes.formControl}>
-                <InputLabel>{data.label}</InputLabel>
-                <Select
-                  name={data.key}
-                  value={data.value}
-                  onChange={event => handleChange(event)}
-                >
-                  {data.list.map((element, index) => {
-                    return (
-                      <MenuItem key={index} value={index}>
-                        {element}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
+              <TextField
+                className={classes.textField}
+                name={data.key}
+                label={data.label}
+                fullWidth
+                value={data.value}
+                onChange={event => handleChange(event)}
+              />
               {message && (
                 <Typography style={{ color: '#d50000', marginTop: 5 }}>
                   {message}
@@ -54,4 +43,4 @@ const TableSelect = props => {
   );
 };
 
-export default withStyles(styles)(TableSelect);
+export default withStyles(styles)(TableText);
