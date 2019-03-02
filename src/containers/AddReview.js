@@ -15,8 +15,8 @@ const styles = theme => ({
     width: 'auto',
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
-      width: 600,
+    [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
+      width: 1000,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -26,6 +26,8 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 6,
   },
   paper: {
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
     padding: theme.spacing.unit * 2,
   },
   container: {
@@ -240,14 +242,18 @@ class AddReview extends Component {
               サービス導入にあたって
             </Typography>
             <Paper className={classes.paper}>
-              <TableSelect
-                list={adopting}
-                handleChange={event => this.handleChange(event)}
-              />
-              <TableText
-                list={adoptingText}
-                handleChange={event => this.handleChange(event)}
-              />
+              <Table>
+                <TableBody>
+                  <TableSelect
+                    list={adopting}
+                    handleChange={event => this.handleChange(event)}
+                  />
+                  <TableText
+                    list={adoptingText}
+                    handleChange={event => this.handleChange(event)}
+                  />
+                </TableBody>
+              </Table>
             </Paper>
           </div>
         </main>
