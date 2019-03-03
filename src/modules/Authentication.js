@@ -91,6 +91,11 @@ class Authentication {
     history.push(PATH.LOGIN);
   };
 
+  static transisionTopIfLogin = async history => {
+    const uid = await Authentication.fetchUserId();
+    if (uid) history.push(PATH.TOP);
+  };
+
   static fetchUserDataById = id => {
     return User.fetchById(id);
   };

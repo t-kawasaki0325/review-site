@@ -11,7 +11,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { Saas } from '../modules';
+import { Saas, Authentication } from '../modules';
 import { SAAS, COMPANY } from '../config';
 import { Header, SaasTable, TableSelect, TableText } from '../components';
 
@@ -61,6 +61,7 @@ const styles = theme => ({
 
 class SaasList extends Component {
   state = {
+    uid: '',
     snapshotList: '',
     sortBy: '',
     sortList: '',
@@ -75,6 +76,9 @@ class SaasList extends Component {
     await this.setState({ sortList: Object.keys(SAAS.SORT) });
     await this.setState({ sortBy: this.state.sortList[0] });
     await this.searchSaas();
+
+    const uid = await Authentication.fetchUserId();
+    this.setState({ uid: uid });
   }
 
   searchSaas = async () => {
@@ -136,7 +140,7 @@ class SaasList extends Component {
 
     return (
       <React.Fragment>
-        <Header history={history} />
+        <Header history={history} uid={this.state.uid} />
         <CssBaseline />
 
         <main className={classes.layout}>

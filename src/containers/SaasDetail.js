@@ -15,7 +15,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import { Header } from '../components';
-import { Saas } from '../modules';
+import { Saas, Authentication } from '../modules';
 import { UrlUtil } from '../utils';
 import { SAAS, PATH } from '../config';
 
@@ -51,6 +51,7 @@ const styles = theme => ({
 
 class SaasDetail extends Component {
   state = {
+    uid: '',
     saasId: '',
     saas: '',
     review: [],
@@ -58,9 +59,11 @@ class SaasDetail extends Component {
 
   async componentDidMount() {
     const { history } = this.props;
-    const saasId = UrlUtil.baseUrl(history.location.pathname);
+    const uid = Authentication.fetchUserId();
+    this.setState({ uid: uid });
 
     // SaaSの取得
+    const saasId = UrlUtil.baseUrl(history.location.pathname);
     const snapshot = await Saas.sassInfoById(saasId);
     this.setState({ saas: snapshot.data(), saasId: saasId });
 
@@ -105,7 +108,7 @@ class SaasDetail extends Component {
 
     return (
       <React.Fragment>
-        <Header history={history} />
+        <Header history={history} uid={this.state.uid} />
         <CssBaseline />
 
         <main className={classes.layout}>

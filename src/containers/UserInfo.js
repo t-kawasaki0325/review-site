@@ -73,6 +73,11 @@ class UserInfo extends Component {
     },
   };
 
+  async componentDidMount() {
+    const { history } = this.props;
+    await Authentication.transisionTopIfLogin(history);
+  }
+
   handleChange = event => {
     const key = event.target.name;
     const type = event.target.type;

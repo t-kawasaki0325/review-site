@@ -9,8 +9,8 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { TableConfirm, Header } from '../components';
-import { Evaluation } from '../modules';
-import { SAAS, REVIEW } from '../config';
+import { Evaluation, Authentication } from '../modules';
+import { SAAS, REVIEW, PATH } from '../config';
 
 const styles = theme => ({
   layout: {
@@ -55,12 +55,27 @@ const styles = theme => ({
 
 class ConfirmReview extends Component {
   state = {
+    saasId: '',
+    info: '',
     loading: false,
   };
 
+  async componentDidMount() {
+    const { location, history } = this.props;
+    if (!location.state) {
+      history.push(PATH.SAAS_LIST);
+      return;
+    }
+
+    const uid = await Authentication.fetchUserId();
+    const { saasId, info } = location.state.state;
+    this.setState({ info: info, saasId: saasId, uid: uid });
+  }
+
   render() {
     const { classes, history } = this.props;
-    const { saasId, info } = this.props.location.state.state;
+    const saasId = this.state.saasId;
+    const info = this.state.info;
 
     const reviewCell = [
       {
@@ -141,7 +156,7 @@ class ConfirmReview extends Component {
 
     return (
       <React.Fragment>
-        <Header history={history} />
+        <Header history={history} uid={this.state.uid} />
         <CssBaseline />
         <main className={classes.layout}>
           <div className={classes.appBarSpacer} />

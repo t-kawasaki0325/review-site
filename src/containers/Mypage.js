@@ -154,7 +154,7 @@ class Mypage extends Component {
 
     return (
       <React.Fragment>
-        <Header history={history} />
+        <Header history={history} uid={this.state.info.uid} />
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>

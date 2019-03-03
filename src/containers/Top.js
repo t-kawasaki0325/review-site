@@ -21,6 +21,7 @@ const styles = theme => ({
 
 class Top extends Component {
   state = {
+    uid: '',
     user: '',
     snapshot: '',
   };
@@ -32,9 +33,11 @@ class Top extends Component {
 
     const userSnapshot = await Authentication.fetchUserDataById(uid);
     const popularItem = await Saas.recentlyManyReviewed();
-    this.setState({ user: userSnapshot.data() });
-    this.setState({ snapshot: popularItem });
-
+    this.setState({
+      uid: uid,
+      user: userSnapshot.data(),
+      snapshot: popularItem,
+    });
     Saas.updatePopularItemIfOld();
   }
   render() {
@@ -42,7 +45,7 @@ class Top extends Component {
 
     return (
       <React.Fragment>
-        <Header history={history} />
+        <Header history={history} uid={this.state.uid} />
         <main className={classes.layout}>
           <div className={classes.appBarSpacer} />
 
