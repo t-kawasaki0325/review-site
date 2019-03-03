@@ -48,6 +48,21 @@ class Product {
       .doc(id)
       .get();
   };
+
+  static resetColumn = async column => {
+    const batch = db.batch();
+
+    const snapshot = await db
+      .collection('product')
+      .where(column, '>', 0)
+      .get();
+    snapshot.docs.forEach(doc => {
+      const data = doc.data();
+      batch.set(doc.ref, { ...data, [column]: 0 });
+    });
+
+    batch.commit();
+  };
 }
 
 export default Product;

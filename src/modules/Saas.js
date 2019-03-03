@@ -1,4 +1,5 @@
 import { Product, PopularItem } from '../models';
+import firebase from '../firebase';
 
 class Saas {
   static registerProduct = info => {
@@ -28,6 +29,15 @@ class Saas {
 
   static recentlyManyReviewed = () => {
     return PopularItem.manyReviewed();
+  };
+
+  static updatePopularItemIfOld = async () => {
+    const snapshot = await PopularItem.getUpdateAt();
+    const { updated_at } = snapshot.data();
+    const now = firebase.firestore.Timestamp.now();
+    if (now.seconds - updated_at.seconds > 3600) {
+      PopularItem.updatePopularItem(now);
+    }
   };
 }
 
