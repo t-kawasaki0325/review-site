@@ -56,7 +56,7 @@ class PopularItem {
         .doc(document)
         .collection('product')
         .doc();
-      batch.set(ref, data);
+      batch.set(ref, { ...data, saasId: doc.id });
     });
     batch.commit();
   };

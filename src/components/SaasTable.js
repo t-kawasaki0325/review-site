@@ -33,7 +33,7 @@ const styles = theme => ({
 });
 
 const SaasTable = props => {
-  const { classes, saas, doc, size } = props;
+  const { classes, saas, size, saasId } = props;
 
   return (
     <Grid container spacing={24}>
@@ -48,7 +48,7 @@ const SaasTable = props => {
           style={size === 'small' ? { fontSize: 18 } : { fontSize: 24 }}
         >
           <Link
-            to={UrlUtil.changeBaseUrl(PATH.SAAS_DETAIL, doc.ref.id)}
+            to={UrlUtil.changeBaseUrl(PATH.SAAS_DETAIL, saasId)}
             style={{ textDecoration: 'none' }}
           >
             {saas.name}

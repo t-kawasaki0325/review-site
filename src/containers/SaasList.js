@@ -211,7 +211,7 @@ class SaasList extends Component {
 
               return (
                 <Paper key={doc.id} className={classes.saas}>
-                  <SaasTable doc={doc} saas={saas} />
+                  <SaasTable saasId={doc.id} saas={saas} />
                 </Paper>
               );
             })}

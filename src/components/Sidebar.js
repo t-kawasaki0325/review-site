@@ -46,7 +46,11 @@ class Sidebar extends Component {
                   return (
                     <TableRow key={doc.id}>
                       <TableCell>
-                        <SaasTable doc={doc} saas={saas} size="small" />
+                        <SaasTable
+                          saasId={saas.saasId}
+                          saas={saas}
+                          size="small"
+                        />
                       </TableCell>
                     </TableRow>
                   );
