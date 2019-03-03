@@ -219,7 +219,7 @@ class SaasDetail extends Component {
 
                       <Typography gutterBottom>
                         {pointKeys.map(key => {
-                          if (!SAAS.RADAR[key]) return;
+                          if (!SAAS.RADAR[key]) return '';
                           return `${SAAS.RADAR[key]}: ${element.point[key]} `;
                         })}
                       </Typography>
