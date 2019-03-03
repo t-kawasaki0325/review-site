@@ -70,6 +70,11 @@ class Authentication {
     }
   };
 
+  static logout = history => {
+    firebase.auth().signOut();
+    history.push(PATH.LOGIN);
+  };
+
   static fetchUserId = () => {
     return new Promise(resolve => {
       firebase.auth().onAuthStateChanged(user => {
