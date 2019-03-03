@@ -6,6 +6,13 @@ const REVIEW = {
     '満足',
     '非常に満足',
   ],
+  RECOMMENDATION_LEVEL: [
+    '全く推奨できない',
+    'あまり推奨できない',
+    'どちらでもない',
+    '推奨できる',
+    'とても推奨できる',
+  ],
   UNTIL_ADOPTED: {
     OPPORTUNITY: ['web', '広告', 'イベント', '他社からの紹介', 'その他'],
     FIRST_CONTACT: ['web', '電話', 'メール', 'その他'],

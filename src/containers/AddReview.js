@@ -146,7 +146,7 @@ class AddReview extends Component {
         label: SAAS.RADAR.recommendation,
         value: this.state.info.recommendation,
         key: 'recommendation',
-        list: REVIEW.SATISFACTION_LEVEL,
+        list: REVIEW.RECOMMENDATION_LEVEL,
       },
       {
         label: SAAS.RADAR.satisfaction,

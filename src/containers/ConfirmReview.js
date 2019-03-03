@@ -77,7 +77,7 @@ class ConfirmReview extends Component {
       },
       {
         label: SAAS.RADAR.recommendation,
-        answer: REVIEW.SATISFACTION_LEVEL[info.recommendation],
+        answer: REVIEW.RECOMMENDATION_LEVEL[info.recommendation],
       },
       {
         label: SAAS.RADAR.satisfaction,
