@@ -13,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import { Saas } from '../modules';
 import { SAAS, COMPANY } from '../config';
-import { Header, SaasTable, TableSelect } from '../components';
+import { Header, SaasTable, TableSelect, TableText } from '../components';
 
 const styles = theme => ({
   layout: {
@@ -64,7 +64,7 @@ class SaasList extends Component {
     snapshotList: '',
     sortBy: '',
     sortList: '',
-    name: '',
+    keyword: '',
     category: 0,
     serviceType: 0,
     scale: 0,
@@ -79,7 +79,7 @@ class SaasList extends Component {
 
   searchSaas = async () => {
     const query = {
-      name: this.state.name,
+      keyword: this.state.keyword,
       category: this.state.category,
       companyServiceType: this.state.serviceType,
       companyScale: this.state.scale,
@@ -98,6 +98,14 @@ class SaasList extends Component {
     const { classes, history } = this.props;
     const snapshotList = this.state.snapshotList;
     const sortList = this.state.sortList;
+
+    const searchText = [
+      {
+        label: 'キーワード',
+        value: this.state.keyword,
+        key: 'keyword',
+      },
+    ];
 
     const searchCell = [
       {
@@ -139,6 +147,10 @@ class SaasList extends Component {
           <Paper className={classes.searchList}>
             <Table>
               <TableBody>
+                <TableText
+                  list={searchText}
+                  handleChange={event => this.handleChange(event)}
+                />
                 <TableSelect
                   list={searchCell}
                   handleChange={event => this.handleChange(event)}
