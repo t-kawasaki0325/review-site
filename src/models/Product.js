@@ -38,11 +38,8 @@ class Product {
     return '登録が完了しました';
   }
 
-  static getSearchData = async sortBy => {
-    return await db
-      .collection('product')
-      .orderBy(sortBy, 'desc')
-      .get();
+  static getSearchData = sortBy => {
+    return db.collection('product').orderBy(sortBy, 'desc');
   };
 
   static getInfoById = async id => {

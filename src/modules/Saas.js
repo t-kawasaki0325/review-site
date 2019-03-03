@@ -8,7 +8,7 @@ class Saas {
   static searchSaas = async (sortBy, query) => {
     const { category, companyServiceType, companyScale, companyRegion } = query;
 
-    const snapshot = await Product.getSearchData(sortBy);
+    const snapshot = await Product.getSearchData(sortBy).get();
     return snapshot.docs.filter(doc => {
       let saas = doc.data();
       if (category && saas) saas = saas.category === category ? saas : null;
