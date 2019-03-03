@@ -47,6 +47,19 @@ class ModelUtil {
       satisfaction: newSatisfaction,
     };
   };
+  static getCurrentPoint = info => {
+    const { sales, support, utilization, recommendation, satisfaction } = info;
+    const average =
+      (sales + support + utilization + recommendation + satisfaction) / 5;
+    return {
+      total: average + 1,
+      sales: sales + 1,
+      support: support + 1,
+      utilization: utilization + 1,
+      recommendation: recommendation + 1,
+      satisfaction: satisfaction + 1,
+    };
+  };
   static averagePoint = (current, newer, length) => {
     // 配列のkeyは0から始まるが点数は1から始まるため+1する
     return (current * length + newer + 1) / (length + 1);

@@ -11,6 +11,7 @@ class Review {
     const saas = snapshot.data();
 
     const point = ModelUtil.calculatePoint(saas, info);
+    const currentPoint = ModelUtil.getCurrentPoint(info);
     saas.review.push(reviewRef);
 
     batch.set(productRef, {
@@ -20,7 +21,7 @@ class Review {
       point: point,
       review: saas.review,
     });
-    batch.set(reviewRef, info);
+    batch.set(reviewRef, Object.assign(info, { point: currentPoint }));
 
     batch.commit();
   };
