@@ -6,7 +6,7 @@ class PopularItem {
     return await db
       .collection('popular_item')
       .doc('recently_reviewed')
-      .collection('item')
+      .collection('product')
       .get();
   };
 
