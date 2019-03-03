@@ -6,17 +6,14 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import { Saas } from '../modules';
 import { SAAS, COMPANY } from '../config';
-import { Header, SaasTable } from '../components';
+import { Header, SaasTable, TableSelect } from '../components';
 
 const styles = theme => ({
   layout: {
@@ -93,8 +90,8 @@ class SaasList extends Component {
     this.setState({ snapshotList: snapshotList });
   };
 
-  handleChange = (key, event) => {
-    this.setState({ [key]: event.target.value });
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
@@ -142,34 +139,10 @@ class SaasList extends Component {
           <Paper className={classes.searchList}>
             <Table>
               <TableBody>
-                {searchCell.map((data, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell component="th" scope="row">
-                        <Typography>{data.label}</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl className={classes.formControl}>
-                          <InputLabel>{data.label}</InputLabel>
-                          <Select
-                            value={data.value}
-                            onChange={event =>
-                              this.handleChange(data.key, event)
-                            }
-                          >
-                            {data.list.map((element, index) => {
-                              return (
-                                <MenuItem key={index} value={index}>
-                                  {element}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                <TableSelect
+                  list={searchCell}
+                  handleChange={event => this.handleChange(event)}
+                />
               </TableBody>
             </Table>
             <Grid container spacing={24}>
