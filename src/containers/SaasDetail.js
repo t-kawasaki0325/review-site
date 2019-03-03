@@ -12,12 +12,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 
 import { Header } from '../components';
 import { Saas } from '../modules';
 import { UrlUtil } from '../utils';
-import { SAAS } from '../config';
+import { SAAS, PATH } from '../config';
 
 const styles = theme => ({
   layout: {
@@ -35,6 +36,13 @@ const styles = theme => ({
     fontSize: 20,
     marginLeft: 10,
   },
+  buttonWrapper: {
+    margin: theme.spacing.unit * 4,
+    textAlign: 'center',
+  },
+  button: {
+    fontSize: 18,
+  },
   reviewContainer: {
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4,
@@ -44,18 +52,18 @@ const styles = theme => ({
 
 class SaasDetail extends Component {
   state = {
+    saasId: '',
     saas: '',
     review: [],
   };
 
   async componentDidMount() {
     const { history } = this.props;
+    const saasId = UrlUtil.baseUrl(history.location.pathname);
 
     // SaaSの取得
-    const snapshot = await Saas.sassInfoById(
-      UrlUtil.baseUrl(history.location.pathname)
-    );
-    this.setState({ saas: snapshot.data() });
+    const snapshot = await Saas.sassInfoById(saasId);
+    this.setState({ saas: snapshot.data(), saasId: saasId });
 
     // reviewの取得
     snapshot.data().review.forEach(async ref => {
@@ -167,6 +175,23 @@ class SaasDetail extends Component {
                     </Typography>
                   </Grid>
                 )}
+                <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
+                  <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    onClick={() =>
+                      history.push(
+                        UrlUtil.changeBaseUrl(
+                          PATH.ADD_REVIEW,
+                          this.state.saasId
+                        )
+                      )
+                    }
+                  >
+                    レビューを書く
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </Paper>
