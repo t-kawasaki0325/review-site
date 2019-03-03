@@ -13,7 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
 
 import { Header } from '../components';
 import { Saas } from '../modules';
@@ -79,25 +78,27 @@ class SaasDetail extends Component {
 
     const data = [
       {
-        subject: `${SAAS.RADAR.sales}: ${saas && saas.point.sales}`,
+        subject: `${SAAS.RADAR.sales}: ${saas && saas.point.sales.toFixed(1)}`,
         value: parseInt(`${saas && saas.point.sales}`),
       },
       {
-        subject: `${SAAS.RADAR.support}: ${saas && saas.point.support}`,
+        subject: `${SAAS.RADAR.support}: ${saas &&
+          saas.point.support.toFixed(1)}`,
         value: parseInt(`${saas && saas.point.support}`),
       },
       {
         subject: `${SAAS.RADAR.recommendation}: ${saas &&
-          saas.point.recommendation}`,
+          saas.point.recommendation.toFixed(1)}`,
         value: parseInt(`${saas && saas.point.recommendation}`),
       },
       {
-        subject: `${SAAS.RADAR.utilization}: ${saas && saas.point.utilization}`,
+        subject: `${SAAS.RADAR.utilization}: ${saas &&
+          saas.point.utilization.toFixed(1)}`,
         value: parseInt(`${saas && saas.point.utilization}`),
       },
       {
         subject: `${SAAS.RADAR.satisfaction}: ${saas &&
-          saas.point.satisfaction}`,
+          saas.point.satisfaction.toFixed(1)}`,
         value: parseInt(`${saas && saas.point.satisfaction}`),
       },
     ];
@@ -203,25 +204,22 @@ class SaasDetail extends Component {
                 <Paper key={index} className={classes.reviewContainer}>
                   <Grid container spacing={24}>
                     <Grid item xs={12} sm={12}>
-                      <Typography component="h1" variant="h5" gutterBottom>
-                        {element.title}
-                      </Typography>
-                      <Divider />
                       <Grid item xs={12} sm={12}>
                         <StarRatings
-                          rating={element.score}
+                          rating={element.point.total}
                           starRatedColor="blue"
                           numberOfStars={5}
                           starDimension="25px"
                           starSpacing="2px"
                         />
                         <span className={classes.pointText}>
-                          {element.score}
+                          {element.point.total}
                         </span>
                       </Grid>
 
                       <Typography gutterBottom>
                         {pointKeys.map(key => {
+                          if (!SAAS.RADAR[key]) return '';
                           return `${SAAS.RADAR[key]}: ${element.point[key]} `;
                         })}
                       </Typography>
