@@ -7,11 +7,23 @@ class Saas {
   };
 
   static searchSaas = async (sortBy, query) => {
-    const { category, companyServiceType, companyScale, companyRegion } = query;
+    const {
+      keyword,
+      category,
+      companyServiceType,
+      companyScale,
+      companyRegion,
+    } = query;
 
     const snapshot = await Product.getSearchData(sortBy).get();
     return snapshot.docs.filter(doc => {
       let saas = doc.data();
+      if (keyword && saas) {
+        saas =
+          saas.name.toLowerCase().search(keyword.trim().toLowerCase()) !== -1
+            ? saas
+            : null;
+      }
       if (category && saas) saas = saas.category === category ? saas : null;
       if (companyServiceType && saas)
         saas = saas.companyServiceType === companyServiceType ? saas : null;
