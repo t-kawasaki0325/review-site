@@ -26,7 +26,6 @@ const TableText = props => {
                 className={classes.textField}
                 name={data.key}
                 label={data.label}
-                fullWidth
                 value={data.value}
                 onChange={event => handleChange(event)}
               />

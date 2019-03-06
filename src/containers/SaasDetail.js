@@ -15,15 +15,14 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import { Header } from '../components';
-import { Saas } from '../modules';
+import { Saas, Authentication } from '../modules';
 import { UrlUtil } from '../utils';
 import { SAAS, PATH } from '../config';
 
 const styles = theme => ({
   layout: {
     width: 'auto',
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 2,
     [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
       width: 1000,
       marginLeft: 'auto',
@@ -47,10 +46,14 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 4,
     padding: theme.spacing.unit * 4,
   },
+  introduction: {
+    backgroundColor: '#eaeaea',
+  },
 });
 
 class SaasDetail extends Component {
   state = {
+    uid: '',
     saasId: '',
     saas: '',
     review: [],
@@ -58,17 +61,24 @@ class SaasDetail extends Component {
 
   async componentDidMount() {
     const { history } = this.props;
-    const saasId = UrlUtil.baseUrl(history.location.pathname);
+    const uid = await Authentication.fetchUserId();
+    this.setState({ uid: uid });
 
     // SaaSの取得
+    const saasId = UrlUtil.baseUrl(history.location.pathname);
     const snapshot = await Saas.sassInfoById(saasId);
     this.setState({ saas: snapshot.data(), saasId: saasId });
 
     // reviewの取得
-    snapshot.data().review.forEach(async ref => {
-      const review = await ref.get();
-      this.setState({ review: this.state.review.concat(review.data()) });
-    });
+    if (uid) {
+      snapshot.data().review.forEach(async ref => {
+        const review = await ref.get();
+        this.setState({ review: this.state.review.concat(review.data()) });
+      });
+    } else {
+      const review = await snapshot.data().review[0].get();
+      this.setState({ review: [review.data()] });
+    }
   }
 
   render() {
@@ -105,7 +115,7 @@ class SaasDetail extends Component {
 
     return (
       <React.Fragment>
-        <Header history={history} />
+        <Header history={history} uid={this.state.uid} />
         <CssBaseline />
 
         <main className={classes.layout}>
@@ -231,6 +241,24 @@ class SaasDetail extends Component {
                 </Paper>
               );
             })}
+          {!this.state.uid && saas && (
+            <Grid container spacing={24} className={classes.introduction}>
+              <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
+                <Typography gutterBottom>
+                  残り {saas.numOfReviews - 1}
+                  件のレビューを見るにはログインしてください
+                </Typography>
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => history.push(PATH.LOGIN)}
+                >
+                  ログイン
+                </Button>
+              </Grid>
+            </Grid>
+          )}
         </main>
       </React.Fragment>
     );

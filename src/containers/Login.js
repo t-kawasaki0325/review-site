@@ -85,6 +85,7 @@ class Login extends Component {
   async componentDidMount() {
     const { history } = this.props;
     await Authentication.completeLoginWithGoogle(history);
+    await Authentication.transisionTopIfLogin(history);
     this.setState({ loading: false });
   }
 

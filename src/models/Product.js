@@ -38,11 +38,8 @@ class Product {
     return '登録が完了しました';
   }
 
-  static getSearchData = async sortBy => {
-    return await db
-      .collection('product')
-      .orderBy(sortBy, 'desc')
-      .get();
+  static getSearchData = sortBy => {
+    return db.collection('product').orderBy(sortBy, 'desc');
   };
 
   static getInfoById = async id => {
@@ -50,6 +47,21 @@ class Product {
       .collection('product')
       .doc(id)
       .get();
+  };
+
+  static resetColumn = async column => {
+    const batch = db.batch();
+
+    const snapshot = await db
+      .collection('product')
+      .where(column, '>', 0)
+      .get();
+    snapshot.docs.forEach(doc => {
+      const data = doc.data();
+      batch.set(doc.ref, { ...data, [column]: 0 });
+    });
+
+    batch.commit();
   };
 }
 

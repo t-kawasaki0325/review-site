@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import StarRatings from 'react-star-ratings';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -8,18 +6,14 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { Saas } from '../modules';
-import { SAAS, COMPANY, PATH } from '../config';
-import { Header } from '../components';
-import { UrlUtil } from '../utils';
+import { Saas, Authentication } from '../modules';
+import { SAAS, COMPANY } from '../config';
+import { Header, SaasTable, TableSelect, TableText } from '../components';
 
 const styles = theme => ({
   layout: {
@@ -67,10 +61,11 @@ const styles = theme => ({
 
 class SaasList extends Component {
   state = {
+    uid: '',
     snapshotList: '',
     sortBy: '',
     sortList: '',
-    name: '',
+    keyword: '',
     category: 0,
     serviceType: 0,
     scale: 0,
@@ -81,11 +76,14 @@ class SaasList extends Component {
     await this.setState({ sortList: Object.keys(SAAS.SORT) });
     await this.setState({ sortBy: this.state.sortList[0] });
     await this.searchSaas();
+
+    const uid = await Authentication.fetchUserId();
+    this.setState({ uid: uid });
   }
 
   searchSaas = async () => {
     const query = {
-      name: this.state.name,
+      keyword: this.state.keyword,
       category: this.state.category,
       companyServiceType: this.state.serviceType,
       companyScale: this.state.scale,
@@ -96,14 +94,22 @@ class SaasList extends Component {
     this.setState({ snapshotList: snapshotList });
   };
 
-  handleChange = (key, event) => {
-    this.setState({ [key]: event.target.value });
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
     const { classes, history } = this.props;
     const snapshotList = this.state.snapshotList;
     const sortList = this.state.sortList;
+
+    const searchText = [
+      {
+        label: 'キーワード',
+        value: this.state.keyword,
+        key: 'keyword',
+      },
+    ];
 
     const searchCell = [
       {
@@ -134,7 +140,7 @@ class SaasList extends Component {
 
     return (
       <React.Fragment>
-        <Header history={history} />
+        <Header history={history} uid={this.state.uid} />
         <CssBaseline />
 
         <main className={classes.layout}>
@@ -145,34 +151,14 @@ class SaasList extends Component {
           <Paper className={classes.searchList}>
             <Table>
               <TableBody>
-                {searchCell.map((data, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell component="th" scope="row">
-                        <Typography>{data.label}</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl className={classes.formControl}>
-                          <InputLabel>{data.label}</InputLabel>
-                          <Select
-                            value={data.value}
-                            onChange={event =>
-                              this.handleChange(data.key, event)
-                            }
-                          >
-                            {data.list.map((element, index) => {
-                              return (
-                                <MenuItem key={index} value={index}>
-                                  {element}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                <TableText
+                  list={searchText}
+                  handleChange={event => this.handleChange(event)}
+                />
+                <TableSelect
+                  list={searchCell}
+                  handleChange={event => this.handleChange(event)}
+                />
               </TableBody>
             </Table>
             <Grid container spacing={24}>
@@ -214,43 +200,7 @@ class SaasList extends Component {
 
               return (
                 <Paper key={doc.id} className={classes.saas}>
-                  <Grid container spacing={24}>
-                    <Grid item xs={12} sm={12}>
-                      <Typography className={classes.title}>
-                        {SAAS.CATEGORY[saas.category]}
-                      </Typography>
-                      <Typography
-                        component="h1"
-                        variant="h5"
-                        className={classes.saasTitle}
-                      >
-                        <Link
-                          to={UrlUtil.changeBaseUrl(
-                            PATH.SAAS_DETAIL,
-                            doc.ref.id
-                          )}
-                          style={{ textDecoration: 'none' }}
-                        >
-                          {saas.name}
-                        </Link>
-                      </Typography>
-                      {saas.review && (
-                        <Typography>
-                          レビュー数：{saas.review.length}
-                        </Typography>
-                      )}
-                    </Grid>
-                    <Grid item xs={12} sm={12}>
-                      <StarRatings
-                        rating={saas.point.total}
-                        starRatedColor="blue"
-                        numberOfStars={5}
-                        starDimension="30px"
-                        starSpacing="2px"
-                      />
-                      {saas.point.total}
-                    </Grid>
-                  </Grid>
+                  <SaasTable saasId={doc.id} saas={saas} />
                 </Paper>
               );
             })}

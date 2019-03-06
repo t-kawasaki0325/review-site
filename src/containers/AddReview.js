@@ -12,7 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Header, TableSelect, TableText } from '../components';
 import { ValidationUtil, UrlUtil } from '../utils';
 import { SAAS, REVIEW, PATH } from '../config';
-import { Saas } from '../modules';
+import { Saas, Authentication } from '../modules';
 
 const styles = theme => ({
   layout: {
@@ -83,6 +83,7 @@ class AddReview extends Component {
       fromNow: '',
       content: '',
     },
+    uid: '',
     saasId: '',
     name: '',
     message: {},
@@ -91,12 +92,15 @@ class AddReview extends Component {
 
   async componentDidMount() {
     const { history } = this.props;
+    const uid = await Authentication.transitionLoginIfNotLogin(history);
+    if (!uid) return;
+
     const saasId = UrlUtil.baseUrl(history.location.pathname);
     const saas = await Saas.sassInfoById(saasId);
     if (!saas.data()) {
       return history.push(PATH.SAAS_LIST);
     }
-    this.setState({ saasId: saasId, name: saas.data().name });
+    this.setState({ saasId: saasId, name: saas.data().name, uid: uid });
   }
 
   handleChange = event => {
@@ -240,7 +244,7 @@ class AddReview extends Component {
 
     return (
       <React.Fragment>
-        <Header history={history} />
+        <Header history={history} uid={this.state.uid} />
         <CssBaseline />
         <main className={classes.layout}>
           <div className={classes.appBarSpacer} />

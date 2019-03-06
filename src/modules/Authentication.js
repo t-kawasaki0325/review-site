@@ -70,6 +70,11 @@ class Authentication {
     }
   };
 
+  static logout = history => {
+    firebase.auth().signOut();
+    history.push(PATH.LOGIN);
+  };
+
   static fetchUserId = () => {
     return new Promise(resolve => {
       firebase.auth().onAuthStateChanged(user => {
@@ -89,6 +94,11 @@ class Authentication {
     }
 
     history.push(PATH.LOGIN);
+  };
+
+  static transisionTopIfLogin = async history => {
+    const uid = await Authentication.fetchUserId();
+    if (uid) history.push(PATH.TOP);
   };
 
   static fetchUserDataById = id => {
