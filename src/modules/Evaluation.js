@@ -1,8 +1,8 @@
 import { Review } from '../models';
 
 class Evaluation {
-  static addReview = (saasId, info) => {
-    Review.createNewReview(saasId, info);
+  static addReview = (uid, saasId, info) => {
+    Review.createNewReview(uid, saasId, info);
   };
 }
 

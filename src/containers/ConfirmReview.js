@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { TableConfirm, Header } from '../components';
-import { Evaluation, Authentication } from '../modules';
+import { Evaluation } from '../modules';
 import { SAAS, REVIEW, PATH } from '../config';
 
 const styles = theme => ({
@@ -55,6 +55,7 @@ const styles = theme => ({
 
 class ConfirmReview extends Component {
   state = {
+    uid: '',
     saasId: '',
     info: '',
     loading: false,
@@ -67,15 +68,13 @@ class ConfirmReview extends Component {
       return;
     }
 
-    const uid = await Authentication.fetchUserId();
-    const { saasId, info } = location.state.state;
+    const { uid, saasId, info } = location.state.state;
     this.setState({ info: info, saasId: saasId, uid: uid });
   }
 
   render() {
     const { classes, history } = this.props;
-    const saasId = this.state.saasId;
-    const info = this.state.info;
+    const { uid, saasId, info } = this.state;
 
     const reviewCell = [
       {
@@ -156,7 +155,7 @@ class ConfirmReview extends Component {
 
     return (
       <React.Fragment>
-        <Header history={history} uid={this.state.uid} />
+        <Header history={history} uid={uid} />
         <CssBaseline />
         <main className={classes.layout}>
           <div className={classes.appBarSpacer} />
@@ -213,7 +212,7 @@ class ConfirmReview extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => Evaluation.addReview(saasId, info)}
+              onClick={() => Evaluation.addReview(uid, saasId, info)}
               className={classes.button}
             >
               この内容で確定する
