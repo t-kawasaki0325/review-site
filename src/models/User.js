@@ -1,4 +1,5 @@
 import { db } from '../firebase';
+import { POINT } from '../config';
 
 class User {
   static async createUser(uid, info) {
@@ -29,6 +30,7 @@ class User {
       position: position,
       department: department,
       companyRef: companyRef,
+      point: { current: POINT.INITIAL },
     };
 
     batch.set(userRef, userData);
