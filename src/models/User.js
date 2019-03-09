@@ -39,9 +39,35 @@ class User {
     batch.commit();
   }
 
-  // TODO: userがupdateされたときの処理を追加
   static updateUser = (uid, info) => {
-    return { uid, info };
+    const {
+      name,
+      company,
+      scale,
+      serviceType,
+      department,
+      position,
+      region,
+    } = info;
+
+    const userRef = db.collection('user').doc(uid);
+
+    db.runTransaction(transaction => {
+      return transaction.get(userRef).then(doc => {
+        const companyRef = doc.data().companyRef;
+        transaction.update(userRef, {
+          name: name,
+          position: position,
+          department: department,
+        });
+        transaction.update(companyRef, {
+          name: company,
+          scale: scale,
+          serviceType: serviceType,
+          region: region,
+        });
+      });
+    });
   };
 
   static fetchById = async uid => {
