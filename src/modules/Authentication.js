@@ -23,7 +23,7 @@ class Authentication {
   };
 
   static createNewUser = (uid, info, history) => {
-    User.fillData(uid, info);
+    User.createUser(uid, info);
     history.push(PATH.TOP);
   };
 
@@ -34,7 +34,7 @@ class Authentication {
       const { user } = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
-      User.fillData(user.uid, info);
+      User.createUser(user.uid, info);
       if (user) {
         history.push(PATH.TOP);
       }
@@ -107,7 +107,7 @@ class Authentication {
 
   static updateUserInfo = info => {
     const { uid } = info;
-    User.fillData(uid, info);
+    User.updateUser(uid, info);
     return '登録が完了しました';
   };
 }

@@ -1,7 +1,7 @@
 import { db } from '../firebase';
 
 class User {
-  static async fillData(uid, info) {
+  static async createUser(uid, info) {
     const {
       name,
       company,
@@ -35,6 +35,11 @@ class User {
     batch.set(companyRef, companyData);
     batch.commit();
   }
+
+  // TODO: userがupdateされたときの処理を追加
+  static updateUser = (uid, info) => {
+    return { uid, info };
+  };
 
   static fetchById = async uid => {
     return db
