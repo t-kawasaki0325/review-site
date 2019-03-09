@@ -57,6 +57,7 @@ class SaasDetail extends Component {
     saasId: '',
     saas: '',
     review: [],
+    canView: '',
   };
 
   async componentDidMount() {
@@ -70,20 +71,30 @@ class SaasDetail extends Component {
     this.setState({ saas: snapshot.data(), saasId: saasId });
 
     // reviewの取得
-    if (uid) {
+    const canView = await this.canViewAll(uid, saasId);
+    if (canView) {
       snapshot.data().review.forEach(async ref => {
         const review = await ref.get();
-        this.setState({ review: this.state.review.concat(review.data()) });
+        this.setState({
+          review: this.state.review.concat(review.data()),
+          canView: true,
+        });
       });
     } else {
       const review = await snapshot.data().review[0].get();
-      this.setState({ review: [review.data()] });
+      this.setState({ review: [review.data()], canView: false });
     }
   }
 
+  canViewAll = async (uid, saasId) => {
+    if (!uid) return false;
+    const user = await Authentication.fetchUserDataById(uid);
+    return user.data().canView.includes(saasId);
+  };
+
   render() {
     const { history, classes } = this.props;
-    const { uid, saas, review } = this.state;
+    const { uid, saas, review, canView } = this.state;
 
     const data = [
       {
@@ -240,7 +251,7 @@ class SaasDetail extends Component {
                 </Paper>
               );
             })}
-          {!uid && saas && (
+          {!canView && (
             <UrgeViewReview uid={uid} saas={saas} history={history} />
           )}
         </main>
