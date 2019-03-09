@@ -42,16 +42,17 @@ class Top extends Component {
   }
   render() {
     const { history, classes } = this.props;
+    const { uid, user, snapshot } = this.state;
 
     return (
       <React.Fragment>
-        <Header history={history} uid={this.state.uid} />
+        <Header history={history} uid={uid} />
         <main className={classes.layout}>
           <div className={classes.appBarSpacer} />
 
           <Grid container spacing={24}>
             <Grid item xs={12} sm={4}>
-              <Sidebar user={this.state.user} snapshot={this.state.snapshot} />
+              <Sidebar user={user} snapshot={snapshot} />
             </Grid>
             <Grid item xs={12} sm={8}>
               <p>main contents</p>

@@ -14,8 +14,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import { Header } from '../components';
-import { Saas, Authentication } from '../modules';
+import { Header, UrgeViewReview } from '../components';
+import { Saas, Authentication, Point } from '../modules';
 import { UrlUtil } from '../utils';
 import { SAAS, PATH } from '../config';
 
@@ -57,6 +57,7 @@ class SaasDetail extends Component {
     saasId: '',
     saas: '',
     review: [],
+    canView: '',
   };
 
   async componentDidMount() {
@@ -70,21 +71,50 @@ class SaasDetail extends Component {
     this.setState({ saas: snapshot.data(), saasId: saasId });
 
     // reviewの取得
-    if (uid) {
-      snapshot.data().review.forEach(async ref => {
-        const review = await ref.get();
-        this.setState({ review: this.state.review.concat(review.data()) });
-      });
+    if (snapshot.data().review.length === 0) {
+      this.setState({ review: [] });
+      return;
+    }
+    const canView = await this.canViewAll(uid, saasId);
+    if (canView) {
+      this.updateReview(snapshot);
     } else {
       const review = await snapshot.data().review[0].get();
-      this.setState({ review: [review.data()] });
+      this.setState({ review: [review.data()], canView: false });
     }
   }
 
+  canViewAll = async (uid, saasId) => {
+    if (!uid) return false;
+    const user = await Authentication.fetchUserDataById(uid);
+    return user.data().can_view.includes(saasId);
+  };
+
+  handleForView = async () => {
+    const { history } = this.props;
+    const { uid, saasId } = this.state;
+    if (!uid) history.push(PATH.LOGIN);
+
+    Point.useForViewReview(uid, saasId);
+
+    const snapshot = await Saas.sassInfoById(saasId);
+    this.updateReview(snapshot);
+  };
+
+  updateReview = snapshot => {
+    this.setState({ review: [] });
+    snapshot.data().review.forEach(async ref => {
+      const review = await ref.get();
+      this.setState({
+        review: this.state.review.concat(review.data()),
+        canView: true,
+      });
+    });
+  };
+
   render() {
     const { history, classes } = this.props;
-    const saas = this.state.saas;
-    const review = this.state.review;
+    const { uid, saas, review, canView, saasId } = this.state;
 
     const data = [
       {
@@ -115,7 +145,7 @@ class SaasDetail extends Component {
 
     return (
       <React.Fragment>
-        <Header history={history} uid={this.state.uid} />
+        <Header history={history} uid={uid} />
         <CssBaseline />
 
         <main className={classes.layout}>
@@ -182,7 +212,7 @@ class SaasDetail extends Component {
                       {saas.point.total}
                     </span>
                     <Typography>
-                      回答者: {saas && saas.numOfReviews}人
+                      回答者: {saas && saas.num_of_reviews}人
                     </Typography>
                   </Grid>
                 )}
@@ -193,10 +223,7 @@ class SaasDetail extends Component {
                     color="primary"
                     onClick={() =>
                       history.push(
-                        UrlUtil.changeBaseUrl(
-                          PATH.ADD_REVIEW,
-                          this.state.saasId
-                        )
+                        UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
                       )
                     }
                   >
@@ -241,23 +268,13 @@ class SaasDetail extends Component {
                 </Paper>
               );
             })}
-          {!this.state.uid && saas && (
-            <Grid container spacing={24} className={classes.introduction}>
-              <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
-                <Typography gutterBottom>
-                  残り {saas.numOfReviews - 1}
-                  件のレビューを見るにはログインしてください
-                </Typography>
-                <Button
-                  className={classes.button}
-                  variant="contained"
-                  color="primary"
-                  onClick={() => history.push(PATH.LOGIN)}
-                >
-                  ログイン
-                </Button>
-              </Grid>
-            </Grid>
+          {!!review.length && !canView && (
+            <UrgeViewReview
+              uid={uid}
+              saas={saas}
+              history={history}
+              handle={() => this.handleForView()}
+            />
           )}
         </main>
       </React.Fragment>

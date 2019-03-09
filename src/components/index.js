@@ -10,3 +10,4 @@ export { default as TableText } from './TableText';
 export { default as TableConfirm } from './TableConfirm';
 export { default as Sidebar } from './Sidebar';
 export { default as SaasTable } from './SaasTable';
+export { default as UrgeViewReview } from './UrgeViewReview';

@@ -1,7 +1,8 @@
 import { db } from '../firebase';
+import { POINT } from '../config';
 
 class User {
-  static async fillData(uid, info) {
+  static async createUser(uid, info) {
     const {
       name,
       company,
@@ -14,33 +15,72 @@ class User {
 
     const batch = db.batch();
 
-    const userRef = db.collection('user').doc(uid);
+    const userRef = User.fetchUserRef(uid);
     const companyRef = db.collection('company').doc();
 
-    const companyData = {
+    batch.set(companyRef, {
       name: company,
       scale: scale,
-      serviceType: serviceType,
+      service_type: serviceType,
       region: region,
-    };
-
-    const userData = {
+    });
+    batch.set(userRef, {
       name: name,
       position: position,
       department: department,
-      companyRef: companyRef,
-    };
+      company_ref: companyRef,
+      point: POINT.INITIAL,
+      can_view: [],
+    });
 
-    batch.set(userRef, userData);
-    batch.set(companyRef, companyData);
     batch.commit();
   }
 
-  static fetchById = async uid => {
-    return db
-      .collection('user')
-      .doc(uid)
-      .get();
+  static updateUser = (uid, info) => {
+    const {
+      name,
+      company,
+      scale,
+      serviceType,
+      department,
+      position,
+      region,
+    } = info;
+
+    const userRef = User.fetchUserRef(uid);
+
+    db.runTransaction(transaction => {
+      return transaction.get(userRef).then(doc => {
+        const companyRef = doc.data().company_ref;
+        transaction.update(userRef, {
+          name: name,
+          position: position,
+          department: department,
+        });
+        transaction.update(companyRef, {
+          name: company,
+          scale: scale,
+          service_type: serviceType,
+          region: region,
+        });
+      });
+    });
+  };
+
+  static fetchUserRef = uid => {
+    return db.collection('user').doc(uid);
+  };
+
+  static changePoint = (uid, saasId, point) => {
+    const userRef = User.fetchUserRef(uid);
+
+    db.runTransaction(transaction => {
+      return transaction.get(userRef).then(doc => {
+        const newPoint = doc.data().point + point;
+        const canView = doc.data().can_view.concat([saasId]);
+        transaction.update(userRef, { can_view: canView, point: newPoint });
+      });
+    });
   };
 }
 

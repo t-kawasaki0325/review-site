@@ -26,25 +26,25 @@ class Saas {
       }
       if (category && saas) saas = saas.category === category ? saas : null;
       if (companyServiceType && saas)
-        saas = saas.companyServiceType === companyServiceType ? saas : null;
+        saas = saas.company_service_type === companyServiceType ? saas : null;
       if (companyScale && saas)
-        saas = saas.companyScale === companyScale ? saas : null;
+        saas = saas.company_scale === companyScale ? saas : null;
       if (companyRegion && saas)
-        saas = saas.companyRegion === companyRegion ? saas : null;
+        saas = saas.company_region === companyRegion ? saas : null;
       return saas;
     });
   };
 
   static sassInfoById = id => {
-    return Product.getInfoById(id);
+    return Product.productRef(id).get();
   };
 
   static recentlyManyReviewed = () => {
-    return PopularItem.manyReviewed();
+    return PopularItem.manyReviewedProductRef().get();
   };
 
   static updatePopularItemIfOld = async () => {
-    const snapshot = await PopularItem.getUpdateAt();
+    const snapshot = await PopularItem.recentlyReviewedRef().get();
     const { updated_at } = snapshot.data();
     const now = firebase.firestore.Timestamp.now();
     if (now.seconds - updated_at.seconds > 3600) {

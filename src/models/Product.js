@@ -3,6 +3,10 @@ import { SAAS } from '../config';
 import { ModelUtil } from '../utils';
 
 class Product {
+  static productRef = id => {
+    return db.collection('product').doc(id);
+  };
+
   static async registerProduct(info) {
     const { company, serviceType, scale, region, name, category } = info;
 
@@ -11,28 +15,25 @@ class Product {
     const productRef = db.collection('product').doc();
     const companyRef = db.collection('company').doc();
 
-    const companyData = {
+    batch.set(companyRef, {
       name: company,
       service_type: serviceType,
       scale: scale,
       region: region,
-    };
-
-    const productData = {
+    });
+    batch.set(productRef, {
       name: name,
       category: category,
-      companyRef: companyRef,
-      numOfReviews: 0,
+      company_ref: companyRef,
+      num_of_reviews: 0,
       point: Object.assign(ModelUtil.initializeKeys(SAAS.RADAR), { total: 0 }),
-      companyRegion: region,
-      companyScale: scale,
-      companyServiceType: serviceType,
+      company_region: region,
+      company_scale: scale,
+      company_service_type: serviceType,
       review: [],
-      recentlyReviewed: 0,
-    };
+      recently_reviewed: 0,
+    });
 
-    batch.set(companyRef, companyData);
-    batch.set(productRef, productData);
     batch.commit();
 
     return '登録が完了しました';
@@ -42,13 +43,6 @@ class Product {
     return db.collection('product').orderBy(sortBy, 'desc');
   };
 
-  static getInfoById = async id => {
-    return await db
-      .collection('product')
-      .doc(id)
-      .get();
-  };
-
   static resetColumn = async column => {
     const batch = db.batch();
 
@@ -56,12 +50,13 @@ class Product {
       .collection('product')
       .where(column, '>', 0)
       .get();
-    snapshot.docs.forEach(doc => {
+    snapshot.docs.forEach((doc, index) => {
       const data = doc.data();
       batch.set(doc.ref, { ...data, [column]: 0 });
+      if (index % 500 === 0 || snapshot.docs.length - 1 === index) {
+        batch.commit();
+      }
     });
-
-    batch.commit();
   };
 }
 

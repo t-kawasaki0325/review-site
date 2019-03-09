@@ -10,33 +10,37 @@ class ModelUtil {
   };
 
   static calculatePoint = (saas, info) => {
-    const { point, numOfReviews } = saas;
+    const { point, num_of_reviews } = saas;
     const { sales, support, utilization, recommendation, satisfaction } = info;
     const average =
       (sales + support + utilization + recommendation + satisfaction) / 5;
 
-    const newSales = ModelUtil.averagePoint(point.sales, sales, numOfReviews);
+    const newSales = ModelUtil.averagePoint(point.sales, sales, num_of_reviews);
     const newSupport = ModelUtil.averagePoint(
       point.support,
       support,
-      numOfReviews
+      num_of_reviews
     );
     const newUtilization = ModelUtil.averagePoint(
       point.utilization,
       utilization,
-      numOfReviews
+      num_of_reviews
     );
     const newRecommendation = ModelUtil.averagePoint(
       point.recommendation,
       recommendation,
-      numOfReviews
+      num_of_reviews
     );
     const newSatisfaction = ModelUtil.averagePoint(
       point.satisfaction,
       satisfaction,
-      numOfReviews
+      num_of_reviews
     );
-    const newTotal = ModelUtil.averagePoint(point.total, average, numOfReviews);
+    const newTotal = ModelUtil.averagePoint(
+      point.total,
+      average,
+      num_of_reviews
+    );
 
     return {
       total: newTotal,
