@@ -73,13 +73,7 @@ class SaasDetail extends Component {
     // reviewの取得
     const canView = await this.canViewAll(uid, saasId);
     if (canView) {
-      snapshot.data().review.forEach(async ref => {
-        const review = await ref.get();
-        this.setState({
-          review: this.state.review.concat(review.data()),
-          canView: true,
-        });
-      });
+      this.updateReview(snapshot);
     } else {
       const review = await snapshot.data().review[0].get();
       this.setState({ review: [review.data()], canView: false });
@@ -92,12 +86,25 @@ class SaasDetail extends Component {
     return user.data().canView.includes(saasId);
   };
 
-  handleForView = () => {
+  handleForView = async () => {
     const { history } = this.props;
     const { uid, saasId } = this.state;
     if (!uid) history.push(PATH.LOGIN);
 
     Point.useForViewReview(uid, saasId);
+
+    const snapshot = await Saas.sassInfoById(saasId);
+    this.updateReview(snapshot);
+  };
+
+  updateReview = snapshot => {
+    snapshot.data().review.forEach(async ref => {
+      const review = await ref.get();
+      this.setState({
+        review: this.state.review.concat(review.data()),
+        canView: true,
+      });
+    });
   };
 
   render() {
