@@ -18,24 +18,21 @@ class User {
     const userRef = User.fetchUserRef(uid);
     const companyRef = db.collection('company').doc();
 
-    const companyData = {
+    batch.set(companyRef, {
       name: company,
       scale: scale,
       serviceType: serviceType,
       region: region,
-    };
-
-    const userData = {
+    });
+    batch.set(userRef, {
       name: name,
       position: position,
       department: department,
       companyRef: companyRef,
       point: POINT.INITIAL,
       canView: [],
-    };
+    });
 
-    batch.set(userRef, userData);
-    batch.set(companyRef, companyData);
     batch.commit();
   }
 

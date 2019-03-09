@@ -15,14 +15,13 @@ class Product {
     const productRef = db.collection('product').doc();
     const companyRef = db.collection('company').doc();
 
-    const companyData = {
+    batch.set(companyRef, {
       name: company,
       service_type: serviceType,
       scale: scale,
       region: region,
-    };
-
-    const productData = {
+    });
+    batch.set(productRef, {
       name: name,
       category: category,
       companyRef: companyRef,
@@ -33,10 +32,8 @@ class Product {
       companyServiceType: serviceType,
       review: [],
       recentlyReviewed: 0,
-    };
+    });
 
-    batch.set(companyRef, companyData);
-    batch.set(productRef, productData);
     batch.commit();
 
     return '登録が完了しました';
