@@ -20,14 +20,14 @@ class Review {
 
     batch.set(productRef, {
       ...saas,
-      numOfReviews: saas.numOfReviews + 1,
-      recentlyReviewed: saas.recentlyReviewed + 1,
+      num_of_reviews: saas.num_of_reviews + 1,
+      recently_reviewed: saas.recently_reviewed + 1,
       point: point,
       review: saas.review,
     });
     batch.set(userRef, {
       ...user,
-      point: user.point.current + POINT.ADD_REVIEW,
+      point: user.point + POINT.ADD_REVIEW,
     });
     batch.set(reviewRef, Object.assign(info, { point: currentPoint }));
 

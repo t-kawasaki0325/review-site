@@ -87,7 +87,7 @@ class Mypage extends Component {
 
     const userSnapshot = await Authentication.fetchUserDataById(uid);
     const user = userSnapshot.data();
-    const companySnapshot = await user.companyRef.get();
+    const companySnapshot = await user.company_ref.get();
     const company = companySnapshot.data();
 
     const info = {
@@ -98,7 +98,7 @@ class Mypage extends Component {
       company: company.name,
       region: company.region,
       scale: company.scale,
-      serviceType: company.serviceType,
+      serviceType: company.service_type,
     };
 
     this.setState({ info: info, loading: false });

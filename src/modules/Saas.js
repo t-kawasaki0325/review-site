@@ -26,11 +26,11 @@ class Saas {
       }
       if (category && saas) saas = saas.category === category ? saas : null;
       if (companyServiceType && saas)
-        saas = saas.companyServiceType === companyServiceType ? saas : null;
+        saas = saas.company_service_type === companyServiceType ? saas : null;
       if (companyScale && saas)
-        saas = saas.companyScale === companyScale ? saas : null;
+        saas = saas.company_scale === companyScale ? saas : null;
       if (companyRegion && saas)
-        saas = saas.companyRegion === companyRegion ? saas : null;
+        saas = saas.company_region === companyRegion ? saas : null;
       return saas;
     });
   };

@@ -24,14 +24,14 @@ class Product {
     batch.set(productRef, {
       name: name,
       category: category,
-      companyRef: companyRef,
-      numOfReviews: 0,
+      company_ref: companyRef,
+      num_of_reviews: 0,
       point: Object.assign(ModelUtil.initializeKeys(SAAS.RADAR), { total: 0 }),
-      companyRegion: region,
-      companyScale: scale,
-      companyServiceType: serviceType,
+      company_region: region,
+      company_scale: scale,
+      company_service_type: serviceType,
       review: [],
-      recentlyReviewed: 0,
+      recently_reviewed: 0,
     });
 
     batch.commit();
@@ -53,7 +53,9 @@ class Product {
     snapshot.docs.forEach((doc, index) => {
       const data = doc.data();
       batch.set(doc.ref, { ...data, [column]: 0 });
-      if (index % 500 === 0) batch.commit();
+      if (index % 500 === 0 || snapshot.docs.length - 1 === index) {
+        batch.commit();
+      }
     });
   };
 }

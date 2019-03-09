@@ -24,7 +24,7 @@ const UrgeViewReview = props => {
     <Grid container spacing={24} className={classes.introduction}>
       <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
         <Typography gutterBottom>
-          残り {saas.numOfReviews - 1}
+          残り {saas.num_of_reviews - 1}
           件のレビューを見るには{text}してください
         </Typography>
         <Button

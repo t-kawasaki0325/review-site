@@ -21,16 +21,16 @@ class User {
     batch.set(companyRef, {
       name: company,
       scale: scale,
-      serviceType: serviceType,
+      service_type: serviceType,
       region: region,
     });
     batch.set(userRef, {
       name: name,
       position: position,
       department: department,
-      companyRef: companyRef,
+      company_ref: companyRef,
       point: POINT.INITIAL,
-      canView: [],
+      can_view: [],
     });
 
     batch.commit();
@@ -51,7 +51,7 @@ class User {
 
     db.runTransaction(transaction => {
       return transaction.get(userRef).then(doc => {
-        const companyRef = doc.data().companyRef;
+        const companyRef = doc.data().company_ref;
         transaction.update(userRef, {
           name: name,
           position: position,
@@ -60,7 +60,7 @@ class User {
         transaction.update(companyRef, {
           name: company,
           scale: scale,
-          serviceType: serviceType,
+          service_type: serviceType,
           region: region,
         });
       });
@@ -77,8 +77,8 @@ class User {
     db.runTransaction(transaction => {
       return transaction.get(userRef).then(doc => {
         const newPoint = doc.data().point + point;
-        const canView = doc.data().canView.concat([saasId]);
-        transaction.update(userRef, { canView: canView, point: newPoint });
+        const canView = doc.data().can_view.concat([saasId]);
+        transaction.update(userRef, { can_view: canView, point: newPoint });
       });
     });
   };

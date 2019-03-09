@@ -9,9 +9,9 @@ const SAAS = {
     'プロジェクト管理',
   ],
   SORT: {
-    numOfReviews: 'レビュー数の多い順',
+    num_of_reviews: 'レビュー数の多い順',
     point: '点数の高い順',
-    recentlyReviewed: '最近レビューされた順',
+    recently_reviewed: '最近レビューされた順',
   },
   RADAR: {
     sales: '営業対応',

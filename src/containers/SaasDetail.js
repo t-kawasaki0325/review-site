@@ -71,6 +71,10 @@ class SaasDetail extends Component {
     this.setState({ saas: snapshot.data(), saasId: saasId });
 
     // reviewの取得
+    if (snapshot.data().review.length === 0) {
+      this.setState({ review: [] });
+      return;
+    }
     const canView = await this.canViewAll(uid, saasId);
     if (canView) {
       this.updateReview(snapshot);
@@ -83,7 +87,7 @@ class SaasDetail extends Component {
   canViewAll = async (uid, saasId) => {
     if (!uid) return false;
     const user = await Authentication.fetchUserDataById(uid);
-    return user.data().canView.includes(saasId);
+    return user.data().can_view.includes(saasId);
   };
 
   handleForView = async () => {
@@ -98,6 +102,7 @@ class SaasDetail extends Component {
   };
 
   updateReview = snapshot => {
+    this.setState({ review: [] });
     snapshot.data().review.forEach(async ref => {
       const review = await ref.get();
       this.setState({
@@ -207,7 +212,7 @@ class SaasDetail extends Component {
                       {saas.point.total}
                     </span>
                     <Typography>
-                      回答者: {saas && saas.numOfReviews}人
+                      回答者: {saas && saas.num_of_reviews}人
                     </Typography>
                   </Grid>
                 )}
@@ -263,7 +268,7 @@ class SaasDetail extends Component {
                 </Paper>
               );
             })}
-          {!canView && (
+          {!!review.length && !canView && (
             <UrgeViewReview
               uid={uid}
               saas={saas}

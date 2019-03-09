@@ -15,9 +15,9 @@ class PopularItem {
       // レビュー数の多いアイテムのリセット
       PopularItem.resetPopularItem('recently_reviewed'),
       // 直近1時間でレビュー数が多いsaasの登録
-      PopularItem.insertPopularItem('recentlyReviewed', 'recently_reviewed'),
+      PopularItem.insertPopularItem('recently_reviewed', 'recently_reviewed'),
       // すべてのsaasのレビュー数リセット
-      Product.resetColumn('recentlyReviewed'),
+      Product.resetColumn('recently_reviewed'),
       // 更新時間の更新
       PopularItem.updateTimeToNow('recently_reviewed', now),
     ]);
