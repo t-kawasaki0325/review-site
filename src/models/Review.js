@@ -27,7 +27,7 @@ class Review {
     });
     batch.set(userRef, {
       ...user,
-      point: { ...user.point, current: user.point.current + POINT.ADD_REVIEW },
+      point: user.point.current + POINT.ADD_REVIEW,
     });
     batch.set(reviewRef, Object.assign(info, { point: currentPoint }));
 

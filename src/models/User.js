@@ -30,7 +30,8 @@ class User {
       position: position,
       department: department,
       companyRef: companyRef,
-      point: { current: POINT.INITIAL },
+      point: POINT.INITIAL,
+      canView: [],
     };
 
     batch.set(userRef, userData);
