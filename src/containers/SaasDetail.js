@@ -14,7 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import { Header } from '../components';
+import { Header, UrgeViewReview } from '../components';
 import { Saas, Authentication } from '../modules';
 import { UrlUtil } from '../utils';
 import { SAAS, PATH } from '../config';
@@ -83,8 +83,7 @@ class SaasDetail extends Component {
 
   render() {
     const { history, classes } = this.props;
-    const saas = this.state.saas;
-    const review = this.state.review;
+    const { uid, saas, review } = this.state;
 
     const data = [
       {
@@ -115,7 +114,7 @@ class SaasDetail extends Component {
 
     return (
       <React.Fragment>
-        <Header history={history} uid={this.state.uid} />
+        <Header history={history} uid={uid} />
         <CssBaseline />
 
         <main className={classes.layout}>
@@ -241,23 +240,8 @@ class SaasDetail extends Component {
                 </Paper>
               );
             })}
-          {!this.state.uid && saas && (
-            <Grid container spacing={24} className={classes.introduction}>
-              <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
-                <Typography gutterBottom>
-                  残り {saas.numOfReviews - 1}
-                  件のレビューを見るにはログインしてください
-                </Typography>
-                <Button
-                  className={classes.button}
-                  variant="contained"
-                  color="primary"
-                  onClick={() => history.push(PATH.LOGIN)}
-                >
-                  ログイン
-                </Button>
-              </Grid>
-            </Grid>
+          {!uid && saas && (
+            <UrgeViewReview uid={uid} saas={saas} history={history} />
           )}
         </main>
       </React.Fragment>
