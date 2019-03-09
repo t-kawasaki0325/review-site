@@ -32,9 +32,11 @@ const Sidebar = props => {
         >
           ようこそ {user.name} さん！
         </Typography>
-        <Typography className={classes.title}>
-          ポイント: {user.point}
-        </Typography>
+        {user && (
+          <Typography className={classes.title}>
+            ポイント: {user.point.current}
+          </Typography>
+        )}
       </Paper>
       <Paper className={classes.container}>
         {snapshot && (
