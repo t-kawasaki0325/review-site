@@ -3,6 +3,10 @@ import { SAAS } from '../config';
 import { ModelUtil } from '../utils';
 
 class Product {
+  static productRef = id => {
+    return db.collection('product').doc(id);
+  };
+
   static async registerProduct(info) {
     const { company, serviceType, scale, region, name, category } = info;
 
@@ -40,13 +44,6 @@ class Product {
 
   static getSearchData = sortBy => {
     return db.collection('product').orderBy(sortBy, 'desc');
-  };
-
-  static getInfoById = async id => {
-    return await db
-      .collection('product')
-      .doc(id)
-      .get();
   };
 
   static resetColumn = async column => {

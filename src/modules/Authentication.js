@@ -102,7 +102,7 @@ class Authentication {
   };
 
   static fetchUserDataById = id => {
-    return User.fetchById(id);
+    return User.fetchUserRef(id).get();
   };
 
   static updateUserInfo = info => {

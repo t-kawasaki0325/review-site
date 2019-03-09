@@ -2,19 +2,12 @@ import { db } from '../firebase';
 import { Product } from '../models';
 
 class PopularItem {
-  static manyReviewed = async () => {
-    return await db
-      .collection('popular_item')
-      .doc('recently_reviewed')
-      .collection('product')
-      .get();
+  static recentlyReviewedRef = () => {
+    return db.collection('popular_item').doc('recently_reviewed');
   };
 
-  static getUpdateAt = () => {
-    return db
-      .collection('popular_item')
-      .doc('recently_reviewed')
-      .get();
+  static manyReviewedProductRef = () => {
+    return PopularItem.recentlyReviewedRef().collection('product');
   };
 
   static updatePopularItem = async now => {

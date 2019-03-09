@@ -36,15 +36,15 @@ class Saas {
   };
 
   static sassInfoById = id => {
-    return Product.getInfoById(id);
+    return Product.productRef(id).get();
   };
 
   static recentlyManyReviewed = () => {
-    return PopularItem.manyReviewed();
+    return PopularItem.manyReviewedProductRef().get();
   };
 
   static updatePopularItemIfOld = async () => {
-    const snapshot = await PopularItem.getUpdateAt();
+    const snapshot = await PopularItem.recentlyReviewedRef().get();
     const { updated_at } = snapshot.data();
     const now = firebase.firestore.Timestamp.now();
     if (now.seconds - updated_at.seconds > 3600) {

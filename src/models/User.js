@@ -15,7 +15,7 @@ class User {
 
     const batch = db.batch();
 
-    const userRef = db.collection('user').doc(uid);
+    const userRef = User.fetchUserRef(uid);
     const companyRef = db.collection('company').doc();
 
     const companyData = {
@@ -50,7 +50,7 @@ class User {
       region,
     } = info;
 
-    const userRef = db.collection('user').doc(uid);
+    const userRef = User.fetchUserRef(uid);
 
     db.runTransaction(transaction => {
       return transaction.get(userRef).then(doc => {
@@ -70,15 +70,12 @@ class User {
     });
   };
 
-  static fetchById = async uid => {
-    return db
-      .collection('user')
-      .doc(uid)
-      .get();
+  static fetchUserRef = uid => {
+    return db.collection('user').doc(uid);
   };
 
   static changePoint = (uid, saasId, point) => {
-    const userRef = db.collection('user').doc(uid);
+    const userRef = User.fetchUserRef(uid);
 
     db.runTransaction(transaction => {
       return transaction.get(userRef).then(doc => {
