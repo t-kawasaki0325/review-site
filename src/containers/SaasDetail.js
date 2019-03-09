@@ -15,7 +15,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import { Header, UrgeViewReview } from '../components';
-import { Saas, Authentication } from '../modules';
+import { Saas, Authentication, Point } from '../modules';
 import { UrlUtil } from '../utils';
 import { SAAS, PATH } from '../config';
 
@@ -92,9 +92,17 @@ class SaasDetail extends Component {
     return user.data().canView.includes(saasId);
   };
 
+  handleForView = () => {
+    const { history } = this.props;
+    const { uid, saasId } = this.state;
+    if (!uid) history.push(PATH.LOGIN);
+
+    Point.useForViewReview(uid, saasId);
+  };
+
   render() {
     const { history, classes } = this.props;
-    const { uid, saas, review, canView } = this.state;
+    const { uid, saas, review, canView, saasId } = this.state;
 
     const data = [
       {
@@ -203,10 +211,7 @@ class SaasDetail extends Component {
                     color="primary"
                     onClick={() =>
                       history.push(
-                        UrlUtil.changeBaseUrl(
-                          PATH.ADD_REVIEW,
-                          this.state.saasId
-                        )
+                        UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
                       )
                     }
                   >
@@ -252,7 +257,12 @@ class SaasDetail extends Component {
               );
             })}
           {!canView && (
-            <UrgeViewReview uid={uid} saas={saas} history={history} />
+            <UrgeViewReview
+              uid={uid}
+              saas={saas}
+              history={history}
+              handle={() => this.handleForView()}
+            />
           )}
         </main>
       </React.Fragment>

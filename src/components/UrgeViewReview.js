@@ -4,8 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import { PATH } from '../config';
-
 const styles = theme => ({
   buttonWrapper: {
     margin: theme.spacing.unit * 4,
@@ -20,7 +18,7 @@ const styles = theme => ({
 });
 
 const UrgeViewReview = props => {
-  const { uid, saas, history, classes } = props;
+  const { uid, saas, classes, handle } = props;
   const text = uid ? 'ポイントを使用' : 'ログイン';
   return (
     <Grid container spacing={24} className={classes.introduction}>
@@ -33,7 +31,7 @@ const UrgeViewReview = props => {
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => history.push(PATH.LOGIN)}
+          onClick={() => handle()}
         >
           {text}
         </Button>

@@ -49,6 +49,18 @@ class User {
       .doc(uid)
       .get();
   };
+
+  static changePoint = (uid, saasId, point) => {
+    const userRef = db.collection('user').doc(uid);
+
+    db.runTransaction(transaction => {
+      return transaction.get(userRef).then(doc => {
+        const newPoint = doc.data().point + point;
+        const canView = doc.data().canView.concat([saasId]);
+        transaction.update(userRef, { canView: canView, point: newPoint });
+      });
+    });
+  };
 }
 
 export default User;
