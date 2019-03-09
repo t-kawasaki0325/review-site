@@ -53,12 +53,11 @@ class Product {
       .collection('product')
       .where(column, '>', 0)
       .get();
-    snapshot.docs.forEach(doc => {
+    snapshot.docs.forEach((doc, index) => {
       const data = doc.data();
       batch.set(doc.ref, { ...data, [column]: 0 });
+      if (index % 500 === 0) batch.commit();
     });
-
-    batch.commit();
   };
 }
 
