@@ -273,7 +273,7 @@ class SaasDetail extends Component {
                 </Paper>
               );
             })}
-          {review.length > 1 && !canView && (
+          {!!review.length && !!(saas.num_of_reviews - 1) && !canView && (
             <UrgeViewReview
               uid={uid}
               saas={saas}
