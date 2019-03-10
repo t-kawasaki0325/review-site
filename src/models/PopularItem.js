@@ -10,6 +10,10 @@ class PopularItem {
     return PopularItem.recentlyReviewedRef().collection('product');
   };
 
+  static recentlyViewedRef = () => {
+    return db.collection('popular_item').doc('recently_viewed');
+  };
+
   static updatePopularItem = async now => {
     Promise.all([
       // レビュー数の多いアイテムのリセット
@@ -20,6 +24,19 @@ class PopularItem {
       Product.resetColumn('recently_reviewed'),
       // 更新時間の更新
       PopularItem.updateTimeToNow('recently_reviewed', now),
+    ]);
+  };
+
+  static updateManyViewedItem = async now => {
+    Promise.all([
+      // 閲覧数の多いアイテムのリセット
+      PopularItem.resetPopularItem('recently_viewed'),
+      // 直近1時間で閲覧数が多いsaasの登録
+      PopularItem.insertPopularItem('recently_viewed', 'recently_viewed'),
+      // すべてのsaasの閲覧数リセット
+      Product.resetColumn('recently_viewed'),
+      // 更新時間の更新
+      PopularItem.updateTimeToNow('recently_viewed', now),
     ]);
   };
 

@@ -13,7 +13,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 
-import { Authentication } from '../modules';
+import { Authentication, Saas } from '../modules';
 import { Header, TableSelect, TableText } from '../components';
 import { COMPANY, SAAS, PATH } from '../config';
 
@@ -67,6 +67,8 @@ class Root extends Component {
 
   componentDidMount() {
     Authentication.transisionTopIfLogin();
+
+    Saas.updateViewedItemIfOld();
   }
 
   handleChange = event => {

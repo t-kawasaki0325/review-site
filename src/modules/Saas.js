@@ -55,6 +55,15 @@ class Saas {
   static viewCountUp = id => {
     return Product.viewCountUp(id);
   };
+
+  static updateViewedItemIfOld = async () => {
+    const snapshot = await PopularItem.recentlyViewedRef().get();
+    const { updated_at } = snapshot.data();
+    const now = firebase.firestore.Timestamp.now();
+    if (now.seconds - updated_at.seconds > 3600) {
+      PopularItem.updateManyViewedItem(now);
+    }
+  };
 }
 
 export default Saas;
