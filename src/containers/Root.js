@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -33,9 +34,6 @@ const styles = theme => ({
   },
   mainFeaturedPostContent: {
     padding: `${theme.spacing.unit * 6}px`,
-  },
-  textCenter: {
-    textAlign: 'center',
   },
   buttonContainer: {
     textAlign: 'center',
@@ -119,7 +117,7 @@ class Root extends Component {
               <Grid item md={12}>
                 <div className={classes.mainFeaturedPostContent}>
                   <Typography
-                    className={classes.textCenter}
+                    align="center"
                     component="h1"
                     variant="h3"
                     color="inherit"
@@ -167,7 +165,7 @@ class Root extends Component {
                 color="inherit"
                 gutterBottom
               >
-                よく見られている企業
+                よく見られているSaaS
               </Typography>
               <Divider />
             </Grid>
@@ -256,6 +254,30 @@ class Root extends Component {
               </Card>
             </Grid>
           </Grid>
+          <footer className={classes.footer}>
+            <Typography variant="h6" align="center" gutterBottom>
+              Review Site
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              align="center"
+              color="textSecondary"
+              component="p"
+            >
+              <Link to="" style={{ textDecoration: 'none' }}>
+                &nbsp;HOME&nbsp;
+              </Link>
+              <Link to="" style={{ textDecoration: 'none' }}>
+                &nbsp;会社情報&nbsp;
+              </Link>
+              <Link to="" style={{ textDecoration: 'none' }}>
+                &nbsp;利用規約&nbsp;
+              </Link>
+              <Link to="" style={{ textDecoration: 'none' }}>
+                &nbsp;プライバシーポリシー&nbsp;
+              </Link>
+            </Typography>
+          </footer>
         </main>
       </React.Fragment>
     );
