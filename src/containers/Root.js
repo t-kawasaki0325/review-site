@@ -7,6 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 
 import { Authentication } from '../modules';
 import { Header, TableSelect, TableText } from '../components';
@@ -25,8 +29,6 @@ const styles = theme => ({
     },
   },
   mainFeaturedPost: {
-    backgroundColor: theme.palette.white,
-    color: theme.palette.common.grey,
     marginBottom: theme.spacing.unit * 4,
   },
   mainFeaturedPostContent: {
@@ -39,6 +41,15 @@ const styles = theme => ({
     textAlign: 'center',
     marginTop: theme.spacing.unit * 2,
     padding: theme.spacing.unit,
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    margin: theme.spacing.unit * 2,
+  },
+  cardContent: {
+    flexGrow: 1,
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
@@ -148,6 +159,103 @@ class Root extends Component {
               </Grid>
             </Grid>
           </Paper>
+          <Grid container className={classes.layout}>
+            <Grid item sm={12}>
+              <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                gutterBottom
+              >
+                よく見られている企業
+              </Typography>
+              <Divider />
+            </Grid>
+            <Grid item sm={3}>
+              <Card className={classes.card}>
+                <CardContent className={classes.cardContent}>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    Heading
+                  </Typography>
+                  <Typography>
+                    This is a media card. You can use this section to describe
+                    the content.
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" color="primary">
+                    View
+                  </Button>
+                  <Button size="small" color="primary">
+                    Edit
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item sm={3}>
+              <Card className={classes.card}>
+                <CardContent className={classes.cardContent}>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    Heading
+                  </Typography>
+                  <Typography>
+                    This is a media card. You can use this section to describe
+                    the content.
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" color="primary">
+                    View
+                  </Button>
+                  <Button size="small" color="primary">
+                    Edit
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item sm={3}>
+              <Card className={classes.card}>
+                <CardContent className={classes.cardContent}>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    Heading
+                  </Typography>
+                  <Typography>
+                    This is a media card. You can use this section to describe
+                    the content.
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" color="primary">
+                    View
+                  </Button>
+                  <Button size="small" color="primary">
+                    Edit
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item sm={3}>
+              <Card className={classes.card}>
+                <CardContent className={classes.cardContent}>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    Heading
+                  </Typography>
+                  <Typography>
+                    This is a media card. You can use this section to describe
+                    the content.
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" color="primary">
+                    View
+                  </Button>
+                  <Button size="small" color="primary">
+                    Edit
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          </Grid>
         </main>
       </React.Fragment>
     );
