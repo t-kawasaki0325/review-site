@@ -43,7 +43,7 @@ class Saas {
     return PopularItem.popularItemProductRef('recently_reviewed').get();
   };
 
-  static recentlyManyReviewed = () => {
+  static recentlyManyViewed = () => {
     return PopularItem.popularItemProductRef('recently_viewed').get();
   };
 

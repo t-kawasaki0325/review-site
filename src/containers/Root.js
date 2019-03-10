@@ -14,8 +14,9 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 
 import { Authentication, Saas } from '../modules';
-import { Header, TableSelect, TableText } from '../components';
+import { Header, TableSelect, TableText, SaasTable } from '../components';
 import { COMPANY, SAAS, PATH } from '../config';
+import { UrlUtil } from '../utils';
 
 const styles = theme => ({
   layout: {
@@ -41,7 +42,6 @@ const styles = theme => ({
     padding: theme.spacing.unit,
   },
   card: {
-    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     margin: theme.spacing.unit * 2,
@@ -65,12 +65,15 @@ class Root extends Component {
       scale: '',
       region: '',
     },
+    snapshot: '',
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { history } = this.props;
     Authentication.transisionTopIfLogin(history);
 
+    const popularItem = await Saas.recentlyManyViewed();
+    this.setState({ snapshot: popularItem });
     // 直近1時間で閲覧数が多かったSaaSの更新
     Saas.updatePopularItemIfOld('recently_viewed');
   }
@@ -88,6 +91,7 @@ class Root extends Component {
 
   render() {
     const { history, classes } = this.props;
+    const { snapshot } = this.state;
 
     const searchText = [
       {
@@ -136,7 +140,7 @@ class Root extends Component {
                   <Typography
                     align="center"
                     component="h1"
-                    variant="h3"
+                    variant="h4"
                     color="inherit"
                     gutterBottom
                   >
@@ -186,90 +190,38 @@ class Root extends Component {
               </Typography>
               <Divider />
             </Grid>
-            <Grid item sm={3}>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Heading
-                  </Typography>
-                  <Typography>
-                    This is a media card. You can use this section to describe
-                    the content.
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    View
-                  </Button>
-                  <Button size="small" color="primary">
-                    Edit
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item sm={3}>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Heading
-                  </Typography>
-                  <Typography>
-                    This is a media card. You can use this section to describe
-                    the content.
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    View
-                  </Button>
-                  <Button size="small" color="primary">
-                    Edit
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item sm={3}>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Heading
-                  </Typography>
-                  <Typography>
-                    This is a media card. You can use this section to describe
-                    the content.
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    View
-                  </Button>
-                  <Button size="small" color="primary">
-                    Edit
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item sm={3}>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Heading
-                  </Typography>
-                  <Typography>
-                    This is a media card. You can use this section to describe
-                    the content.
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    View
-                  </Button>
-                  <Button size="small" color="primary">
-                    Edit
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
+            {snapshot &&
+              snapshot.docs.map(doc => {
+                const saas = doc.data();
+                return (
+                  <Grid key={doc.id} item sm={3}>
+                    <Card className={classes.card}>
+                      <CardContent className={classes.cardContent}>
+                        <SaasTable
+                          saasId={saas.saasId}
+                          saas={saas}
+                          size="small"
+                        />
+                        <CardActions style={{ justifyContent: 'center' }}>
+                          <Button
+                            color="primary"
+                            onClick={() =>
+                              history.push(
+                                UrlUtil.changeBaseUrl(
+                                  PATH.SAAS_DETAIL,
+                                  saas.saasId
+                                )
+                              )
+                            }
+                          >
+                            詳細を見る
+                          </Button>
+                        </CardActions>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                );
+              })}
           </Grid>
           <footer className={classes.footer}>
             <Typography variant="h6" align="center" gutterBottom>
