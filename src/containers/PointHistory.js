@@ -81,11 +81,13 @@ class PointHistory extends Component {
               <Table>
                 <TableBody>
                   {user.point_history.map((element, index) => {
+                    const date = element.date.toDate();
                     return (
                       <TableRow key={index}>
                         <TableCell component="th" scope="row">
                           <Typography>
-                            {element.date.toDate().toString()}
+                            {date.getFullYear()}/{date.getMonth() + 1}/
+                            {date.getDate()}
                           </Typography>
                         </TableCell>
                         <TableCell component="th" scope="row">
