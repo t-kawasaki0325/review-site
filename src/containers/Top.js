@@ -38,7 +38,9 @@ class Top extends Component {
       user: userSnapshot.data(),
       snapshot: popularItem,
     });
-    Saas.updatePopularItemIfOld();
+
+    // 直近1時間でレビュー数が多かったSaaSの更新
+    Saas.updatePopularItemIfOld('recently_reviewed');
   }
   render() {
     const { history, classes } = this.props;

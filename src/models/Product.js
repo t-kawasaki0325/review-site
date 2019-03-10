@@ -32,6 +32,7 @@ class Product {
       company_service_type: serviceType,
       review: [],
       recently_reviewed: 0,
+      recently_viewed: 0,
     });
 
     batch.commit();
@@ -56,6 +57,16 @@ class Product {
       if (index % 500 === 0 || snapshot.docs.length - 1 === index) {
         batch.commit();
       }
+    });
+  };
+
+  static viewCountUp = id => {
+    const ref = Product.productRef(id);
+    db.runTransaction(transaction => {
+      return transaction.get(ref).then(doc => {
+        const viewCount = doc.data().recently_viewed + 1;
+        transaction.update(ref, { recently_viewed: viewCount });
+      });
     });
   };
 }

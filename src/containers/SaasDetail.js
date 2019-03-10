@@ -82,6 +82,9 @@ class SaasDetail extends Component {
       const review = await snapshot.data().review[0].get();
       this.setState({ review: [review.data()], canView: false });
     }
+
+    // 閲覧数をcount up
+    Saas.viewCountUp(saasId);
   }
 
   canViewAll = async (uid, saasId) => {
@@ -119,27 +122,27 @@ class SaasDetail extends Component {
     const data = [
       {
         subject: `${SAAS.RADAR.sales}: ${saas && saas.point.sales.toFixed(1)}`,
-        value: parseInt(`${saas && saas.point.sales}`),
+        value: parseFloat(`${saas && saas.point.sales}`),
       },
       {
         subject: `${SAAS.RADAR.support}: ${saas &&
           saas.point.support.toFixed(1)}`,
-        value: parseInt(`${saas && saas.point.support}`),
+        value: parseFloat(`${saas && saas.point.support}`),
       },
       {
         subject: `${SAAS.RADAR.recommendation}: ${saas &&
           saas.point.recommendation.toFixed(1)}`,
-        value: parseInt(`${saas && saas.point.recommendation}`),
+        value: parseFloat(`${saas && saas.point.recommendation}`),
       },
       {
         subject: `${SAAS.RADAR.utilization}: ${saas &&
           saas.point.utilization.toFixed(1)}`,
-        value: parseInt(`${saas && saas.point.utilization}`),
+        value: parseFloat(`${saas && saas.point.utilization}`),
       },
       {
         subject: `${SAAS.RADAR.satisfaction}: ${saas &&
           saas.point.satisfaction.toFixed(1)}`,
-        value: parseInt(`${saas && saas.point.satisfaction}`),
+        value: parseFloat(`${saas && saas.point.satisfaction}`),
       },
     ];
 
@@ -216,20 +219,22 @@ class SaasDetail extends Component {
                     </Typography>
                   </Grid>
                 )}
-                <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
-                  <Button
-                    className={classes.button}
-                    variant="contained"
-                    color="primary"
-                    onClick={() =>
-                      history.push(
-                        UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
-                      )
-                    }
-                  >
-                    レビューを書く
-                  </Button>
-                </Grid>
+                {!canView && (
+                  <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
+                    <Button
+                      className={classes.button}
+                      variant="contained"
+                      color="primary"
+                      onClick={() =>
+                        history.push(
+                          UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
+                        )
+                      }
+                    >
+                      レビューを書く
+                    </Button>
+                  </Grid>
+                )}
               </Grid>
             </Grid>
           </Paper>
@@ -268,7 +273,7 @@ class SaasDetail extends Component {
                 </Paper>
               );
             })}
-          {!!review.length && !canView && (
+          {review.length > 1 && !canView && (
             <UrgeViewReview
               uid={uid}
               saas={saas}

@@ -40,16 +40,24 @@ class Saas {
   };
 
   static recentlyManyReviewed = () => {
-    return PopularItem.manyReviewedProductRef().get();
+    return PopularItem.popularItemProductRef('recently_reviewed').get();
   };
 
-  static updatePopularItemIfOld = async () => {
-    const snapshot = await PopularItem.recentlyReviewedRef().get();
+  static recentlyManyViewed = () => {
+    return PopularItem.popularItemProductRef('recently_viewed').get();
+  };
+
+  static updatePopularItemIfOld = async doc => {
+    const snapshot = await PopularItem.popularItemDocRef(doc).get();
     const { updated_at } = snapshot.data();
     const now = firebase.firestore.Timestamp.now();
     if (now.seconds - updated_at.seconds > 3600) {
-      PopularItem.updatePopularItem(now);
+      PopularItem.updatePopularItem(now, doc);
     }
+  };
+
+  static viewCountUp = id => {
+    return Product.viewCountUp(id);
   };
 }
 
