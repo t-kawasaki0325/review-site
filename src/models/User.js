@@ -29,7 +29,8 @@ class User {
       position: position,
       department: department,
       company_ref: companyRef,
-      point: POINT.INITIAL,
+      point: POINT.INITIAL.value,
+      point_history: POINT.INITIAL,
       can_view: [],
     });
 
@@ -76,9 +77,15 @@ class User {
 
     db.runTransaction(transaction => {
       return transaction.get(userRef).then(doc => {
-        const newPoint = doc.data().point + point;
-        const canView = doc.data().can_view.concat([saasId]);
-        transaction.update(userRef, { can_view: canView, point: newPoint });
+        const data = doc.data();
+        const newPoint = data.point + point;
+        const canView = data.can_view.concat([saasId]);
+        data.point_history.push(POINT.VIEW_REVIEW);
+        transaction.update(userRef, {
+          can_view: canView,
+          point: newPoint,
+          point_history: data.point_history,
+        });
       });
     });
   };
