@@ -219,20 +219,22 @@ class SaasDetail extends Component {
                     </Typography>
                   </Grid>
                 )}
-                <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
-                  <Button
-                    className={classes.button}
-                    variant="contained"
-                    color="primary"
-                    onClick={() =>
-                      history.push(
-                        UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
-                      )
-                    }
-                  >
-                    レビューを書く
-                  </Button>
-                </Grid>
+                {!canView && (
+                  <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
+                    <Button
+                      className={classes.button}
+                      variant="contained"
+                      color="primary"
+                      onClick={() =>
+                        history.push(
+                          UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
+                        )
+                      }
+                    >
+                      レビューを書く
+                    </Button>
+                  </Grid>
+                )}
               </Grid>
             </Grid>
           </Paper>
