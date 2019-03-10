@@ -6,10 +6,10 @@ class PopularItem {
     return db.collection('popular_item').doc(doc);
   };
 
-  static manyReviewedProductRef = () => {
+  static popularItemProductRef = doc => {
     return db
       .collection('popular_item')
-      .doc('recently_reviewed')
+      .doc(doc)
       .collection('product');
   };
 

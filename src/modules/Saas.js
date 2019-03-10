@@ -40,7 +40,7 @@ class Saas {
   };
 
   static recentlyManyReviewed = () => {
-    return PopularItem.manyReviewedProductRef().get();
+    return PopularItem.popularItemProductRef('recently_reviewed').get();
   };
 
   static updatePopularItemIfOld = async doc => {
