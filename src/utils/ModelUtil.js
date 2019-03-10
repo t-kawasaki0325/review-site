@@ -68,6 +68,11 @@ class ModelUtil {
     // 配列のkeyは0から始まるが点数は1から始まるため+1する
     return (current * length + newer + 1) / (length + 1);
   };
+  static addPointHistory = (pointHistory, event) => {
+    pointHistory.push(event);
+    if (pointHistory.length > 10) pointHistory.shift();
+    return pointHistory;
+  };
 }
 
 export default ModelUtil;

@@ -1,5 +1,6 @@
 import { db } from '../firebase';
 import { POINT } from '../config';
+import { ModelUtil } from '../utils';
 
 class User {
   static async createUser(uid, info) {
@@ -30,7 +31,7 @@ class User {
       department: department,
       company_ref: companyRef,
       point: POINT.INITIAL.value,
-      point_history: POINT.INITIAL,
+      point_history: [POINT.INITIAL],
       can_view: [],
     });
 
@@ -80,11 +81,14 @@ class User {
         const data = doc.data();
         const newPoint = data.point + point;
         const canView = data.can_view.concat([saasId]);
-        data.point_history.push(POINT.VIEW_REVIEW);
+        const history = ModelUtil.addPointHistory(
+          data.point_history,
+          POINT.VIEW_REVIEW
+        );
         transaction.update(userRef, {
           can_view: canView,
           point: newPoint,
-          point_history: data.point_history,
+          point_history: history,
         });
       });
     });
