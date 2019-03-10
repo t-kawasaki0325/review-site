@@ -82,6 +82,9 @@ class SaasDetail extends Component {
       const review = await snapshot.data().review[0].get();
       this.setState({ review: [review.data()], canView: false });
     }
+
+    // 閲覧数をcount up
+    Saas.viewCountUp(saasId);
   }
 
   canViewAll = async (uid, saasId) => {

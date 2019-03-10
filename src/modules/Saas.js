@@ -51,6 +51,10 @@ class Saas {
       PopularItem.updatePopularItem(now);
     }
   };
+
+  static viewCountUp = id => {
+    return Product.viewCountUp(id);
+  };
 }
 
 export default Saas;
