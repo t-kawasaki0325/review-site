@@ -49,6 +49,12 @@ const Header = props => {
             <React.Fragment>
               <Button
                 color="inherit"
+                onClick={() => history.push(PATH.SAAS_LIST)}
+              >
+                SaaSを探す
+              </Button>
+              <Button
+                color="inherit"
                 onClick={() => history.push(PATH.REGISTRATION)}
               >
                 ユーザー登録（無料）
