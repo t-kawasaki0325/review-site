@@ -66,9 +66,11 @@ class Root extends Component {
   };
 
   componentDidMount() {
-    Authentication.transisionTopIfLogin();
+    const { history } = this.props;
+    Authentication.transisionTopIfLogin(history);
 
-    Saas.updateViewedItemIfOld();
+    // 直近1時間で閲覧数が多かったSaaSの更新
+    Saas.updatePopularItemIfOld('recently_viewed');
   }
 
   handleChange = event => {

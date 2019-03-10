@@ -2,41 +2,27 @@ import { db } from '../firebase';
 import { Product } from '../models';
 
 class PopularItem {
-  static recentlyReviewedRef = () => {
-    return db.collection('popular_item').doc('recently_reviewed');
+  static popularItemDocRef = doc => {
+    return db.collection('popular_item').doc(doc);
   };
 
   static manyReviewedProductRef = () => {
-    return PopularItem.recentlyReviewedRef().collection('product');
+    return db
+      .collection('popular_item')
+      .doc('recently_reviewed')
+      .collection('product');
   };
 
-  static recentlyViewedRef = () => {
-    return db.collection('popular_item').doc('recently_viewed');
-  };
-
-  static updatePopularItem = async now => {
+  static updatePopularItem = async (now, doc) => {
     Promise.all([
-      // レビュー数の多いアイテムのリセット
-      PopularItem.resetPopularItem('recently_reviewed'),
-      // 直近1時間でレビュー数が多いsaasの登録
-      PopularItem.insertPopularItem('recently_reviewed', 'recently_reviewed'),
-      // すべてのsaasのレビュー数リセット
-      Product.resetColumn('recently_reviewed'),
+      // レビュー/閲覧数の多いアイテムのリセット
+      PopularItem.resetPopularItem(doc),
+      // 直近1時間でレビュー/閲覧数が多いsaasの登録
+      PopularItem.insertPopularItem(doc, doc),
+      // すべてのsaasのレビュー/閲覧数リセット
+      Product.resetColumn(doc),
       // 更新時間の更新
-      PopularItem.updateTimeToNow('recently_reviewed', now),
-    ]);
-  };
-
-  static updateManyViewedItem = async now => {
-    Promise.all([
-      // 閲覧数の多いアイテムのリセット
-      PopularItem.resetPopularItem('recently_viewed'),
-      // 直近1時間で閲覧数が多いsaasの登録
-      PopularItem.insertPopularItem('recently_viewed', 'recently_viewed'),
-      // すべてのsaasの閲覧数リセット
-      Product.resetColumn('recently_viewed'),
-      // 更新時間の更新
-      PopularItem.updateTimeToNow('recently_viewed', now),
+      PopularItem.updateTimeToNow(doc, now),
     ]);
   };
 
@@ -54,10 +40,12 @@ class PopularItem {
   };
 
   static insertPopularItem = async (column, document) => {
+    const limit = document === 'recently_viewed' ? 4 : 5;
+
     const batch = db.batch();
 
     const snapshot = await Product.getSearchData(column)
-      .limit(5)
+      .limit(limit)
       .get();
     snapshot.docs.forEach(doc => {
       const data = doc.data();
