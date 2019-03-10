@@ -1,3 +1,5 @@
+import { now } from '../firebase';
+
 class ModelUtil {
   static initializeKeys = object => {
     const keys = Object.keys(object);
@@ -67,6 +69,11 @@ class ModelUtil {
   static averagePoint = (current, newer, length) => {
     // 配列のkeyは0から始まるが点数は1から始まるため+1する
     return (current * length + newer + 1) / (length + 1);
+  };
+  static addPointHistory = (pointHistory, event) => {
+    pointHistory.push(Object.assign(event, { date: now }));
+    if (pointHistory.length > 10) pointHistory.shift();
+    return pointHistory;
   };
 }
 

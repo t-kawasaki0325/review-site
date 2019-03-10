@@ -9,3 +9,4 @@ export { default as SaasDetail } from './SaasDetail';
 export { default as Mypage } from './Mypage';
 export { default as AddReview } from './AddReview';
 export { default as ConfirmReview } from './ConfirmReview';
+export { default as PointHistory } from './PointHistory';

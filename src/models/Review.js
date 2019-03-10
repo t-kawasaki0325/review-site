@@ -17,6 +17,10 @@ class Review {
     const point = ModelUtil.calculatePoint(saas, info);
     const currentPoint = ModelUtil.getCurrentPoint(info);
     saas.review.push(reviewRef);
+    const history = ModelUtil.addPointHistory(
+      user.point_history,
+      POINT.ADD_REVIEW
+    );
 
     batch.set(productRef, {
       ...saas,
@@ -27,7 +31,8 @@ class Review {
     });
     batch.set(userRef, {
       ...user,
-      point: user.point + POINT.ADD_REVIEW,
+      point: user.point + POINT.ADD_REVIEW.value,
+      point_history: history,
     });
     batch.set(reviewRef, Object.assign(info, { point: currentPoint }));
 

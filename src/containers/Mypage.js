@@ -6,8 +6,15 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 
-import { MemberInfo, CompanyInfo, Header, Message } from '../components';
+import {
+  MemberInfo,
+  CompanyInfo,
+  Header,
+  Message,
+  Sidebar,
+} from '../components';
 import { Authentication } from '../modules';
 import { ValidationUtil } from '../utils';
 
@@ -16,18 +23,17 @@ const styles = theme => ({
     width: 'auto',
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
-      width: 600,
+    [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
+      width: 1000,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
   },
+  appBarSpacer: theme.mixins.toolbar,
   paper: {
-    marginTop: theme.spacing.unit * 3,
     marginBottom: theme.spacing.unit * 3,
     padding: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
-      marginTop: theme.spacing.unit * 6,
+    [theme.breakpoints.up(1000 + theme.spacing.unit * 3 * 2)]: {
       marginBottom: theme.spacing.unit * 6,
       padding: theme.spacing.unit * 3,
     },
@@ -76,6 +82,7 @@ class Mypage extends Component {
       scale: '',
       serviceType: '',
     },
+    user: '',
     loading: true,
     error: '',
   };
@@ -101,7 +108,7 @@ class Mypage extends Component {
       serviceType: company.service_type,
     };
 
-    this.setState({ info: info, loading: false });
+    this.setState({ info: info, loading: false, user: user });
   }
 
   handleChange = event => {
@@ -151,58 +158,67 @@ class Mypage extends Component {
 
   render() {
     const { classes, history } = this.props;
+    const { user, info } = this.state;
 
     return (
       <React.Fragment>
-        <Header history={history} uid={this.state.info.uid} />
+        <Header history={history} uid={info.uid} />
         <CssBaseline />
         <main className={classes.layout}>
-          <Paper className={classes.paper}>
-            {this.state.error && (
-              <Message type="info" error={this.state.error} />
-            )}
-            <Typography
-              component="h1"
-              variant="h4"
-              align="center"
-              className={classes.title}
-            >
-              マイページ編集
-            </Typography>
-            <MemberInfo
-              history={history}
-              name={this.state.info.name}
-              handleChange={event => this.handleChange(event)}
-              message={this.state.message}
-            />
-            <CompanyInfo
-              company={this.state.info.company}
-              region={this.state.info.region}
-              scale={this.state.info.scale}
-              serviceType={this.state.info.serviceType}
-              position={this.state.info.position}
-              department={this.state.info.department}
-              handleChange={event => this.handleChange(event)}
-              message={this.state.message}
-            />
-            <div className={classes.buttons}>
-              <Button
-                disabled={this.canSubmit()}
-                variant="contained"
-                color="primary"
-                onClick={() => this.updateUserInfo()}
-                className={classes.button}
-              >
-                送信
-              </Button>
-              {this.state.loading && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
+          <div className={classes.appBarSpacer} />
+          <Grid container spacing={24}>
+            <Grid item xs={12} sm={4}>
+              <Sidebar user={user} link={true} />
+            </Grid>
+            <Grid item xs={12} sm={8}>
+              <Paper className={classes.paper}>
+                {this.state.error && (
+                  <Message type="info" error={this.state.error} />
+                )}
+                <Typography
+                  component="h1"
+                  variant="h4"
+                  align="center"
+                  className={classes.title}
+                >
+                  マイページ編集
+                </Typography>
+                <MemberInfo
+                  history={history}
+                  name={info.name}
+                  handleChange={event => this.handleChange(event)}
+                  message={this.state.message}
                 />
-              )}
-            </div>
-          </Paper>
+                <CompanyInfo
+                  company={info.company}
+                  region={info.region}
+                  scale={info.scale}
+                  serviceType={info.serviceType}
+                  position={info.position}
+                  department={info.department}
+                  handleChange={event => this.handleChange(event)}
+                  message={this.state.message}
+                />
+                <div className={classes.buttons}>
+                  <Button
+                    disabled={this.canSubmit()}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => this.updateUserInfo()}
+                    className={classes.button}
+                  >
+                    送信
+                  </Button>
+                  {this.state.loading && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  )}
+                </div>
+              </Paper>
+            </Grid>
+          </Grid>
         </main>
       </React.Fragment>
     );
