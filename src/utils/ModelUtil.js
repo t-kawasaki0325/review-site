@@ -1,3 +1,5 @@
+import { now } from '../firebase';
+
 class ModelUtil {
   static initializeKeys = object => {
     const keys = Object.keys(object);
@@ -69,7 +71,7 @@ class ModelUtil {
     return (current * length + newer + 1) / (length + 1);
   };
   static addPointHistory = (pointHistory, event) => {
-    pointHistory.push(event);
+    pointHistory.push(Object.assign(event, { date: now }));
     if (pointHistory.length > 10) pointHistory.shift();
     return pointHistory;
   };

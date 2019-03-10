@@ -1,4 +1,4 @@
-import { db } from '../firebase';
+import { db, now } from '../firebase';
 import { POINT } from '../config';
 import { ModelUtil } from '../utils';
 
@@ -31,7 +31,7 @@ class User {
       department: department,
       company_ref: companyRef,
       point: POINT.INITIAL.value,
-      point_history: [POINT.INITIAL],
+      point_history: [Object.assign(POINT.INITIAL, { date: now })],
       can_view: [],
     });
 

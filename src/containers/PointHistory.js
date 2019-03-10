@@ -84,6 +84,11 @@ class PointHistory extends Component {
                     return (
                       <TableRow key={index}>
                         <TableCell component="th" scope="row">
+                          <Typography>
+                            {element.date.toDate().toString()}
+                          </Typography>
+                        </TableCell>
+                        <TableCell component="th" scope="row">
                           <Typography>{element.event}</Typography>
                         </TableCell>
                         <TableCell>

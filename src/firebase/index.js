@@ -13,6 +13,7 @@ const config = {
 firebase.initializeApp(config);
 
 export const db = firebase.firestore();
+export const now = firebase.firestore.Timestamp.now();
 
 export const providerGoogle = new firebase.auth.GoogleAuthProvider();
 export default firebase;
