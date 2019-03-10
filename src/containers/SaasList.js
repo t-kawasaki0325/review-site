@@ -73,8 +73,14 @@ class SaasList extends Component {
   };
 
   async componentDidMount() {
-    await this.setState({ sortList: Object.keys(SAAS.SORT) });
-    await this.setState({ sortBy: this.state.sortList[0] });
+    const { location } = this.props;
+    await this.setState({
+      sortList: Object.keys(SAAS.SORT),
+      sortBy: Object.keys(SAAS.SORT)[0],
+    });
+    if (location.state) {
+      this.setState(location.state.search);
+    }
     await this.searchSaas();
 
     const uid = await Authentication.fetchUserId();

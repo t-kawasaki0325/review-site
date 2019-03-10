@@ -15,7 +15,7 @@ import CardContent from '@material-ui/core/CardContent';
 
 import { Authentication } from '../modules';
 import { Header, TableSelect, TableText } from '../components';
-import { COMPANY, SAAS } from '../config';
+import { COMPANY, SAAS, PATH } from '../config';
 
 const styles = theme => ({
   layout: {
@@ -68,6 +68,15 @@ class Root extends Component {
   componentDidMount() {
     Authentication.transisionTopIfLogin();
   }
+
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  searchSaas = () => {
+    const { history } = this.props;
+    history.push(PATH.SAAS_LIST, { search: this.state });
+  };
 
   render() {
     const { history, classes } = this.props;
