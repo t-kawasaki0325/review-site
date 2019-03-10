@@ -58,11 +58,13 @@ const styles = theme => ({
 
 class Root extends Component {
   state = {
-    keyword: '',
-    category: '',
-    serviceType: '',
-    scale: '',
-    region: '',
+    search: {
+      keyword: '',
+      category: '',
+      serviceType: '',
+      scale: '',
+      region: '',
+    },
   };
 
   componentDidMount() {
@@ -74,12 +76,14 @@ class Root extends Component {
   }
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({
+      search: { ...this.state.search, [event.target.name]: event.target.value },
+    });
   };
 
   searchSaas = () => {
     const { history } = this.props;
-    history.push(PATH.SAAS_LIST, { search: this.state });
+    history.push(PATH.SAAS_LIST, { search: this.state.search });
   };
 
   render() {
@@ -88,7 +92,7 @@ class Root extends Component {
     const searchText = [
       {
         label: 'キーワード',
-        value: this.state.keyword,
+        value: this.state.search.keyword,
         key: 'keyword',
       },
     ];
@@ -96,25 +100,25 @@ class Root extends Component {
     const searchCell = [
       {
         label: '製品カテゴリ',
-        value: this.state.category,
+        value: this.state.search.category,
         key: 'category',
         list: SAAS.CATEGORY,
       },
       {
         label: '業種',
-        value: this.state.serviceType,
+        value: this.state.search.serviceType,
         key: 'serviceType',
         list: COMPANY.SERVICE_TYPE,
       },
       {
         label: '会社規模',
-        value: this.state.scale,
+        value: this.state.search.scale,
         key: 'scale',
         list: COMPANY.SCALE,
       },
       {
         label: '会社地域',
-        value: this.state.region,
+        value: this.state.search.region,
         key: 'region',
         list: COMPANY.REGION,
       },

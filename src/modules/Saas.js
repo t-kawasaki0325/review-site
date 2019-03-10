@@ -43,6 +43,10 @@ class Saas {
     return PopularItem.popularItemProductRef('recently_reviewed').get();
   };
 
+  static recentlyManyReviewed = () => {
+    return PopularItem.popularItemProductRef('recently_viewed').get();
+  };
+
   static updatePopularItemIfOld = async doc => {
     const snapshot = await PopularItem.popularItemDocRef(doc).get();
     const { updated_at } = snapshot.data();
