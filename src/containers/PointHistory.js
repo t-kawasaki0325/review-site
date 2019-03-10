@@ -7,8 +7,9 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import Grid from '@material-ui/core/Grid';
 
-import { Header } from '../components';
+import { Header, Sidebar } from '../components';
 import { Authentication } from '../modules';
 
 const styles = theme => ({
@@ -16,18 +17,17 @@ const styles = theme => ({
     width: 'auto',
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
-      width: 600,
+    [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
+      width: 1000,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
   },
+  appBarSpacer: theme.mixins.toolbar,
   paper: {
-    marginTop: theme.spacing.unit * 3,
     marginBottom: theme.spacing.unit * 3,
     padding: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
-      marginTop: theme.spacing.unit * 6,
+    [theme.breakpoints.up(1000 + theme.spacing.unit * 3 * 2)]: {
       marginBottom: theme.spacing.unit * 6,
       padding: theme.spacing.unit * 3,
     },
@@ -68,44 +68,52 @@ class PointHistory extends Component {
         <CssBaseline />
 
         <main className={classes.layout}>
-          <Paper className={classes.paper}>
-            <Typography
-              component="h1"
-              variant="h4"
-              align="center"
-              className={classes.title}
-            >
-              ポイント履歴
-            </Typography>
-            {user && (
-              <Table>
-                <TableBody>
-                  {user.point_history.map((element, index) => {
-                    const date = element.date.toDate();
-                    return (
-                      <TableRow key={index}>
-                        <TableCell component="th" scope="row">
-                          <Typography>
-                            {date.getFullYear()}/{date.getMonth() + 1}/
-                            {date.getDate()}
-                          </Typography>
-                        </TableCell>
-                        <TableCell component="th" scope="row">
-                          <Typography>{element.event}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{element.value}</Typography>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            )}
-            <Typography className={classes.currentPoint}>
-              保有ポイント: {user && user.point}
-            </Typography>
-          </Paper>
+          <div className={classes.appBarSpacer} />
+          <Grid container spacing={24}>
+            <Grid item xs={12} sm={4}>
+              <Sidebar user={user} link={true} />
+            </Grid>
+            <Grid item xs={12} sm={8}>
+              <Paper className={classes.paper}>
+                <Typography
+                  component="h1"
+                  variant="h4"
+                  align="center"
+                  className={classes.title}
+                >
+                  ポイント履歴
+                </Typography>
+                {user && (
+                  <Table>
+                    <TableBody>
+                      {user.point_history.map((element, index) => {
+                        const date = element.date.toDate();
+                        return (
+                          <TableRow key={index}>
+                            <TableCell component="th" scope="row">
+                              <Typography>
+                                {date.getFullYear()}/{date.getMonth() + 1}/
+                                {date.getDate()}
+                              </Typography>
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                              <Typography>{element.event}</Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography>{element.value}</Typography>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                )}
+                <Typography className={classes.currentPoint}>
+                  保有ポイント: {user && user.point}
+                </Typography>
+              </Paper>
+            </Grid>
+          </Grid>
         </main>
       </React.Fragment>
     );

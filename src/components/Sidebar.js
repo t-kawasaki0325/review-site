@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -8,6 +9,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 import { SaasTable } from '../components';
+import { PATH } from '../config';
 
 const styles = () => ({
   container: {
@@ -20,7 +22,18 @@ const styles = () => ({
 });
 
 const Sidebar = props => {
-  const { user, classes, snapshot } = props;
+  const { user, classes, snapshot, link } = props;
+
+  const menu = [
+    {
+      label: 'マイページトップ',
+      link: PATH.MYPAGE,
+    },
+    {
+      label: 'ポイント履歴',
+      link: PATH.POINT_HISTORY,
+    },
+  ];
   return (
     <React.Fragment>
       <Paper className={classes.container}>
@@ -50,6 +63,26 @@ const Sidebar = props => {
                         saas={saas}
                         size="small"
                       />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        )}
+        {link && (
+          <Table>
+            <TableBody>
+              {menu.map((element, index) => {
+                return (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Link
+                        to={element.link}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        {element.label}
+                      </Link>
                     </TableCell>
                   </TableRow>
                 );
