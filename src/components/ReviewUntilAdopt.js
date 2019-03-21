@@ -18,11 +18,6 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2,
     padding: theme.spacing.unit * 2,
   },
-  priceEndText: {
-    margin: 10,
-    fontSize: 16,
-    verticalAlign: 'bottom',
-  },
 });
 
 const ReviewUntilAdopt = props => {

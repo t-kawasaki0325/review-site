@@ -10,6 +10,7 @@ import {
   ReviewTotal,
   ReviewBasic,
   ReviewUntilAdopt,
+  ReviewAdopting,
 } from '../components';
 import { ValidationUtil, UrlUtil } from '../utils';
 import { PATH } from '../config';
@@ -98,7 +99,7 @@ class AddReview extends Component {
       onboadingSystemC: false,
       onboadingPeriod: '',
       onboadingSatisfaction: '',
-      // adoptiong
+      // adopting
       isOperationParticipant: '',
       support: '',
       supportSatisfaction: '',
@@ -115,11 +116,8 @@ class AddReview extends Component {
       considerationReason: '',
       otherSaas: '',
       decision: '',
-      // adoptiong
-      isOperationParticipant: '',
-      support: '',
+      // adopting
       supportSatisfaction: '',
-      utilization: '',
     },
     uid: '',
     saasId: '',
@@ -198,6 +196,11 @@ class AddReview extends Component {
             message={message}
             handleChange={event => this.handleChange(event)}
             handleCheckChange={event => this.handleCheckChange(event)}
+          />
+          <ReviewAdopting
+            info={info}
+            message={message}
+            handleChange={event => this.handleChange(event)}
           />
           <div className={classes.buttonWrapper}>
             <Button
