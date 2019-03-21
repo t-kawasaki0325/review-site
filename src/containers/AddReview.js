@@ -5,7 +5,12 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { Header, ReviewTotal, ReviewBasic } from '../components';
+import {
+  Header,
+  ReviewTotal,
+  ReviewBasic,
+  ReviewUntilAdopt,
+} from '../components';
 import { ValidationUtil, UrlUtil } from '../utils';
 import { PATH } from '../config';
 import { Saas, Authentication } from '../modules';
@@ -88,10 +93,12 @@ class AddReview extends Component {
       isDiscounted: '',
       discountRate: '',
       decision: '',
-      // adoptiong
-      onboadingSystem: '',
+      onboadingSystemA: false,
+      onboadingSystemB: false,
+      onboadingSystemC: false,
       onboadingPeriod: '',
       onboadingSatisfaction: '',
+      // adoptiong
       isOperationParticipant: '',
       support: '',
       supportSatisfaction: '',
@@ -115,10 +122,12 @@ class AddReview extends Component {
       isDiscounted: '',
       discountRate: '',
       decision: '',
-      // adoptiong
-      onboadingSystem: '',
+      onboadingSystemA: '',
+      onboadingSystemB: '',
+      onboadingSystemC: '',
       onboadingPeriod: '',
       onboadingSatisfaction: '',
+      // adoptiong
       isOperationParticipant: '',
       support: '',
       supportSatisfaction: '',
@@ -159,6 +168,15 @@ class AddReview extends Component {
     });
   };
 
+  handleCheckChange = event => {
+    const value = event.target.value;
+    const checked = event.target.checked;
+
+    this.setState({
+      info: { ...this.state.info, [value]: checked },
+    });
+  };
+
   confirmReview = () => {
     const { history } = this.props;
     history.push(PATH.CONFIRM_REVIEW, { state: this.state });
@@ -186,6 +204,12 @@ class AddReview extends Component {
             info={info}
             message={message}
             handleChange={event => this.handleChange(event)}
+          />
+          <ReviewUntilAdopt
+            info={info}
+            message={message}
+            handleChange={event => this.handleChange(event)}
+            handleCheckChange={event => this.handleCheckChange(event)}
           />
           <div className={classes.buttonWrapper}>
             <Button
