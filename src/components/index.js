@@ -13,3 +13,4 @@ export { default as Sidebar } from './Sidebar';
 export { default as SaasTable } from './SaasTable';
 export { default as UrgeViewReview } from './UrgeViewReview';
 export { default as ReviewTotal } from './ReviewTotal';
+export { default as ReviewBasic } from './ReviewBasic';

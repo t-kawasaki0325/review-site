@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { Header, ReviewTotal } from '../components';
+import { Header, ReviewTotal, ReviewBasic } from '../components';
 import { ValidationUtil, UrlUtil } from '../utils';
 import { PATH } from '../config';
 import { Saas, Authentication } from '../modules';
@@ -186,6 +186,11 @@ class AddReview extends Component {
             {name} 評価レポート
           </Typography>
           <ReviewTotal
+            info={info}
+            message={message}
+            handleChange={event => this.handleChange(event)}
+          />
+          <ReviewBasic
             info={info}
             message={message}
             handleChange={event => this.handleChange(event)}
