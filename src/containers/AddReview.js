@@ -96,10 +96,45 @@ class AddReview extends Component {
       supportSatisfaction: '',
       utilization: '',
     },
+    message: {
+      // review
+      title: '',
+      good: '',
+      bad: '',
+      // basic
+      isAdmin: '',
+      contractStatus: '',
+      contractDate: '',
+      price: '',
+      priceOption: '',
+      priceSatisfaction: '',
+      licenseNum: '',
+      isContinue: '',
+      reasonNotContinue: '',
+      satisfaction: '',
+      //untilAdopt
+      isParticipant: '',
+      firstContact: '',
+      reasonFirstContact: '',
+      considerationReason: '',
+      otherSaas: '',
+      considerationPeriod: '',
+      sales: '',
+      isDiscounted: '',
+      discountRate: '',
+      decision: '',
+      // adoptiong
+      onboadingSystem: '',
+      onboadingPeriod: '',
+      onboadingSatisfaction: '',
+      isOperationParticipant: '',
+      support: '',
+      supportSatisfaction: '',
+      utilization: '',
+    },
     uid: '',
     saasId: '',
     name: '',
-    message: {},
     loading: false,
   };
 
@@ -139,7 +174,7 @@ class AddReview extends Component {
 
   render() {
     const { classes, history } = this.props;
-    const { info, name, uid, loading } = this.state;
+    const { info, message, name, uid, loading } = this.state;
 
     return (
       <React.Fragment>
@@ -152,6 +187,7 @@ class AddReview extends Component {
           </Typography>
           <ReviewTotal
             info={info}
+            message={message}
             handleChange={event => this.handleChange(event)}
           />
           <div className={classes.buttonWrapper}>

@@ -12,7 +12,7 @@ const styles = () => ({
 });
 
 const TableText = props => {
-  const { list, classes, handleChange, message } = props;
+  const { list, classes, handleChange } = props;
   return (
     <React.Fragment>
       {list.map((data, index) => {
@@ -29,9 +29,9 @@ const TableText = props => {
                 value={data.value}
                 onChange={event => handleChange(event)}
               />
-              {message && (
+              {data.message && (
                 <Typography style={{ color: '#d50000', marginTop: 5 }}>
-                  {message}
+                  {data.message}
                 </Typography>
               )}
             </TableCell>

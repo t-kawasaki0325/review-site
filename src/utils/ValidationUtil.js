@@ -7,6 +7,8 @@ class ValidationUtil {
         return ValidationUtil.passwordValidation(value);
       case 'text':
         return ValidationUtil.textValidation(value);
+      case 'textarea':
+        return ValidationUtil.textareaValidation(value);
       default:
         return ValidationUtil.selectValidation(value);
     }
@@ -30,6 +32,12 @@ class ValidationUtil {
 
   static textValidation = text => {
     if (!text) return '不正な入力値です';
+
+    return '';
+  };
+
+  static textareaValidation = text => {
+    if (text.length < 50) return 'テキストは50文字以上で入力してください';
 
     return '';
   };

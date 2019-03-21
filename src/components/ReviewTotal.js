@@ -17,7 +17,7 @@ const styles = theme => ({
 });
 
 const ReviewTotal = props => {
-  const { classes, info, handleChange } = props;
+  const { classes, info, message, handleChange } = props;
 
   const reviewCell = [
     {
@@ -33,6 +33,7 @@ const ReviewTotal = props => {
       label: 'レビューのタイトル',
       value: info.title,
       key: 'title',
+      message: message.title,
     },
   ];
 
@@ -41,11 +42,13 @@ const ReviewTotal = props => {
       label: 'プロダクトの優れている点',
       value: info.good,
       key: 'good',
+      message: message.good,
     },
     {
       label: 'プロダクトの改善点',
       value: info.bad,
       key: 'bad',
+      message: message.bad,
     },
   ];
 

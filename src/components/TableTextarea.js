@@ -7,7 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 
 const TableTextarea = props => {
-  const { list, handleChange, message } = props;
+  const { list, handleChange } = props;
   return (
     <React.Fragment>
       {list.map((data, index) => {
@@ -26,9 +26,9 @@ const TableTextarea = props => {
                     rows={4}
                     rowsMax={10}
                   />
-                  {message && (
+                  {data.message && (
                     <Typography style={{ color: '#d50000', marginTop: 5 }}>
-                      {message}
+                      {data.message}
                     </Typography>
                   )}
                 </TableCell>
