@@ -6,6 +6,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
+import Radio from '@material-ui/core/Radio';
+import TextField from '@material-ui/core/TextField';
 
 import { REVIEW } from '../config';
 import { TableSelect, TableTextarea } from '../components';
@@ -16,10 +18,15 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2,
     padding: theme.spacing.unit * 2,
   },
+  priceEndText: {
+    margin: 10,
+    fontSize: 16,
+    verticalAlign: 'bottom',
+  },
 });
 
 const ReviewBasic = props => {
-  const { classes, info, handleChange } = props;
+  const { classes, info, message, handleChange } = props;
 
   const basicCell = [
     {
@@ -41,6 +48,15 @@ const ReviewBasic = props => {
       key: 'contractStatus',
       list: REVIEW.BASIC.CONTRACT_STATUS,
       display: info.isAdmin,
+    },
+  ];
+
+  const basicCellPeriod = [
+    {
+      label: '契約期間',
+      value: info.contractPeriod,
+      key: 'contractPeriod',
+      list: REVIEW.BASIC.CONTRACT_PERIOD,
     },
   ];
 
@@ -95,20 +111,50 @@ const ReviewBasic = props => {
                     <Typography>契約日</Typography>
                   </TableCell>
                 </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>契約期間</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>契約期間</Typography>
-                  </TableCell>
-                </TableRow>
+                <TableSelect
+                  list={basicCellPeriod}
+                  handleChange={event => handleChange(event)}
+                />
                 <TableRow>
                   <TableCell>
                     <Typography>価格</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>価格</Typography>
+                    <Typography>
+                      <Radio
+                        checked={info.priceOption === '0'}
+                        onChange={event => handleChange(event)}
+                        value="0"
+                        name="priceOption"
+                      />
+                      : 無償
+                      <Radio
+                        checked={info.priceOption === '1'}
+                        onChange={event => handleChange(event)}
+                        value="1"
+                        name="priceOption"
+                      />
+                      : 月額
+                      <Radio
+                        checked={info.priceOption === '2'}
+                        onChange={event => handleChange(event)}
+                        value="2"
+                        name="priceOption"
+                      />
+                      : 年額
+                    </Typography>
+                    <TextField
+                      name="price"
+                      label="価格"
+                      value={info.price}
+                      onChange={event => handleChange(event)}
+                    />
+                    <span className={classes.priceEndText}>円</span>
+                    {message.price && (
+                      <Typography style={{ color: '#d50000', marginTop: 5 }}>
+                        {message.price}
+                      </Typography>
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableSelect
@@ -119,7 +165,7 @@ const ReviewBasic = props => {
             )}
           </TableBody>
         </Table>
-        {!!info.isAdmin && (
+        {!!info.isAdmin && info.isContinue === 0 && (
           <TableTextarea
             list={basicTextarea}
             handleChange={event => handleChange(event)}

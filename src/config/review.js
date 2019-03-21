@@ -17,6 +17,7 @@ const REVIEW = {
   BASIC: {
     CONTRACT_STATUS: ['契約中', '解約済み', '検討中'],
     LISENCE_NUM: ['0', '1', '2~5', '6~10', '11~30', '31~100', '101以上'],
+    CONTRACT_PERIOD: ['~1ヶ月', '1ヶ月~半年', '半年~1年', '1年~3年', '3年~'],
   },
   UNTIL_ADOPTED: {
     OPPORTUNITY: ['web', '広告', 'イベント', '他社からの紹介', 'その他'],
