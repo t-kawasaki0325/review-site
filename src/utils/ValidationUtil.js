@@ -37,7 +37,7 @@ class ValidationUtil {
   };
 
   static textareaValidation = text => {
-    if (text.length < 50) return 'テキストは50文字以上で入力してください';
+    if (text.length < 30) return 'テキストは30文字以上で入力してください';
 
     return '';
   };

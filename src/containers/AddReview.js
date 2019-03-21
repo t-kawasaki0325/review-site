@@ -112,21 +112,9 @@ class AddReview extends Component {
       // basic
       price: '',
       //untilAdopt
-      isParticipant: '',
-      firstContact: '',
-      reasonFirstContact: '',
       considerationReason: '',
       otherSaas: '',
-      considerationPeriod: '',
-      sales: '',
-      isDiscounted: '',
-      discountRate: '',
       decision: '',
-      onboadingSystemA: '',
-      onboadingSystemB: '',
-      onboadingSystemC: '',
-      onboadingPeriod: '',
-      onboadingSatisfaction: '',
       // adoptiong
       isOperationParticipant: '',
       support: '',

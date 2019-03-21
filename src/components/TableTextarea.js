@@ -11,6 +11,8 @@ const TableTextarea = props => {
   return (
     <React.Fragment>
       {list.map((data, index) => {
+        const display = !(data.display === false || data.display === '');
+        if (!display) return <React.Fragment key={index} />;
         return (
           <Table key={index}>
             <TableBody>

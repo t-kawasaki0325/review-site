@@ -40,14 +40,14 @@ const ReviewBasic = props => {
       value: info.satisfaction,
       key: 'satisfaction',
       list: REVIEW.SATISFACTION_LEVEL,
-      display: info.isAdmin,
+      display: !!info.isAdmin,
     },
     {
       label: '契約ステータス',
       value: info.contractStatus,
       key: 'contractStatus',
       list: REVIEW.BASIC.CONTRACT_STATUS,
-      display: info.isAdmin,
+      display: !!info.isAdmin,
     },
   ];
 

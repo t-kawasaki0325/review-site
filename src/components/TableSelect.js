@@ -19,7 +19,7 @@ const TableSelect = props => {
   return (
     <React.Fragment>
       {list.map((data, index) => {
-        const display = !(data.display === 0 || data.display === '');
+        const display = !(data.display === false || data.display === '');
         if (!display) return <React.Fragment key={index} />;
         return (
           <TableRow key={index}>

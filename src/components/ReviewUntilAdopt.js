@@ -26,7 +26,7 @@ const styles = theme => ({
 });
 
 const ReviewUntilAdopt = props => {
-  const { classes, info, handleChange, handleCheckChange } = props;
+  const { classes, info, message, handleChange, handleCheckChange } = props;
 
   const untilAdoptCell = [
     {
@@ -36,10 +36,11 @@ const ReviewUntilAdopt = props => {
       list: REVIEW.YES_OR_NO,
     },
     {
-      label: '知ったきっかけ',
+      label: '製品を知ったきっかけ',
       value: info.firstContact,
       key: 'firstContact',
       list: REVIEW.UNTIL_ADOPT.FIRST_CONTACT,
+      display: !!info.isParticipant,
     },
   ];
 
@@ -48,11 +49,17 @@ const ReviewUntilAdopt = props => {
       label: 'きっかけを入力してください',
       value: info.reasonFirstContact,
       key: 'reasonFirstContact',
+      display: !!(
+        info.isParticipant &&
+        info.firstContact === REVIEW.UNTIL_ADOPT.FIRST_CONTACT.length - 1
+      ),
     },
     {
       label: '検討理由',
       value: info.considerationReason,
       key: 'considerationReason',
+      display: !!info.isParticipant,
+      message: message.considerationReason,
     },
   ];
 
@@ -61,6 +68,8 @@ const ReviewUntilAdopt = props => {
       label: '他に検討した製品',
       value: info.otherSaas,
       key: 'otherSaas',
+      display: !!info.isParticipant,
+      message: message.otherSaas,
     },
   ];
 
@@ -70,32 +79,38 @@ const ReviewUntilAdopt = props => {
       value: info.considerationPeriod,
       key: 'considerationPeriod',
       list: REVIEW.UNTIL_ADOPT.PERIOD,
+      display: !!info.isParticipant,
     },
     {
       label: '営業対応',
       value: info.sales,
       key: 'sales',
       list: REVIEW.SATISFACTION_LEVEL,
+      display: !!info.isParticipant,
     },
     {
       label: 'ディスカウントの有無',
       value: info.isDiscounted,
       key: 'isDiscounted',
       list: REVIEW.UNTIL_ADOPT.IS_DISCOUNTED,
+      display: !!info.isParticipant,
     },
     {
       label: 'ディスカウントの割合',
       value: info.discountRate,
       key: 'discountRate',
       list: REVIEW.UNTIL_ADOPT.DISCOUNT_RATE,
+      display: !!(info.isParticipant && info.isDiscounted),
     },
   ];
 
   const decisionTextarea = [
     {
       label: '導入の決め手',
-      value: info.discountRate,
-      key: 'discountRate',
+      value: info.decision,
+      key: 'decision',
+      display: !!info.isParticipant,
+      message: message.decision,
     },
   ];
 
@@ -105,12 +120,14 @@ const ReviewUntilAdopt = props => {
       value: info.onboadingPeriod,
       key: 'onboadingPeriod',
       list: REVIEW.UNTIL_ADOPT.ONBOADING_PERIOD,
+      display: !!info.isParticipant,
     },
     {
       label: '導入体制の満足度',
       value: info.onboadingSatisfaction,
       key: 'onboadingSatisfaction',
       list: REVIEW.SATISFACTION_LEVEL,
+      display: !!info.isParticipant,
     },
   ];
 
@@ -150,43 +167,45 @@ const ReviewUntilAdopt = props => {
         />
         <Table>
           <TableBody>
-            <TableRow>
-              <TableCell>
-                <Typography>導入体制</Typography>
-              </TableCell>
-              <TableCell>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={info.onboadingSystemA}
-                      onChange={event => handleCheckChange(event)}
-                      value="onboadingSystemA"
-                    />
-                  }
-                  label="社内で実施"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={info.onboadingSystemB}
-                      onChange={event => handleCheckChange(event)}
-                      value="onboadingSystemB"
-                    />
-                  }
-                  label="パートナーで実施"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={info.onboadingSystemC}
-                      onChange={event => handleCheckChange(event)}
-                      value="onboadingSystemC"
-                    />
-                  }
-                  label="メーカーで実施"
-                />
-              </TableCell>
-            </TableRow>
+            {!!info.isParticipant && (
+              <TableRow>
+                <TableCell>
+                  <Typography>導入体制</Typography>
+                </TableCell>
+                <TableCell>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={info.onboadingSystemA}
+                        onChange={event => handleCheckChange(event)}
+                        value="onboadingSystemA"
+                      />
+                    }
+                    label="社内で実施"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={info.onboadingSystemB}
+                        onChange={event => handleCheckChange(event)}
+                        value="onboadingSystemB"
+                      />
+                    }
+                    label="パートナーで実施"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={info.onboadingSystemC}
+                        onChange={event => handleCheckChange(event)}
+                        value="onboadingSystemC"
+                      />
+                    }
+                    label="メーカーで実施"
+                  />
+                </TableCell>
+              </TableRow>
+            )}
             <TableSelect
               list={untilAdoptCellThird}
               handleChange={event => handleChange(event)}
