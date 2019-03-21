@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { Header, TableSelect, TableText } from '../components';
+import { Header, ReviewTotal } from '../components';
 import { ValidationUtil, UrlUtil } from '../utils';
-import { SAAS, REVIEW, PATH } from '../config';
+import { PATH } from '../config';
 import { Saas, Authentication } from '../modules';
 
 const styles = theme => ({
@@ -144,23 +141,6 @@ class AddReview extends Component {
     const { classes, history } = this.props;
     const { info, name, uid, loading } = this.state;
 
-    const reviewCell = [
-      {
-        label: SAAS.RADAR.recommendation,
-        value: info.recommendation,
-        key: 'recommendation',
-        list: REVIEW.RECOMMENDATION_LEVEL,
-      },
-    ];
-
-    const reviewText = [
-      {
-        label: 'レビューのタイトル',
-        value: info.title,
-        key: 'title',
-      },
-    ];
-
     return (
       <React.Fragment>
         <Header history={history} uid={uid} />
@@ -170,25 +150,10 @@ class AddReview extends Component {
           <Typography component="h1" variant="h4" className={classes.title}>
             {name} 評価レポート
           </Typography>
-          <div className={classes.container}>
-            <Typography component="h1" variant="h6" gutterBottom>
-              全体評価レビュー
-            </Typography>
-            <Paper className={classes.paper}>
-              <Table>
-                <TableBody>
-                  <TableSelect
-                    list={reviewCell}
-                    handleChange={event => this.handleChange(event)}
-                  />
-                  <TableText
-                    list={reviewText}
-                    handleChange={event => this.handleChange(event)}
-                  />
-                </TableBody>
-              </Table>
-            </Paper>
-          </div>
+          <ReviewTotal
+            info={info}
+            handleChange={event => this.handleChange(event)}
+          />
           <div className={classes.buttonWrapper}>
             <Button
               disabled={loading}

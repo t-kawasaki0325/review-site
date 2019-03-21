@@ -8,6 +8,8 @@ export { default as Message } from './Message';
 export { default as TableSelect } from './TableSelect';
 export { default as TableText } from './TableText';
 export { default as TableConfirm } from './TableConfirm';
+export { default as TableTextarea } from './TableTextarea';
 export { default as Sidebar } from './Sidebar';
 export { default as SaasTable } from './SaasTable';
 export { default as UrgeViewReview } from './UrgeViewReview';
+export { default as ReviewTotal } from './ReviewTotal';
