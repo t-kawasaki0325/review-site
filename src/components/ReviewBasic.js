@@ -8,6 +8,8 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import Radio from '@material-ui/core/Radio';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import { REVIEW, SAAS } from '../config';
 import { TableSelect, TableTextarea } from '../components';
@@ -108,7 +110,34 @@ const ReviewBasic = props => {
                     <Typography>契約日</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>契約日</Typography>
+                    <Select
+                      name="contractYear"
+                      value={info.contractYear}
+                      onChange={event => handleChange(event)}
+                    >
+                      {REVIEW.YEAR.map((element, index) => {
+                        return (
+                          <MenuItem key={index} value={index}>
+                            {element}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                    &nbsp;年&nbsp;
+                    <Select
+                      name="contractMonth"
+                      value={info.contractMonth}
+                      onChange={event => handleChange(event)}
+                    >
+                      {REVIEW.MONTH.map((element, index) => {
+                        return (
+                          <MenuItem key={index} value={index}>
+                            {element}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                    &nbsp;月&nbsp;
                   </TableCell>
                 </TableRow>
                 <TableSelect

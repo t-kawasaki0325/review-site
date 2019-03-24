@@ -74,7 +74,8 @@ class AddReview extends Component {
       // basic
       isAdmin: '',
       contractStatus: '',
-      contractDate: '',
+      contractMonth: '',
+      contractYear: '',
       contractPeriod: '',
       price: '',
       priceOption: '',
