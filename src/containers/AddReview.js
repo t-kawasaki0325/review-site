@@ -164,6 +164,15 @@ class AddReview extends Component {
     });
   };
 
+  canSubmit = () => {
+    return (
+      this.canSubmitTotal() &&
+      this.canSubmitBasic() &&
+      this.canSubmitUntilAdopt() &&
+      this.canSubmitAdopting()
+    );
+  };
+
   canSubmitTotal = () => {
     const { recommendation, title, good, bad } = this.state.info;
     const { message } = this.state;
@@ -277,6 +286,7 @@ class AddReview extends Component {
 
   confirmReview = () => {
     const { history } = this.props;
+    if (!this.canSubmit()) return;
     history.push(PATH.CONFIRM_REVIEW, { state: this.state });
   };
 
@@ -316,7 +326,7 @@ class AddReview extends Component {
           />
           <div className={classes.buttonWrapper}>
             <Button
-              disabled={loading || !this.canSubmitAdopting()}
+              disabled={loading || !this.canSubmit()}
               variant="contained"
               color="primary"
               onClick={() => this.confirmReview()}
