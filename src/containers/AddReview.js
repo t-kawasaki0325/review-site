@@ -173,7 +173,7 @@ class AddReview extends Component {
       message.good,
       message.bad,
     ]);
-    return !!input && !error;
+    return input && !error;
   };
 
   canSubmitBasic = () => {
@@ -201,12 +201,56 @@ class AddReview extends Component {
       isContinue,
       satisfaction,
     ]);
-    if (!!isAdmin && !isContinue)
+    if (!isContinue)
       input = input && ValidationUtil.arrayEmpty([reasonNotContinue]);
 
     const error = ValidationUtil.isError([message.price]);
 
-    return !!input && !error;
+    return input && !error;
+  };
+
+  canSubmitUntilAdopt = () => {
+    const { message } = this.state;
+    const {
+      isParticipant,
+      firstContact,
+      considerationReason,
+      otherSaas,
+      considerationPeriod,
+      sales,
+      isDiscounted,
+      discountRate,
+      decision,
+      onboadingSystemA,
+      onboadingSystemB,
+      onboadingSystemC,
+      onboadingPeriod,
+      onboadingSatisfaction,
+    } = this.state.info;
+    if (isParticipant === 0) return true;
+    let input = ValidationUtil.arrayEmpty([
+      firstContact,
+      considerationReason,
+      otherSaas,
+      considerationPeriod,
+      sales,
+      isDiscounted,
+      decision,
+      onboadingPeriod,
+      onboadingSatisfaction,
+    ]);
+    input =
+      input && !!(onboadingSystemA || onboadingSystemB || onboadingSystemC);
+    if (isDiscounted)
+      input = input && ValidationUtil.arrayEmpty([discountRate]);
+
+    const error = ValidationUtil.isError([
+      message.considerationReason,
+      message.otherSaas,
+      message.decision,
+    ]);
+
+    return input && !error;
   };
 
   confirmReview = () => {
@@ -250,7 +294,7 @@ class AddReview extends Component {
           />
           <div className={classes.buttonWrapper}>
             <Button
-              disabled={loading || !this.canSubmitBasic()}
+              disabled={loading || !this.canSubmitUntilAdopt()}
               variant="contained"
               color="primary"
               onClick={() => this.confirmReview()}
