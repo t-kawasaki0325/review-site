@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 
-import { REVIEW } from '../config';
+import { REVIEW, SAAS } from '../config';
 import { TableSelect, TableTextarea } from '../components';
 
 const styles = theme => ({
@@ -21,19 +21,19 @@ const ReviewAdopting = props => {
 
   const adoptingCell = [
     {
-      label: '運用に携わっていますか',
+      label: REVIEW.ADOPTING_TITLE.IS_OPERATION_PARTICIPANT,
       value: info.isOperationParticipant,
       key: 'isOperationParticipant',
       list: REVIEW.YES_OR_NO,
     },
     {
-      label: '活用度合い',
+      label: SAAS.RADAR.utilization,
       value: info.utilization,
       key: 'utilization',
       list: REVIEW.SATISFACTION_LEVEL,
     },
     {
-      label: 'サポート対応',
+      label: SAAS.RADAR.support,
       value: info.support,
       key: 'support',
       list: REVIEW.SATISFACTION_LEVEL,
@@ -43,7 +43,7 @@ const ReviewAdopting = props => {
 
   const adoptingTextarea = [
     {
-      label: 'サポートについて感じることを教えてください',
+      label: REVIEW.ADOPTING_TITLE.SUPPORT_SATISFACTION,
       value: info.supportSatisfaction,
       key: 'supportSatisfaction',
       display: !!info.isOperationParticipant,

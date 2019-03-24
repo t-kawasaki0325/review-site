@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import { REVIEW } from '../config';
+import { REVIEW, SAAS } from '../config';
 import { TableSelect, TableText, TableTextarea } from '../components';
 
 const styles = theme => ({
@@ -25,13 +25,13 @@ const ReviewUntilAdopt = props => {
 
   const untilAdoptCell = [
     {
-      label: '導入に携わりましたか',
+      label: REVIEW.UNTIL_ADOPTED_TITLE.IS_PARTICIPANT,
       value: info.isParticipant,
       key: 'isParticipant',
       list: REVIEW.YES_OR_NO,
     },
     {
-      label: '製品を知ったきっかけ',
+      label: REVIEW.UNTIL_ADOPTED_TITLE.FIRST_CONTACT,
       value: info.firstContact,
       key: 'firstContact',
       list: REVIEW.UNTIL_ADOPT.FIRST_CONTACT,
@@ -41,7 +41,7 @@ const ReviewUntilAdopt = props => {
 
   const contactTextarea = [
     {
-      label: 'きっかけを入力してください',
+      label: REVIEW.UNTIL_ADOPTED_TITLE.REASON_FIRST_CONTACT,
       value: info.reasonFirstContact,
       key: 'reasonFirstContact',
       display: !!(
@@ -50,7 +50,7 @@ const ReviewUntilAdopt = props => {
       ),
     },
     {
-      label: '検討理由',
+      label: REVIEW.UNTIL_ADOPTED_TITLE.CONSIDERATION_REASON,
       value: info.considerationReason,
       key: 'considerationReason',
       display: !!info.isParticipant,
@@ -60,7 +60,7 @@ const ReviewUntilAdopt = props => {
 
   const otherSaasText = [
     {
-      label: '他に検討した製品',
+      label: REVIEW.UNTIL_ADOPTED_TITLE.OTHER_SAAS,
       value: info.otherSaas,
       key: 'otherSaas',
       display: !!info.isParticipant,
@@ -70,28 +70,28 @@ const ReviewUntilAdopt = props => {
 
   const untilAdoptCellSecond = [
     {
-      label: '検討期間',
+      label: REVIEW.UNTIL_ADOPTED_TITLE.CONSIDERATION_PERIOD,
       value: info.considerationPeriod,
       key: 'considerationPeriod',
       list: REVIEW.UNTIL_ADOPT.PERIOD,
       display: !!info.isParticipant,
     },
     {
-      label: '営業対応',
+      label: SAAS.RADAR.sales,
       value: info.sales,
       key: 'sales',
       list: REVIEW.SATISFACTION_LEVEL,
       display: !!info.isParticipant,
     },
     {
-      label: 'ディスカウントの有無',
+      label: REVIEW.UNTIL_ADOPTED_TITLE.IS_DISCOUNTED,
       value: info.isDiscounted,
       key: 'isDiscounted',
       list: REVIEW.UNTIL_ADOPT.IS_DISCOUNTED,
       display: !!info.isParticipant,
     },
     {
-      label: 'ディスカウントの割合',
+      label: REVIEW.UNTIL_ADOPTED_TITLE.DISCOUNT_RATE,
       value: info.discountRate,
       key: 'discountRate',
       list: REVIEW.UNTIL_ADOPT.DISCOUNT_RATE,
@@ -101,7 +101,7 @@ const ReviewUntilAdopt = props => {
 
   const decisionTextarea = [
     {
-      label: '導入の決め手',
+      label: REVIEW.UNTIL_ADOPTED_TITLE.DECISION,
       value: info.decision,
       key: 'decision',
       display: !!info.isParticipant,
@@ -111,14 +111,14 @@ const ReviewUntilAdopt = props => {
 
   const untilAdoptCellThird = [
     {
-      label: '導入期間',
+      label: REVIEW.UNTIL_ADOPTED_TITLE.ONBOADING_PERIOD,
       value: info.onboadingPeriod,
       key: 'onboadingPeriod',
       list: REVIEW.UNTIL_ADOPT.ONBOADING_PERIOD,
       display: !!info.isParticipant,
     },
     {
-      label: '導入体制の満足度',
+      label: REVIEW.UNTIL_ADOPTED_TITLE.ONBOADING_SATISFACTION,
       value: info.onboadingSatisfaction,
       key: 'onboadingSatisfaction',
       list: REVIEW.SATISFACTION_LEVEL,

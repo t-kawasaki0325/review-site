@@ -9,7 +9,7 @@ import TableBody from '@material-ui/core/TableBody';
 import Radio from '@material-ui/core/Radio';
 import TextField from '@material-ui/core/TextField';
 
-import { REVIEW } from '../config';
+import { REVIEW, SAAS } from '../config';
 import { TableSelect, TableTextarea } from '../components';
 
 const styles = theme => ({
@@ -30,20 +30,20 @@ const ReviewBasic = props => {
 
   const basicCell = [
     {
-      label: 'プロダクトの管理者ですか',
+      label: REVIEW.BASIC_TITLE.IS_ADMIN,
       value: info.isAdmin,
       key: 'isAdmin',
       list: REVIEW.YES_OR_NO,
     },
     {
-      label: '現状の満足度',
+      label: SAAS.RADAR.satisfaction,
       value: info.satisfaction,
       key: 'satisfaction',
       list: REVIEW.SATISFACTION_LEVEL,
       display: !!info.isAdmin,
     },
     {
-      label: '契約ステータス',
+      label: REVIEW.BASIC_TITLE.CONTRACT_STATUS,
       value: info.contractStatus,
       key: 'contractStatus',
       list: REVIEW.BASIC.CONTRACT_STATUS,
@@ -53,7 +53,7 @@ const ReviewBasic = props => {
 
   const basicCellPeriod = [
     {
-      label: '契約期間',
+      label: REVIEW.BASIC_TITLE.CONTRACT_PERIOD,
       value: info.contractPeriod,
       key: 'contractPeriod',
       list: REVIEW.BASIC.CONTRACT_PERIOD,
@@ -62,19 +62,19 @@ const ReviewBasic = props => {
 
   const basicCellSecond = [
     {
-      label: '価格の満足度',
+      label: REVIEW.BASIC_TITLE.PRICE_SATISFACTION,
       value: info.priceSatisfaction,
       key: 'priceSatisfaction',
       list: REVIEW.SATISFACTION_LEVEL,
     },
     {
-      label: 'ライセンス数',
+      label: REVIEW.BASIC_TITLE.LISENCE_NUM,
       value: info.licenseNum,
       key: 'licenseNum',
       list: REVIEW.BASIC.LISENCE_NUM,
     },
     {
-      label: '今後も継続予定ですか',
+      label: REVIEW.BASIC_TITLE.IS_CONTINUE,
       value: info.isContinue,
       key: 'isContinue',
       list: REVIEW.YES_OR_NO,
@@ -83,7 +83,7 @@ const ReviewBasic = props => {
 
   const basicTextarea = [
     {
-      label: 'その理由を教えてください',
+      label: REVIEW.BASIC_TITLE.REASON_NOT_CONTINUE,
       value: info.reasonNotContinue,
       key: 'reasonNotContinue',
     },

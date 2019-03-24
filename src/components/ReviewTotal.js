@@ -30,7 +30,7 @@ const ReviewTotal = props => {
 
   const reviewText = [
     {
-      label: 'レビューのタイトル',
+      label: REVIEW.TOTAL_TITLE.TITLE,
       value: info.title,
       key: 'title',
       message: message.title,
@@ -39,13 +39,13 @@ const ReviewTotal = props => {
 
   const reviewTextarea = [
     {
-      label: 'プロダクトの優れている点',
+      label: REVIEW.TOTAL_TITLE.GOOD,
       value: info.good,
       key: 'good',
       message: message.good,
     },
     {
-      label: 'プロダクトの改善点',
+      label: REVIEW.TOTAL_TITLE.BAD,
       value: info.bad,
       key: 'bad',
       message: message.bad,
