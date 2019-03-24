@@ -47,6 +47,22 @@ class ValidationUtil {
 
     return '';
   };
+
+  static arrayEmpty = elements => {
+    return (
+      elements.filter(element => {
+        return element === '';
+      }).length === 0
+    );
+  };
+
+  static isError = errors => {
+    return (
+      errors.filter(error => {
+        return error !== '';
+      }).length !== 0
+    );
+  };
 }
 
 export default ValidationUtil;

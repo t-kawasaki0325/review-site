@@ -164,6 +164,18 @@ class AddReview extends Component {
     });
   };
 
+  canSubmitTotal = () => {
+    const { recommendation, title, good, bad } = this.state.info;
+    const { message } = this.state;
+    const input = ValidationUtil.arrayEmpty([recommendation, title, good, bad]);
+    const error = ValidationUtil.isError([
+      message.title,
+      message.good,
+      message.bad,
+    ]);
+    return !!input && !error;
+  };
+
   confirmReview = () => {
     const { history } = this.props;
     history.push(PATH.CONFIRM_REVIEW, { state: this.state });
@@ -205,7 +217,7 @@ class AddReview extends Component {
           />
           <div className={classes.buttonWrapper}>
             <Button
-              disabled={loading}
+              disabled={loading || !this.canSubmitTotal()}
               variant="contained"
               color="primary"
               onClick={() => this.confirmReview()}
