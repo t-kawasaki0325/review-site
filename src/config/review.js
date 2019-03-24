@@ -39,6 +39,7 @@ const REVIEW = {
   MONTH: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
   BASIC: {
     CONTRACT_STATUS: ['契約中', '解約済み', '検討中'],
+    PRICE_OPTION: ['無償', '月額', '年額'],
     LISENCE_NUM: ['0', '1', '2~5', '6~10', '11~30', '31~100', '101以上'],
     CONTRACT_PERIOD: ['~1ヶ月', '1ヶ月~半年', '半年~1年', '1年~3年', '3年~'],
   },
@@ -47,6 +48,7 @@ const REVIEW = {
     PERIOD: ['1ヶ月以内', '1~3ヶ月', '3~6ヶ月', '6ヶ月~1年', '1年以上'],
     IS_DISCOUNTED: ['無し', '有り'],
     DISCOUNT_RATE: ['0%', '0~10%', '10~30%', '30~50%', '50%以上'],
+    ONBOADING_SYSTEM: ['社内で実施', 'パートナーで実施', 'メーカーで実施'],
     ONBOADING_PERIOD: ['~1ヶ月', '1~3ヶ月', '3~6ヶ月', '6ヶ月~1年', '1年以上'],
   },
   TOTAL_TITLE: {
@@ -57,7 +59,9 @@ const REVIEW = {
   BASIC_TITLE: {
     IS_ADMIN: 'プロダクトの管理者ですか',
     CONTRACT_STATUS: '契約ステータス',
+    CONTRACT_DATE: '契約日',
     CONTRACT_PERIOD: '契約期間',
+    PRICE: '価格',
     PRICE_SATISFACTION: '価格の満足度',
     LISENCE_NUM: 'ライセンス数',
     IS_CONTINUE: '今後も継続予定ですか',
@@ -73,6 +77,7 @@ const REVIEW = {
     IS_DISCOUNTED: 'ディスカウントの有無',
     DISCOUNT_RATE: 'ディスカウントの割合',
     DECISION: '導入の決め手',
+    ONBOADING_SYSTEM: '導入体制',
     ONBOADING_PERIOD: '導入期間',
     ONBOADING_SATISFACTION: '導入体制の満足度',
   },

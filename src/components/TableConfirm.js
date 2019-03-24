@@ -8,6 +8,8 @@ const TableConfirm = props => {
   return (
     <React.Fragment>
       {list.map((data, index) => {
+        const display = !(data.display === false || data.display === '');
+        if (!display) return <React.Fragment key={index} />;
         return (
           <TableRow key={index}>
             <TableCell component="th" scope="row">

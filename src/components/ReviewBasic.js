@@ -107,7 +107,7 @@ const ReviewBasic = props => {
               <React.Fragment>
                 <TableRow>
                   <TableCell>
-                    <Typography>契約日</Typography>
+                    <Typography>{REVIEW.BASIC_TITLE.CONTRACT_DATE}</Typography>
                   </TableCell>
                   <TableCell>
                     <Select
@@ -146,7 +146,7 @@ const ReviewBasic = props => {
                 />
                 <TableRow>
                   <TableCell>
-                    <Typography>価格</Typography>
+                    <Typography>{REVIEW.BASIC_TITLE.PRICE}</Typography>
                   </TableCell>
                   <TableCell>
                     <Typography>
@@ -156,21 +156,21 @@ const ReviewBasic = props => {
                         value="0"
                         name="priceOption"
                       />
-                      : 無償
+                      : {REVIEW.BASIC.PRICE_OPTION[0]}
                       <Radio
                         checked={info.priceOption === '1'}
                         onChange={event => handleChange(event)}
                         value="1"
                         name="priceOption"
                       />
-                      : 月額
+                      : {REVIEW.BASIC.PRICE_OPTION[1]}
                       <Radio
                         checked={info.priceOption === '2'}
                         onChange={event => handleChange(event)}
                         value="2"
                         name="priceOption"
                       />
-                      : 年額
+                      : {REVIEW.BASIC.PRICE_OPTION[2]}
                     </Typography>
                     <TextField
                       name="price"

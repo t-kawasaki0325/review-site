@@ -165,7 +165,9 @@ const ReviewUntilAdopt = props => {
             {!!info.isParticipant && (
               <TableRow>
                 <TableCell>
-                  <Typography>導入体制</Typography>
+                  <Typography>
+                    {REVIEW.UNTIL_ADOPTED_TITLE.ONBOADING_SYSTEM}
+                  </Typography>
                 </TableCell>
                 <TableCell>
                   <FormControlLabel
@@ -176,7 +178,7 @@ const ReviewUntilAdopt = props => {
                         value="onboadingSystemA"
                       />
                     }
-                    label="社内で実施"
+                    label={REVIEW.UNTIL_ADOPT.ONBOADING_SYSTEM[0]}
                   />
                   <FormControlLabel
                     control={
@@ -186,7 +188,7 @@ const ReviewUntilAdopt = props => {
                         value="onboadingSystemB"
                       />
                     }
-                    label="パートナーで実施"
+                    label={REVIEW.UNTIL_ADOPT.ONBOADING_SYSTEM[1]}
                   />
                   <FormControlLabel
                     control={
@@ -196,7 +198,7 @@ const ReviewUntilAdopt = props => {
                         value="onboadingSystemC"
                       />
                     }
-                    label="メーカーで実施"
+                    label={REVIEW.UNTIL_ADOPT.ONBOADING_SYSTEM[2]}
                   />
                 </TableCell>
               </TableRow>

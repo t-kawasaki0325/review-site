@@ -78,78 +78,173 @@ class ConfirmReview extends Component {
 
     const reviewCell = [
       {
-        label: SAAS.RADAR.sales,
-        answer: REVIEW.SATISFACTION_LEVEL[info.sales],
-      },
-      {
-        label: SAAS.RADAR.support,
-        answer: REVIEW.SATISFACTION_LEVEL[info.support],
-      },
-      {
-        label: SAAS.RADAR.utilization,
-        answer: REVIEW.SATISFACTION_LEVEL[info.utilization],
-      },
-      {
         label: SAAS.RADAR.recommendation,
         answer: REVIEW.RECOMMENDATION_LEVEL[info.recommendation],
       },
       {
-        label: SAAS.RADAR.satisfaction,
-        answer: REVIEW.SATISFACTION_LEVEL[info.satisfaction],
+        label: REVIEW.TOTAL_TITLE.TITLE,
+        answer: info.title,
+      },
+      {
+        label: REVIEW.TOTAL_TITLE.GOOD,
+        answer: info.good,
+      },
+      {
+        label: REVIEW.TOTAL_TITLE.BAD,
+        answer: info.bad,
       },
     ];
 
-    const untilAdopt = [
+    const basicCell = [
       {
-        label: REVIEW.UNTIL_ADOPTED_TITLE.OPPORTUNITY,
-        answer: REVIEW.UNTIL_ADOPTED.OPPORTUNITY[info.opportunity],
+        label: REVIEW.BASIC_TITLE.IS_ADMIN,
+        answer: REVIEW.YES_OR_NO[info.isAdmin],
+      },
+      {
+        label: SAAS.RADAR.satisfaction,
+        answer: REVIEW.SATISFACTION_LEVEL[info.satisfaction],
+        display: !!info.satisfaction,
+      },
+      {
+        label: REVIEW.BASIC_TITLE.CONTRACT_STATUS,
+        answer: REVIEW.BASIC.CONTRACT_STATUS[info.contractStatus],
+        display: info.contractStatus,
+      },
+      {
+        label: REVIEW.BASIC_TITLE.CONTRACT_DATE,
+        answer: `${REVIEW.YEAR[info.contractYear]} 年 ${
+          REVIEW.MONTH[info.contractMonth]
+        } 月`,
+        display: !!(info.contractYear && info.contractMonth),
+      },
+      {
+        label: REVIEW.BASIC_TITLE.CONTRACT_PERIOD,
+        answer: REVIEW.BASIC.CONTRACT_PERIOD[info.contractPeriod],
+        display: !!info.contractPeriod,
+      },
+      {
+        label: REVIEW.BASIC_TITLE.PRICE,
+        answer: `${REVIEW.BASIC.PRICE_OPTION[info.priceOption]} ${
+          info.price
+        } 円`,
+        display: !!info.price,
+      },
+      {
+        label: REVIEW.BASIC_TITLE.PRICE_SATISFACTION,
+        answer: REVIEW.SATISFACTION_LEVEL[info.priceSatisfaction],
+        display: !!info.priceSatisfaction,
+      },
+      {
+        label: REVIEW.BASIC_TITLE.LISENCE_NUM,
+        answer: REVIEW.BASIC.LISENCE_NUM[info.licenseNum],
+        display: !!info.licenseNum,
+      },
+      {
+        label: REVIEW.BASIC_TITLE.IS_CONTINUE,
+        answer: REVIEW.YES_OR_NO[info.isContinue],
+        display: !!info.isContinue,
+      },
+      {
+        label: REVIEW.BASIC_TITLE.REASON_NOT_CONTINUE,
+        answer: info.reasonNotContinue,
+        display: !!info.reasonNotContinue,
+      },
+    ];
+
+    const untilAdoptCell = [
+      {
+        label: REVIEW.UNTIL_ADOPTED_TITLE.IS_PARTICIPANT,
+        answer: REVIEW.YES_OR_NO[info.isParticipant],
       },
       {
         label: REVIEW.UNTIL_ADOPTED_TITLE.FIRST_CONTACT,
-        answer: REVIEW.UNTIL_ADOPTED.FIRST_CONTACT[info.firstContact],
+        answer: REVIEW.UNTIL_ADOPT.FIRST_CONTACT[info.firstContact],
+        display: !!info.firstContact,
       },
       {
-        label: REVIEW.UNTIL_ADOPTED_TITLE.REASON,
-        answer: REVIEW.UNTIL_ADOPTED.REASON[info.considerationReason],
+        label: REVIEW.UNTIL_ADOPTED_TITLE.REASON_FIRST_CONTACT,
+        answer: info.reasonFirstContact,
+        display: !!info.reasonFirstContact,
       },
       {
-        label: REVIEW.UNTIL_ADOPTED_TITLE.PERIOD,
-        answer: REVIEW.UNTIL_ADOPTED.PERIOD[info.considerationPeriod],
+        label: REVIEW.UNTIL_ADOPTED_TITLE.CONSIDERATION_REASON,
+        answer: info.considerationReason,
+        display: !!info.considerationReason,
       },
       {
         label: REVIEW.UNTIL_ADOPTED_TITLE.OTHER_SAAS,
         answer: info.otherSaas,
+        display: !!info.otherSaas,
+      },
+      {
+        label: REVIEW.UNTIL_ADOPTED_TITLE.CONSIDERATION_PERIOD,
+        answer: REVIEW.UNTIL_ADOPT.PERIOD[info.considerrationPeriod],
+        display: !!info.considerrationPeriod,
+      },
+      {
+        label: SAAS.RADAR.sales,
+        answer: REVIEW.SATISFACTION_LEVEL[info.sales],
+        display: !!info.sales,
+      },
+      {
+        label: REVIEW.UNTIL_ADOPTED_TITLE.IS_DISCOUNTED,
+        answer: REVIEW.UNTIL_ADOPT.IS_DISCOUNTED[info.isDiscounted],
+        display: !!info.isDiscounted,
+      },
+      {
+        label: REVIEW.UNTIL_ADOPTED_TITLE.DISCOUNT_RATE,
+        answer: REVIEW.UNTIL_ADOPT.DISCOUNT_RATE[info.discountRate],
+        display: !!info.discountRate,
+      },
+      {
+        label: REVIEW.UNTIL_ADOPTED_TITLE.DECISION,
+        answer: info.decision,
+        display: !!info.decision,
+      },
+      {
+        label: REVIEW.UNTIL_ADOPTED_TITLE.ONBOADING_SYSTEM,
+        answer: `${
+          info.onboadingSystemA ? REVIEW.UNTIL_ADOPT.ONBOADING_SYSTEM[0] : ''
+        } ${
+          info.onboadingSystemB ? REVIEW.UNTIL_ADOPT.ONBOADING_SYSTEM[1] : ''
+        } ${
+          info.onboadingSystemC ? REVIEW.UNTIL_ADOPT.ONBOADING_SYSTEM[2] : ''
+        }`,
+        display:
+          info.onboadingSystemA ||
+          info.onboadingSystemB ||
+          info.onboadingSystemC,
+      },
+      {
+        label: REVIEW.UNTIL_ADOPTED_TITLE.ONBOADING_PERIOD,
+        answer: REVIEW.UNTIL_ADOPT.ONBOADING_PERIOD[info.onboadingPeriod],
+        display: !!info.onboadingPeriod,
+      },
+      {
+        label: REVIEW.UNTIL_ADOPTED_TITLE.ONBOADING_SATISFACTION,
+        answer: REVIEW.SATISFACTION_LEVEL[info.onboadingSatisfaction],
+        display: !!info.onboadingSatisfaction,
       },
     ];
 
-    const adopting = [
+    const adoptingCell = [
       {
-        label: REVIEW.BEING_ADOPTED_TITLE.IS_DISCOUNTED,
-        answer: REVIEW.BEING_ADOPTED.IS_DISCOUNTED[info.isDiscounted],
+        label: REVIEW.ADOPTING_TITLE.IS_OPERATION_PARTICIPANT,
+        answer: REVIEW.YES_OR_NO[info.isOperationParticipant],
       },
       {
-        label: REVIEW.BEING_ADOPTED_TITLE.DISCOUNT_RATE,
-        answer: REVIEW.BEING_ADOPTED.DISCOUNT_RATE[info.discountRate],
+        label: SAAS.RADAR.support,
+        answer: REVIEW.SATISFACTION_LEVEL[info.support],
+        display: !!info.support,
       },
       {
-        label: REVIEW.BEING_ADOPTED_TITLE.ONBOADING_PERIOD,
-        answer: REVIEW.BEING_ADOPTED.ONBOADING_PERIOD[info.onboadingPeriod],
+        label: REVIEW.ADOPTING_TITLE.SUPPORT_SATISFACTION,
+        answer: info.supportSatisfaction,
+        display: !!info.supportSatisfaction,
       },
       {
-        label: REVIEW.BEING_ADOPTED_TITLE.PRICE,
-        answer: REVIEW.BEING_ADOPTED.PRICE[info.price],
-      },
-      {
-        label: REVIEW.BEING_ADOPTED_TITLE.PERIOD,
-        answer: REVIEW.BEING_ADOPTED.PERIOD[info.period],
-      },
-      {
-        label: REVIEW.BEING_ADOPTED_TITLE.FROM_NOW,
-        answer: REVIEW.BEING_ADOPTED.FROM_NOW[info.fromNow],
-      },
-      {
-        label: REVIEW.BEING_ADOPTED_TITLE.ONBOADING_SYSTEM,
-        answer: info.onboadingSystem,
+        label: SAAS.RADAR.utilization,
+        answer: REVIEW.SATISFACTION_LEVEL[info.utilization],
       },
     ];
 
@@ -164,7 +259,7 @@ class ConfirmReview extends Component {
           </Typography>
           <div className={classes.container}>
             <Typography component="h1" variant="h6" gutterBottom>
-              全体的な満足度
+              全体評価レビュー
             </Typography>
             <Paper className={classes.paper}>
               <Table>
@@ -176,36 +271,38 @@ class ConfirmReview extends Component {
           </div>
           <div className={classes.container}>
             <Typography component="h1" variant="h6" gutterBottom>
-              対象のSaaSを導入するまで
+              現在の契約状況について
             </Typography>
             <Paper className={classes.paper}>
               <Table>
                 <TableBody>
-                  <TableConfirm list={untilAdopt} />
+                  <TableConfirm list={basicCell} />
                 </TableBody>
               </Table>
             </Paper>
           </div>
           <div className={classes.container}>
             <Typography component="h1" variant="h6" gutterBottom>
-              サービス導入にあたって
+              導入にあたって
             </Typography>
             <Paper className={classes.paper}>
               <Table>
                 <TableBody>
-                  <TableConfirm list={adopting} />
+                  <TableConfirm list={untilAdoptCell} />
                 </TableBody>
               </Table>
             </Paper>
           </div>
           <div className={classes.container}>
             <Typography component="h1" variant="h6" gutterBottom>
-              自由記入欄
+              導入後の状況
             </Typography>
             <Paper className={classes.paper}>
-              <Typography component="h1" variant="h6" gutterBottom>
-                {info.content}
-              </Typography>
+              <Table>
+                <TableBody>
+                  <TableConfirm list={adoptingCell} />
+                </TableBody>
+              </Table>
             </Paper>
           </div>
           <div className={classes.buttonWrapper}>
