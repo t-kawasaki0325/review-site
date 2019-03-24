@@ -176,6 +176,39 @@ class AddReview extends Component {
     return !!input && !error;
   };
 
+  canSubmitBasic = () => {
+    const { message } = this.state;
+    const {
+      isAdmin,
+      contractStatus,
+      price,
+      priceOption,
+      priceSatisfaction,
+      licenseNum,
+      isContinue,
+      reasonNotContinue,
+      satisfaction,
+    } = this.state.info;
+    if (isAdmin === 0) return true;
+
+    let input = ValidationUtil.arrayEmpty([
+      isAdmin,
+      contractStatus,
+      price,
+      priceOption,
+      priceSatisfaction,
+      licenseNum,
+      isContinue,
+      satisfaction,
+    ]);
+    if (!!isAdmin && !isContinue)
+      input = input && ValidationUtil.arrayEmpty([reasonNotContinue]);
+
+    const error = ValidationUtil.isError([message.price]);
+
+    return !!input && !error;
+  };
+
   confirmReview = () => {
     const { history } = this.props;
     history.push(PATH.CONFIRM_REVIEW, { state: this.state });
@@ -217,7 +250,7 @@ class AddReview extends Component {
           />
           <div className={classes.buttonWrapper}>
             <Button
-              disabled={loading || !this.canSubmitTotal()}
+              disabled={loading || !this.canSubmitBasic()}
               variant="contained"
               color="primary"
               onClick={() => this.confirmReview()}
