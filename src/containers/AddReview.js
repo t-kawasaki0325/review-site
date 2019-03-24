@@ -253,6 +253,28 @@ class AddReview extends Component {
     return input && !error;
   };
 
+  canSubmitAdopting = () => {
+    const { message } = this.state;
+    const {
+      isOperationParticipant,
+      support,
+      supportSatisfaction,
+      utilization,
+    } = this.state.info;
+
+    let input = ValidationUtil.arrayEmpty([
+      isOperationParticipant,
+      utilization,
+    ]);
+    if (isOperationParticipant === 1)
+      input =
+        input && ValidationUtil.arrayEmpty([support, supportSatisfaction]);
+
+    const error = ValidationUtil.isError([message.supportSatisfaction]);
+
+    return input && !error;
+  };
+
   confirmReview = () => {
     const { history } = this.props;
     history.push(PATH.CONFIRM_REVIEW, { state: this.state });
@@ -294,7 +316,7 @@ class AddReview extends Component {
           />
           <div className={classes.buttonWrapper}>
             <Button
-              disabled={loading || !this.canSubmitUntilAdopt()}
+              disabled={loading || !this.canSubmitAdopting()}
               variant="contained"
               color="primary"
               onClick={() => this.confirmReview()}
