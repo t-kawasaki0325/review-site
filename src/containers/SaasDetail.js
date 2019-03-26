@@ -107,8 +107,8 @@ class SaasDetail extends Component {
     // 過去にレビューが存在するか確認する
     return (
       user.reviewed.filter(element => {
-        return element.product_ref === `/product/${saasId}`;
-      }).length === 1
+        return element.product_ref.id === saasId;
+      }).length < 1
     );
   };
 
