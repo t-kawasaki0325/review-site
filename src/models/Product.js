@@ -37,6 +37,7 @@ class Product {
       review: [],
       recently_reviewed: 0,
       recently_viewed: 0,
+      num_of_reviews: 0,
     });
 
     batch.commit();
