@@ -52,8 +52,10 @@ class Review {
       user.point_history,
       POINT.ADD_REVIEW
     );
+    user.reviewed.push({ review_ref: reviewRef, product_ref: productRef });
     batch.set(userRef, {
       ...user,
+      reviewed: user.reviewed,
       point: user.point + POINT.ADD_REVIEW.value,
       point_history: history,
     });
@@ -63,6 +65,8 @@ class Review {
     batch.set(reviewRef, Object.assign(object, { point: currentPoint }));
 
     batch.commit();
+
+    return '登録が完了しました';
   };
 }
 

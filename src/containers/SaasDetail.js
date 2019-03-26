@@ -54,6 +54,7 @@ const styles = theme => ({
 class SaasDetail extends Component {
   state = {
     uid: '',
+    user: '',
     saasId: '',
     saas: '',
     review: [],
@@ -64,7 +65,10 @@ class SaasDetail extends Component {
   async componentDidMount() {
     const { location, history } = this.props;
     const uid = await Authentication.fetchUserId();
-    this.setState({ uid: uid });
+    if (!uid) return;
+
+    const user = await Authentication.fetchUserDataById(uid);
+    this.setState({ uid: uid, user: user.data() });
 
     // SaaSの取得
     const saasId = UrlUtil.baseUrl(history.location.pathname);
@@ -76,7 +80,7 @@ class SaasDetail extends Component {
       this.setState({ review: [] });
       return;
     }
-    const canView = await this.canViewAll(uid, saasId);
+    const canView = this.canViewAll(saasId);
     if (canView) {
       this.updateReview(snapshot);
     } else {
@@ -91,10 +95,21 @@ class SaasDetail extends Component {
     Saas.viewCountUp(saasId);
   }
 
-  canViewAll = async (uid, saasId) => {
-    if (!uid) return false;
-    const user = await Authentication.fetchUserDataById(uid);
-    return user.data().can_view.includes(saasId);
+  canViewAll = saasId => {
+    const { user } = this.state;
+    if (!user) return;
+    return user.can_view.includes(saasId);
+  };
+
+  canReview = () => {
+    const { user, saasId } = this.state;
+    if (!user) return true;
+    // 過去にレビューが存在するか確認する
+    return (
+      user.reviewed.filter(element => {
+        return element.product_ref === `/product/${saasId}`;
+      }).length === 1
+    );
   };
 
   handleForView = async () => {
@@ -230,7 +245,7 @@ class SaasDetail extends Component {
                     </Typography>
                   </Grid>
                 )}
-                {!canView && (
+                {this.canReview() && (
                   <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
                     <Button
                       className={classes.button}
