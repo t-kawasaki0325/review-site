@@ -14,7 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import { Header, UrgeViewReview } from '../components';
+import { Header, UrgeViewReview, Message } from '../components';
 import { Saas, Authentication, Point } from '../modules';
 import { UrlUtil } from '../utils';
 import { SAAS, PATH } from '../config';
@@ -54,16 +54,21 @@ const styles = theme => ({
 class SaasDetail extends Component {
   state = {
     uid: '',
+    user: '',
     saasId: '',
     saas: '',
     review: [],
     canView: '',
+    message: '',
   };
 
   async componentDidMount() {
-    const { history } = this.props;
+    const { location, history } = this.props;
     const uid = await Authentication.fetchUserId();
-    this.setState({ uid: uid });
+    if (!uid) return;
+
+    const user = await Authentication.fetchUserDataById(uid);
+    this.setState({ uid: uid, user: user.data() });
 
     // SaaSの取得
     const saasId = UrlUtil.baseUrl(history.location.pathname);
@@ -75,22 +80,36 @@ class SaasDetail extends Component {
       this.setState({ review: [] });
       return;
     }
-    const canView = await this.canViewAll(uid, saasId);
+    const canView = this.canViewAll(saasId);
     if (canView) {
       this.updateReview(snapshot);
     } else {
       const review = await snapshot.data().review[0].get();
       this.setState({ review: [review.data()], canView: false });
     }
+    if (location.state) {
+      this.setState({ message: location.state.message });
+    }
 
     // 閲覧数をcount up
     Saas.viewCountUp(saasId);
   }
 
-  canViewAll = async (uid, saasId) => {
-    if (!uid) return false;
-    const user = await Authentication.fetchUserDataById(uid);
-    return user.data().can_view.includes(saasId);
+  canViewAll = saasId => {
+    const { user } = this.state;
+    if (!user) return;
+    return user.can_view.includes(saasId);
+  };
+
+  canReview = () => {
+    const { user, saasId } = this.state;
+    if (!user) return true;
+    // 過去にレビューが存在するか確認する
+    return (
+      user.reviewed.filter(element => {
+        return element.product_ref === `/product/${saasId}`;
+      }).length === 1
+    );
   };
 
   handleForView = async () => {
@@ -117,7 +136,7 @@ class SaasDetail extends Component {
 
   render() {
     const { history, classes } = this.props;
-    const { uid, saas, review, canView, saasId } = this.state;
+    const { uid, saas, review, canView, saasId, message } = this.state;
 
     const data = [
       {
@@ -154,6 +173,11 @@ class SaasDetail extends Component {
         <main className={classes.layout}>
           <div className={classes.appBarSpacer} />
           <Grid container spacing={24}>
+            {message && (
+              <Grid item xs={12} sm={12}>
+                <Message type="info" error={message} />
+              </Grid>
+            )}
             <Grid item xs={12} sm={12}>
               <Typography component="h1" variant="h4" className={classes.title}>
                 {saas && saas.name}
@@ -168,7 +192,9 @@ class SaasDetail extends Component {
                   starDimension="30px"
                   starSpacing="2px"
                 />
-                <span className={classes.pointText}>{saas.point.total}</span>
+                <span className={classes.pointText}>
+                  {saas && saas.point.total.toFixed(1)}
+                </span>
               </Grid>
             )}
           </Grid>
@@ -212,14 +238,14 @@ class SaasDetail extends Component {
                       starSpacing="2px"
                     />
                     <span className={classes.pointText}>
-                      {saas.point.total}
+                      {saas && saas.point.total.toFixed(1)}
                     </span>
                     <Typography>
                       回答者: {saas && saas.num_of_reviews}人
                     </Typography>
                   </Grid>
                 )}
-                {!canView && (
+                {this.canReview() && (
                   <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
                     <Button
                       className={classes.button}

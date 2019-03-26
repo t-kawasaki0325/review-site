@@ -15,10 +15,12 @@ const styles = () => ({
 });
 
 const TableSelect = props => {
-  const { list, classes, handleChange, message } = props;
+  const { list, classes, handleChange } = props;
   return (
     <React.Fragment>
       {list.map((data, index) => {
+        const display = !(data.display === false || data.display === '');
+        if (!display) return <React.Fragment key={index} />;
         return (
           <TableRow key={index}>
             <TableCell component="th" scope="row">
@@ -41,9 +43,9 @@ const TableSelect = props => {
                   })}
                 </Select>
               </FormControl>
-              {message && (
+              {data.message && (
                 <Typography style={{ color: '#d50000', marginTop: 5 }}>
-                  {message}
+                  {data.message}
                 </Typography>
               )}
             </TableCell>

@@ -33,6 +33,7 @@ class User {
       point: POINT.INITIAL.value,
       point_history: [Object.assign(POINT.INITIAL, { date: now })],
       can_view: [],
+      reviewed: [],
     });
 
     batch.commit();

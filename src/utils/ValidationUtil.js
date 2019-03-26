@@ -7,6 +7,8 @@ class ValidationUtil {
         return ValidationUtil.passwordValidation(value);
       case 'text':
         return ValidationUtil.textValidation(value);
+      case 'textarea':
+        return ValidationUtil.textareaValidation(value);
       default:
         return ValidationUtil.selectValidation(value);
     }
@@ -34,10 +36,32 @@ class ValidationUtil {
     return '';
   };
 
+  static textareaValidation = text => {
+    if (text.length < 30) return 'テキストは30文字以上で入力してください';
+
+    return '';
+  };
+
   static selectValidation = option => {
     if (option === 0) return '「選択なし」は選択できません';
 
     return '';
+  };
+
+  static arrayEmpty = elements => {
+    return (
+      elements.filter(element => {
+        return element === '';
+      }).length === 0
+    );
+  };
+
+  static isError = errors => {
+    return (
+      errors.filter(error => {
+        return error !== '';
+      }).length !== 0
+    );
   };
 }
 
