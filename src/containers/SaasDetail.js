@@ -14,7 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import { Header, UrgeViewReview } from '../components';
+import { Header, UrgeViewReview, Message } from '../components';
 import { Saas, Authentication, Point } from '../modules';
 import { UrlUtil } from '../utils';
 import { SAAS, PATH } from '../config';
@@ -58,10 +58,11 @@ class SaasDetail extends Component {
     saas: '',
     review: [],
     canView: '',
+    message: '',
   };
 
   async componentDidMount() {
-    const { history } = this.props;
+    const { location, history } = this.props;
     const uid = await Authentication.fetchUserId();
     this.setState({ uid: uid });
 
@@ -81,6 +82,9 @@ class SaasDetail extends Component {
     } else {
       const review = await snapshot.data().review[0].get();
       this.setState({ review: [review.data()], canView: false });
+    }
+    if (location.state) {
+      this.setState({ message: location.state.message });
     }
 
     // 閲覧数をcount up
@@ -117,7 +121,7 @@ class SaasDetail extends Component {
 
   render() {
     const { history, classes } = this.props;
-    const { uid, saas, review, canView, saasId } = this.state;
+    const { uid, saas, review, canView, saasId, message } = this.state;
 
     const data = [
       {
@@ -154,6 +158,11 @@ class SaasDetail extends Component {
         <main className={classes.layout}>
           <div className={classes.appBarSpacer} />
           <Grid container spacing={24}>
+            {message && (
+              <Grid item xs={12} sm={12}>
+                <Message type="info" error={message} />
+              </Grid>
+            )}
             <Grid item xs={12} sm={12}>
               <Typography component="h1" variant="h4" className={classes.title}>
                 {saas && saas.name}
@@ -168,7 +177,9 @@ class SaasDetail extends Component {
                   starDimension="30px"
                   starSpacing="2px"
                 />
-                <span className={classes.pointText}>{saas.point.total}</span>
+                <span className={classes.pointText}>
+                  {saas && saas.point.total.toFixed(1)}
+                </span>
               </Grid>
             )}
           </Grid>
@@ -212,7 +223,7 @@ class SaasDetail extends Component {
                       starSpacing="2px"
                     />
                     <span className={classes.pointText}>
-                      {saas.point.total}
+                      {saas && saas.point.total.toFixed(1)}
                     </span>
                     <Typography>
                       回答者: {saas && saas.num_of_reviews}人

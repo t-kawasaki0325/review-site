@@ -309,7 +309,7 @@ class ConfirmReview extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => Evaluation.addReview(uid, saasId, info)}
+              onClick={() => Evaluation.addReview(uid, saasId, info, history)}
               className={classes.button}
             >
               この内容で確定する

@@ -66,7 +66,7 @@ const SaasTable = props => {
           starDimension={size === 'small' ? '20' : '30'}
           starSpacing="2px"
         />
-        {saas.point.total}
+        {saas.point.total.toFixed(1)}
       </Grid>
     </Grid>
   );
