@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import { Authentication } from '../modules';
 import { MemberInfo, CompanyInfo } from '../components';
 import { UrlUtil, ValidationUtil } from '../utils';
+import { PATH } from '../config';
 
 const styles = theme => ({
   layout: {
@@ -75,7 +76,10 @@ class UserInfo extends Component {
 
   async componentDidMount() {
     const { history } = this.props;
-    await Authentication.transisionTopIfLogin(history);
+    const uid = await Authentication.fetchUserId();
+    if (!uid) history.push(PATH.LOGIN);
+    const user = await Authentication.fetchUserDataById(uid);
+    if (user.data()) history.push(PATH.TOP);
   }
 
   handleChange = event => {

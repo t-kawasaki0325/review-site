@@ -16,10 +16,12 @@ class Authentication {
 
     const isNewUser = result.additionalUserInfo.isNewUser;
     if (isNewUser) {
-      return history.push(`${PATH.REGISTRATION}/${user.uid}`);
+      history.push(`${PATH.REGISTRATION}/${user.uid}`);
+      return true;
     }
 
-    return history.push(PATH.TOP);
+    history.push(PATH.TOP);
+    return true;
   };
 
   static createNewUser = (uid, info, history) => {
