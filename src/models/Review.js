@@ -18,6 +18,11 @@ class Review {
     const user = userSnapshot.data();
 
     const point = ModelUtil.calculatePoint(saas, info);
+    const total = ModelUtil.averagePoint(
+      saas.point_total,
+      ModelUtil.getCurrentAverage(info),
+      saas.num_of_reviews
+    );
     saas.review.push(reviewRef);
 
     batch.set(productRef, {
@@ -45,6 +50,7 @@ class Review {
       ),
       recently_reviewed: saas.recently_reviewed + 1,
       point: point,
+      point_total: total,
       review: saas.review,
     });
 

@@ -30,6 +30,7 @@ class Product {
       utilization_review_num: 0,
       recommendation_review_num: 0,
       satisfaction_review_num: 0,
+      point_total: 0,
       point: Object.assign(ModelUtil.initializeKeys(SAAS.RADAR), { total: 0 }),
       company_region: region,
       company_scale: scale,

@@ -186,14 +186,14 @@ class SaasDetail extends Component {
             {saas && (
               <Grid item xs={12} sm={12}>
                 <StarRatings
-                  rating={saas.point.total}
+                  rating={saas.point_total}
                   starRatedColor="blue"
                   numberOfStars={5}
                   starDimension="30px"
                   starSpacing="2px"
                 />
                 <span className={classes.pointText}>
-                  {saas && saas.point.total.toFixed(1)}
+                  {saas && saas.point_total.toFixed(1)}
                 </span>
               </Grid>
             )}
@@ -231,14 +231,14 @@ class SaasDetail extends Component {
                 {saas && (
                   <Grid item xs={12} sm={12}>
                     <StarRatings
-                      rating={saas.point.total}
+                      rating={saas.point_total}
                       starRatedColor="blue"
                       numberOfStars={5}
                       starDimension="30px"
                       starSpacing="2px"
                     />
                     <span className={classes.pointText}>
-                      {saas && saas.point.total.toFixed(1)}
+                      {saas && saas.point_total.toFixed(1)}
                     </span>
                     <Typography>
                       回答者: {saas && saas.num_of_reviews}人
@@ -274,14 +274,14 @@ class SaasDetail extends Component {
                     <Grid item xs={12} sm={12}>
                       <Grid item xs={12} sm={12}>
                         <StarRatings
-                          rating={element.point.total}
+                          rating={element.point_total}
                           starRatedColor="blue"
                           numberOfStars={5}
                           starDimension="25px"
                           starSpacing="2px"
                         />
                         <span className={classes.pointText}>
-                          {element.point.total}
+                          {element.point_total}
                         </span>
                       </Grid>
 
