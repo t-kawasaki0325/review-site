@@ -49,6 +49,10 @@ const styles = theme => ({
   introduction: {
     backgroundColor: '#eaeaea',
   },
+  reviewSubtitle: {
+    marginTop: 10,
+    fontSize: '1.1em',
+  },
 });
 
 class SaasDetail extends Component {
@@ -266,34 +270,40 @@ class SaasDetail extends Component {
           </Paper>
           {!!review.length &&
             review.map((element, index) => {
-              const pointKeys = Object.keys(element.point);
-
               return (
                 <Paper key={index} className={classes.reviewContainer}>
                   <Grid container spacing={24}>
                     <Grid item xs={12} sm={12}>
+                      <Typography component="h1" variant="h5">
+                        {element.title}
+                      </Typography>
                       <Grid item xs={12} sm={12}>
                         <StarRatings
-                          rating={element.point_total}
+                          rating={element.point.total}
                           starRatedColor="blue"
                           numberOfStars={5}
                           starDimension="25px"
                           starSpacing="2px"
                         />
                         <span className={classes.pointText}>
-                          {element.point_total}
+                          {element.point.total}
                         </span>
                       </Grid>
 
-                      <Typography gutterBottom>
-                        {pointKeys.map(key => {
-                          if (!SAAS.RADAR[key]) return '';
-                          return `${SAAS.RADAR[key]}: ${element.point[key]} `;
-                        })}
+                      <Typography
+                        component="h1"
+                        className={classes.reviewSubtitle}
+                      >
+                        優れていると感じた点
                       </Typography>
-                      <Typography component="h1" variant="h6">
-                        {element.content}
+                      <Typography component="h1">{element.good}</Typography>
+                      <Typography
+                        component="h1"
+                        className={classes.reviewSubtitle}
+                      >
+                        改善してほしいと感じた点
                       </Typography>
+                      <Typography component="h1">{element.bad}</Typography>
                     </Grid>
                   </Grid>
                 </Paper>
