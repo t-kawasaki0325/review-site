@@ -69,6 +69,12 @@ class SaasDetail extends Component {
   async componentDidMount() {
     const { location, history } = this.props;
 
+    const uid = await Authentication.fetchUserId();
+    if (uid) {
+      const user = await Authentication.fetchUserDataById(uid);
+      this.setState({ uid: uid, user: user.data() });
+    }
+
     // SaaSの取得
     const saasId = UrlUtil.baseUrl(history.location.pathname);
     const snapshot = await Saas.sassInfoById(saasId);
@@ -89,12 +95,6 @@ class SaasDetail extends Component {
     if (location.state) {
       this.setState({ message: location.state.message });
     }
-
-    const uid = await Authentication.fetchUserId();
-    if (!uid) return;
-
-    const user = await Authentication.fetchUserDataById(uid);
-    this.setState({ uid: uid, user: user.data() });
 
     // 閲覧数をcount up
     Saas.viewCountUp(saasId);
@@ -120,7 +120,10 @@ class SaasDetail extends Component {
   handleForView = async () => {
     const { history } = this.props;
     const { uid, saasId } = this.state;
-    if (!uid) history.push(PATH.LOGIN);
+    if (!uid) {
+      history.push(PATH.LOGIN);
+      return;
+    }
 
     Point.useForViewReview(uid, saasId);
 

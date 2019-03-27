@@ -74,7 +74,7 @@ class Authentication {
 
   static logout = history => {
     firebase.auth().signOut();
-    history.push(PATH.LOGIN);
+    history.push(PATH.ROOT);
   };
 
   static fetchUserId = () => {
