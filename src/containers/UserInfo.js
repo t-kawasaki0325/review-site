@@ -123,6 +123,7 @@ class UserInfo extends Component {
 
   render() {
     const { classes, history } = this.props;
+    const { info, message } = this.state;
 
     return (
       <React.Fragment>
@@ -140,19 +141,19 @@ class UserInfo extends Component {
             <React.Fragment>
               <MemberInfo
                 history={history}
-                name={this.state.info.name}
+                name={info.name}
                 handleChange={event => this.handleChange(event)}
-                message={this.state.message}
+                message={message}
               />
               <CompanyInfo
-                department={this.state.info.department}
-                position={this.state.info.position}
-                company={this.state.info.company}
-                region={this.state.info.region}
-                scale={this.state.info.scale}
-                serviceType={this.state.info.serviceType}
+                department={info.department}
+                position={info.position}
+                company={info.company}
+                region={info.region}
+                scale={info.scale}
+                serviceType={info.serviceType}
                 handleChange={event => this.handleChange(event)}
-                message={this.state.message}
+                message={message}
               />
               <div className={classes.buttons}>
                 <Button
@@ -161,7 +162,7 @@ class UserInfo extends Component {
                   color="primary"
                   onClick={() => {
                     const uid = UrlUtil.baseUrl(history.location.pathname);
-                    Authentication.createNewUser(uid, this.state.info, history);
+                    Authentication.createNewUser(uid, info, history);
                   }}
                   className={classes.button}
                 >

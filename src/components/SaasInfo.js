@@ -69,14 +69,24 @@ class SaasInfo extends Component {
 
   render() {
     const { classes } = this.props;
+    const {
+      company,
+      scale,
+      serviceType,
+      region,
+      name,
+      category,
+      loading,
+      message,
+    } = this.state;
 
     const info = {
-      company: this.state.company,
-      scale: this.state.scale,
-      serviceType: this.state.serviceType,
-      region: this.state.region,
-      name: this.state.name,
-      category: this.state.category,
+      company: company,
+      scale: scale,
+      serviceType: serviceType,
+      region: region,
+      name: name,
+      category: category,
     };
 
     return (
@@ -92,7 +102,7 @@ class SaasInfo extends Component {
               required
               label="会社名"
               fullWidth
-              value={this.state.company}
+              value={company}
               onChange={event => this.setState({ company: event.target.value })}
             />
           </Grid>
@@ -100,7 +110,7 @@ class SaasInfo extends Component {
             <FormControl required className={classes.formControl}>
               <InputLabel>会社規模</InputLabel>
               <Select
-                value={this.state.scale}
+                value={scale}
                 onChange={event => this.setState({ scale: event.target.value })}
               >
                 {COMPANY.SCALE.map((element, index) => {
@@ -117,7 +127,7 @@ class SaasInfo extends Component {
             <FormControl required className={classes.formControl}>
               <InputLabel>業種</InputLabel>
               <Select
-                value={this.state.serviceType}
+                value={serviceType}
                 onChange={event =>
                   this.setState({ serviceType: event.target.value })
                 }
@@ -136,7 +146,7 @@ class SaasInfo extends Component {
             <FormControl required className={classes.formControl}>
               <InputLabel>会社所在地</InputLabel>
               <Select
-                value={this.state.region}
+                value={region}
                 onChange={event =>
                   this.setState({ region: event.target.value })
                 }
@@ -161,7 +171,7 @@ class SaasInfo extends Component {
               required
               label="SaaS名"
               fullWidth
-              value={this.state.name}
+              value={name}
               onChange={event => this.setState({ name: event.target.value })}
             />
           </Grid>
@@ -169,7 +179,7 @@ class SaasInfo extends Component {
             <FormControl required className={classes.formControl}>
               <InputLabel>製品カテゴリ</InputLabel>
               <Select
-                value={this.state.category}
+                value={category}
                 onChange={event =>
                   this.setState({ category: event.target.value })
                 }
@@ -187,7 +197,7 @@ class SaasInfo extends Component {
         </Grid>
         <div className={classes.buttons}>
           <Button
-            disabled={this.state.loading}
+            disabled={loading}
             variant="contained"
             color="primary"
             onClick={() => this.registerSaas(info)}
@@ -195,13 +205,11 @@ class SaasInfo extends Component {
           >
             送信
           </Button>
-          {this.state.loading && (
+          {loading && (
             <CircularProgress size={24} className={classes.buttonProgress} />
           )}
         </div>
-        {this.state.message && (
-          <Message type="info" error={this.state.message} />
-        )}
+        {message && <Message type="info" error={message} />}
       </React.Fragment>
     );
   }

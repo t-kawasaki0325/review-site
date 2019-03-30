@@ -158,7 +158,7 @@ class Mypage extends Component {
 
   render() {
     const { classes, history } = this.props;
-    const { user, info } = this.state;
+    const { user, info, message, error, loading } = this.state;
 
     return (
       <React.Fragment>
@@ -172,9 +172,7 @@ class Mypage extends Component {
             </Grid>
             <Grid item xs={12} sm={8}>
               <Paper className={classes.paper}>
-                {this.state.error && (
-                  <Message type="info" error={this.state.error} />
-                )}
+                {error && <Message type="info" error={error} />}
                 <Typography
                   component="h1"
                   variant="h4"
@@ -187,7 +185,7 @@ class Mypage extends Component {
                   history={history}
                   name={info.name}
                   handleChange={event => this.handleChange(event)}
-                  message={this.state.message}
+                  message={message}
                 />
                 <CompanyInfo
                   company={info.company}
@@ -197,7 +195,7 @@ class Mypage extends Component {
                   position={info.position}
                   department={info.department}
                   handleChange={event => this.handleChange(event)}
-                  message={this.state.message}
+                  message={message}
                 />
                 <div className={classes.buttons}>
                   <Button
@@ -209,7 +207,7 @@ class Mypage extends Component {
                   >
                     送信
                   </Button>
-                  {this.state.loading && (
+                  {loading && (
                     <CircularProgress
                       size={24}
                       className={classes.buttonProgress}
