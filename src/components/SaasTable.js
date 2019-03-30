@@ -60,13 +60,13 @@ const SaasTable = props => {
       </Grid>
       <Grid item xs={12} sm={12}>
         <StarRatings
-          rating={saas.point.total}
+          rating={saas.point_total}
           starRatedColor="blue"
           numberOfStars={5}
           starDimension={size === 'small' ? '20' : '30'}
           starSpacing="2px"
         />
-        {saas.point.total.toFixed(1)}
+        {saas.point_total.toFixed(1)}
       </Grid>
     </Grid>
   );

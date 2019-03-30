@@ -7,6 +7,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import Divider from '@material-ui/core/Divider';
 
 import { SaasTable } from '../components';
 import { PATH } from '../config';
@@ -51,24 +52,30 @@ const Sidebar = props => {
       </Paper>
       <Paper className={classes.container}>
         {snapshot && (
-          <Table>
-            <TableBody>
-              {snapshot.docs.map(doc => {
-                const saas = doc.data();
-                return (
-                  <TableRow key={doc.id}>
-                    <TableCell>
-                      <SaasTable
-                        saasId={saas.saasId}
-                        saas={saas}
-                        size="small"
-                      />
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+          <React.Fragment>
+            <Typography align="center" gutterBottom>
+              最近レビューされたSaaS
+            </Typography>
+            <Divider />
+            <Table>
+              <TableBody>
+                {snapshot.docs.map(doc => {
+                  const saas = doc.data();
+                  return (
+                    <TableRow key={doc.id}>
+                      <TableCell>
+                        <SaasTable
+                          saasId={saas.saasId}
+                          saas={saas}
+                          size="small"
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </React.Fragment>
         )}
         {link && (
           <Table>

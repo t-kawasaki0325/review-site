@@ -11,6 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Authentication } from '../modules';
 import { MemberInfo, CompanyInfo, Header, Message } from '../components';
 import { ValidationUtil } from '../utils';
+import { PATH } from '../config';
 import icon from '../assets/icons-google.svg';
 
 const styles = theme => ({
@@ -101,7 +102,11 @@ class Registration extends Component {
 
   async componentDidMount() {
     const { history } = this.props;
-    await Authentication.completeLoginWithGoogle(history);
+    const result = await Authentication.completeLoginWithGoogle(history);
+    if (result && result.isNewUser) {
+      history.push(`${PATH.REGISTRATION}/${result.user.uid}`);
+      return;
+    }
     await Authentication.transisionTopIfLogin(history);
     this.setState({ loading: false });
   }
@@ -110,58 +115,45 @@ class Registration extends Component {
     const key = event.target.name;
     const type = event.target.type;
     const value = event.target.value;
+    const { info, message } = this.state;
 
     this.setState({
-      info: { ...this.state.info, [key]: value },
+      info: { ...info, [key]: value },
     });
     this.setState({
       message: {
-        ...this.state.message,
+        ...message,
         [key]: ValidationUtil.formValidate(type, value),
       },
     });
   };
 
   canSubmit = () => {
-    const i = this.state.info;
-    const m = this.state.message;
+    const { info, message, loading } = this.state;
+    const allowInfo =
+      Object.keys(info).filter(key => {
+        return info[key] === '';
+      }).length === 0;
+    const allowMessage =
+      Object.keys(message).filter(key => {
+        return message[key] !== '';
+      }).length === 0;
 
-    const infoValid =
-      !i.email ||
-      !i.password ||
-      !i.name ||
-      !i.department ||
-      !i.position ||
-      !i.company ||
-      !i.region ||
-      !i.scale ||
-      !i.serviceType;
-    const messageValid =
-      !!m.email ||
-      !!m.password ||
-      !!m.name ||
-      !!m.department ||
-      !!m.position ||
-      !!m.company ||
-      !!m.region ||
-      !!m.scale ||
-      !!m.serviceType;
-    return infoValid || messageValid || this.state.loading;
+    return !allowInfo || !allowMessage || loading;
   };
 
   signupWithEmail = async () => {
     const { history } = this.props;
+    const { info } = this.state;
 
     this.setState({ loading: true });
-    const error = await Authentication.signupWithEmail(
-      this.state.info,
-      history
-    );
+    const error = await Authentication.signupWithEmail(info, history);
     this.setState({ error: error, loading: false });
   };
 
   render() {
     const { classes, history } = this.props;
+    const { info, message, loading, error } = this.state;
 
     return (
       <React.Fragment>
@@ -169,9 +161,7 @@ class Registration extends Component {
         <main className={classes.layout}>
           <CssBaseline />
           <Paper className={classes.paper}>
-            {this.state.error && (
-              <Message error={this.state.error} type="error" />
-            )}
+            {error && <Message error={error} type="error" />}
             <Typography
               component="h1"
               variant="h4"
@@ -184,22 +174,22 @@ class Registration extends Component {
               <Grid container spacing={24} />
               <MemberInfo
                 history={history}
-                name={this.state.info.name}
-                email={this.state.info.email}
-                password={this.state.info.password}
+                name={info.name}
+                email={info.email}
+                password={info.password}
                 handleChange={event => this.handleChange(event)}
-                message={this.state.message}
+                message={message}
               />
               <CompanyInfo
                 history={history}
-                department={this.state.info.department}
-                position={this.state.info.position}
-                company={this.state.info.company}
-                region={this.state.info.region}
-                scale={this.state.info.scale}
-                serviceType={this.state.info.serviceType}
+                department={info.department}
+                position={info.position}
+                company={info.company}
+                region={info.region}
+                scale={info.scale}
+                serviceType={info.serviceType}
                 handleChange={event => this.handleChange(event)}
-                message={this.state.message}
+                message={message}
               />
               <div className={classes.buttons}>
                 <Button
@@ -211,7 +201,7 @@ class Registration extends Component {
                 >
                   送信
                 </Button>
-                {this.state.loading && (
+                {loading && (
                   <CircularProgress
                     size={24}
                     className={classes.buttonProgress}

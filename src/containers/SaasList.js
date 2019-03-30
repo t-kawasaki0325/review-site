@@ -106,8 +106,7 @@ class SaasList extends Component {
 
   render() {
     const { classes, history } = this.props;
-    const snapshotList = this.state.snapshotList;
-    const sortList = this.state.sortList;
+    const { snapshotList, sortList } = this.state;
 
     const searchText = [
       {

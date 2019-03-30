@@ -91,12 +91,12 @@ class Root extends Component {
 
   render() {
     const { history, classes } = this.props;
-    const { snapshot } = this.state;
+    const { snapshot, search } = this.state;
 
     const searchText = [
       {
         label: 'キーワード',
-        value: this.state.search.keyword,
+        value: search.keyword,
         key: 'keyword',
       },
     ];
@@ -104,25 +104,25 @@ class Root extends Component {
     const searchCell = [
       {
         label: '製品カテゴリ',
-        value: this.state.search.category,
+        value: search.category,
         key: 'category',
         list: SAAS.CATEGORY,
       },
       {
         label: '業種',
-        value: this.state.search.serviceType,
+        value: search.serviceType,
         key: 'serviceType',
         list: COMPANY.SERVICE_TYPE,
       },
       {
         label: '会社規模',
-        value: this.state.search.scale,
+        value: search.scale,
         key: 'scale',
         list: COMPANY.SCALE,
       },
       {
         label: '会社地域',
-        value: this.state.search.region,
+        value: search.region,
         key: 'region',
         list: COMPANY.REGION,
       },

@@ -74,7 +74,7 @@ class ConfirmReview extends Component {
 
   render() {
     const { classes, history } = this.props;
-    const { uid, saasId, info } = this.state;
+    const { uid, saasId, info, loading } = this.state;
 
     const reviewCell = [
       {
@@ -314,7 +314,7 @@ class ConfirmReview extends Component {
             >
               この内容で確定する
             </Button>
-            {this.state.loading && (
+            {loading && (
               <CircularProgress size={24} className={classes.buttonProgress} />
             )}
           </div>

@@ -49,6 +49,10 @@ const styles = theme => ({
   introduction: {
     backgroundColor: '#eaeaea',
   },
+  reviewSubtitle: {
+    marginTop: 10,
+    fontSize: '1.1em',
+  },
 });
 
 class SaasDetail extends Component {
@@ -64,11 +68,12 @@ class SaasDetail extends Component {
 
   async componentDidMount() {
     const { location, history } = this.props;
-    const uid = await Authentication.fetchUserId();
-    if (!uid) return;
 
-    const user = await Authentication.fetchUserDataById(uid);
-    this.setState({ uid: uid, user: user.data() });
+    const uid = await Authentication.fetchUserId();
+    if (uid) {
+      const user = await Authentication.fetchUserDataById(uid);
+      this.setState({ uid: uid, user: user.data() });
+    }
 
     // SaaSの取得
     const saasId = UrlUtil.baseUrl(history.location.pathname);
@@ -107,15 +112,18 @@ class SaasDetail extends Component {
     // 過去にレビューが存在するか確認する
     return (
       user.reviewed.filter(element => {
-        return element.product_ref === `/product/${saasId}`;
-      }).length === 1
+        return element.product_ref.id === saasId;
+      }).length < 1
     );
   };
 
   handleForView = async () => {
     const { history } = this.props;
     const { uid, saasId } = this.state;
-    if (!uid) history.push(PATH.LOGIN);
+    if (!uid) {
+      history.push(PATH.LOGIN);
+      return;
+    }
 
     Point.useForViewReview(uid, saasId);
 
@@ -186,14 +194,14 @@ class SaasDetail extends Component {
             {saas && (
               <Grid item xs={12} sm={12}>
                 <StarRatings
-                  rating={saas.point.total}
+                  rating={saas.point_total}
                   starRatedColor="blue"
                   numberOfStars={5}
                   starDimension="30px"
                   starSpacing="2px"
                 />
                 <span className={classes.pointText}>
-                  {saas && saas.point.total.toFixed(1)}
+                  {saas && saas.point_total.toFixed(1)}
                 </span>
               </Grid>
             )}
@@ -231,14 +239,14 @@ class SaasDetail extends Component {
                 {saas && (
                   <Grid item xs={12} sm={12}>
                     <StarRatings
-                      rating={saas.point.total}
+                      rating={saas.point_total}
                       starRatedColor="blue"
                       numberOfStars={5}
                       starDimension="30px"
                       starSpacing="2px"
                     />
                     <span className={classes.pointText}>
-                      {saas && saas.point.total.toFixed(1)}
+                      {saas && saas.point_total.toFixed(1)}
                     </span>
                     <Typography>
                       回答者: {saas && saas.num_of_reviews}人
@@ -266,12 +274,13 @@ class SaasDetail extends Component {
           </Paper>
           {!!review.length &&
             review.map((element, index) => {
-              const pointKeys = Object.keys(element.point);
-
               return (
                 <Paper key={index} className={classes.reviewContainer}>
                   <Grid container spacing={24}>
                     <Grid item xs={12} sm={12}>
+                      <Typography component="h1" variant="h5">
+                        {element.title}
+                      </Typography>
                       <Grid item xs={12} sm={12}>
                         <StarRatings
                           rating={element.point.total}
@@ -285,15 +294,20 @@ class SaasDetail extends Component {
                         </span>
                       </Grid>
 
-                      <Typography gutterBottom>
-                        {pointKeys.map(key => {
-                          if (!SAAS.RADAR[key]) return '';
-                          return `${SAAS.RADAR[key]}: ${element.point[key]} `;
-                        })}
+                      <Typography
+                        component="h1"
+                        className={classes.reviewSubtitle}
+                      >
+                        優れていると感じた点
                       </Typography>
-                      <Typography component="h1" variant="h6">
-                        {element.content}
+                      <Typography component="h1">{element.good}</Typography>
+                      <Typography
+                        component="h1"
+                        className={classes.reviewSubtitle}
+                      >
+                        改善してほしいと感じた点
                       </Typography>
+                      <Typography component="h1">{element.bad}</Typography>
                     </Grid>
                   </Grid>
                 </Paper>

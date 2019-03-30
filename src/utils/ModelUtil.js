@@ -14,7 +14,6 @@ class ModelUtil {
   static calculatePoint = (saas, info) => {
     const {
       point,
-      num_of_reviews,
       sales_review_num,
       support_review_num,
       utilization_review_num,
@@ -22,14 +21,6 @@ class ModelUtil {
       satisfaction_review_num,
     } = saas;
     const { sales, support, utilization, satisfaction, recommendation } = info;
-
-    const average = ModelUtil.currentAverage([
-      sales,
-      support,
-      utilization,
-      recommendation,
-      satisfaction,
-    ]);
 
     const newSales = ModelUtil.averagePoint(
       point.sales,
@@ -56,14 +47,8 @@ class ModelUtil {
       satisfaction,
       satisfaction_review_num
     );
-    const newTotal = ModelUtil.averagePoint(
-      point.total,
-      average,
-      num_of_reviews
-    );
 
     return {
-      total: newTotal,
       sales: newSales,
       support: newSupport,
       utilization: newUtilization,
@@ -73,13 +58,7 @@ class ModelUtil {
   };
   static getCurrentPoint = info => {
     const { sales, support, utilization, recommendation, satisfaction } = info;
-    const average = ModelUtil.currentAverage([
-      sales,
-      support,
-      utilization,
-      recommendation,
-      satisfaction,
-    ]);
+    const average = ModelUtil.getCurrentAverage(info);
     return {
       total: ModelUtil.incrementIfNotEmpty(average),
       sales: ModelUtil.incrementIfNotEmpty(sales),
@@ -88,6 +67,16 @@ class ModelUtil {
       recommendation: ModelUtil.incrementIfNotEmpty(recommendation),
       satisfaction: ModelUtil.incrementIfNotEmpty(satisfaction),
     };
+  };
+  static getCurrentAverage = info => {
+    const { sales, support, utilization, recommendation, satisfaction } = info;
+    return ModelUtil.currentAverage([
+      sales,
+      support,
+      utilization,
+      recommendation,
+      satisfaction,
+    ]);
   };
   static currentAverage = array => {
     const target = array.filter(point => {
@@ -100,6 +89,7 @@ class ModelUtil {
     );
   };
   static averagePoint = (current, newer, length) => {
+    if (newer === '') return current;
     // 配列のkeyは0から始まるが点数は1から始まるため+1する
     return (current * length + newer + 1) / (length + 1);
   };

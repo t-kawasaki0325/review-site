@@ -13,6 +13,7 @@ import icon from '../assets/icons-google.svg';
 import { Header, Email, Password, Message } from '../components';
 import { Authentication } from '../modules';
 import { ValidationUtil } from '../utils';
+import { PATH } from '../config';
 
 const styles = theme => ({
   main: {
@@ -84,7 +85,12 @@ class Login extends Component {
 
   async componentDidMount() {
     const { history } = this.props;
-    await Authentication.completeLoginWithGoogle(history);
+    const result = await Authentication.completeLoginWithGoogle();
+    if (result && result.isNewUser) {
+      history.push(`${PATH.REGISTRATION}/${result.user.uid}`);
+      return;
+    }
+
     await Authentication.transisionTopIfLogin(history);
     this.setState({ loading: false });
   }
@@ -92,34 +98,35 @@ class Login extends Component {
   handleChange = event => {
     const key = event.target.name;
     const value = event.target.value;
+    const { info, message } = this.state;
 
     this.setState({
-      info: { ...this.state.info, [key]: value },
+      info: { ...info, [key]: value },
     });
     this.setState({
       message: {
-        ...this.state.message,
+        ...message,
         [key]: ValidationUtil.formValidate(key, value),
       },
     });
   };
 
   canSubmit = () => {
-    const info = this.state.info;
-    const message = this.state.message;
+    const { info, message, loading } = this.state;
 
     const infoValid = !info.email || !info.password;
     const messageValid = !!message.email || !!message.password;
-    return infoValid || messageValid || this.state.loading;
+    return infoValid || messageValid || loading;
   };
 
   loginWithEmail = async () => {
     const { history } = this.props;
+    const { email, password } = this.state.info;
 
     this.setState({ loading: true });
     const message = await Authentication.loginWithEmail(
-      this.state.info.email,
-      this.state.info.password,
+      email,
+      password,
       history
     );
     this.setState({ error: message, loading: false });
@@ -127,6 +134,7 @@ class Login extends Component {
 
   render() {
     const { classes, history } = this.props;
+    const { error, info, message, loading } = this.state;
 
     return (
       <React.Fragment>
@@ -134,9 +142,7 @@ class Login extends Component {
         <main className={classes.main}>
           <CssBaseline />
           <Paper className={classes.paper}>
-            {this.state.error && (
-              <Message error={this.state.error} type="error" />
-            )}
+            {error && <Message error={error} type="error" />}
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />
             </Avatar>
@@ -145,14 +151,14 @@ class Login extends Component {
             </Typography>
             <div className={classes.form}>
               <Email
-                value={this.state.info.email}
+                value={info.email}
                 handleChange={event => this.handleChange(event)}
-                message={this.state.message.email}
+                message={message.email}
               />
               <Password
-                value={this.state.info.password}
+                value={info.password}
                 handleChange={event => this.handleChange(event)}
-                message={this.state.message.password}
+                message={message.password}
               />
               <div className={classes.wrapper}>
                 <Button
@@ -165,7 +171,7 @@ class Login extends Component {
                 >
                   ログイン
                 </Button>
-                {this.state.loading && (
+                {loading && (
                   <CircularProgress
                     size={24}
                     className={classes.buttonProgress}

@@ -30,6 +30,7 @@ class Product {
       utilization_review_num: 0,
       recommendation_review_num: 0,
       satisfaction_review_num: 0,
+      point_total: 0,
       point: Object.assign(ModelUtil.initializeKeys(SAAS.RADAR), { total: 0 }),
       company_region: region,
       company_scale: scale,
@@ -37,6 +38,7 @@ class Product {
       review: [],
       recently_reviewed: 0,
       recently_viewed: 0,
+      num_of_reviews: 0,
     });
 
     batch.commit();
@@ -49,19 +51,31 @@ class Product {
   };
 
   static resetColumn = async column => {
-    const batch = db.batch();
+    // 1回でbatch commitできる最大件数
+    const oneProcessNum = 500;
 
     const snapshot = await db
       .collection('product')
       .where(column, '>', 0)
       .get();
-    snapshot.docs.forEach((doc, index) => {
-      const data = doc.data();
-      batch.set(doc.ref, { ...data, [column]: 0 });
-      if (index % 500 === 0 || snapshot.docs.length - 1 === index) {
-        batch.commit();
-      }
-    });
+
+    let start = 0;
+    const length = snapshot.docs.length;
+
+    while (start < length) {
+      let end = start + oneProcessNum < length ? start + oneProcessNum : length;
+
+      const docs = snapshot.docs.slice(start, end);
+      const batch = db.batch();
+
+      docs.forEach(doc => {
+        const data = doc.data();
+        batch.set(doc.ref, { ...data, [column]: 0 });
+      });
+      batch.commit();
+
+      start = end;
+    }
   };
 
   static viewCountUp = id => {
