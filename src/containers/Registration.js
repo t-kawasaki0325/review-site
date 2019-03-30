@@ -129,30 +129,17 @@ class Registration extends Component {
   };
 
   canSubmit = () => {
-    const i = this.state.info;
-    const m = this.state.message;
+    const { info, message, loading } = this.state;
+    const allowInfo =
+      Object.keys(info).filter(key => {
+        return info[key] === '';
+      }).length === 0;
+    const allowMessage =
+      Object.keys(message).filter(key => {
+        return message[key] !== '';
+      }).length === 0;
 
-    const infoValid =
-      !i.email ||
-      !i.password ||
-      !i.name ||
-      !i.department ||
-      !i.position ||
-      !i.company ||
-      !i.region ||
-      !i.scale ||
-      !i.serviceType;
-    const messageValid =
-      !!m.email ||
-      !!m.password ||
-      !!m.name ||
-      !!m.department ||
-      !!m.position ||
-      !!m.company ||
-      !!m.region ||
-      !!m.scale ||
-      !!m.serviceType;
-    return infoValid || messageValid || this.state.loading;
+    return !allowInfo || !allowMessage || loading;
   };
 
   signupWithEmail = async () => {
