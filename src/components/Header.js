@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -16,6 +17,9 @@ const styles = {
   grow: {
     flexGrow: 1,
   },
+  noneTransform: {
+    textTransform: 'none',
+  },
 };
 
 const Header = props => {
@@ -25,11 +29,17 @@ const Header = props => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.grow}>
-            Review Site
+            <Link
+              to={uid ? PATH.TOP : PATH.ROOT}
+              style={{ textDecoration: 'none', color: '#fff' }}
+            >
+              Review Site
+            </Link>
           </Typography>
           {uid ? (
             <React.Fragment>
               <Button
+                className={classes.noneTransform}
                 color="inherit"
                 onClick={() => history.push(PATH.SAAS_LIST)}
               >
@@ -48,6 +58,7 @@ const Header = props => {
           ) : (
             <React.Fragment>
               <Button
+                className={classes.noneTransform}
                 color="inherit"
                 onClick={() => history.push(PATH.SAAS_LIST)}
               >
