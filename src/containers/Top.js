@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 
 import { Header, Sidebar } from '../components';
 import { Authentication, Saas } from '../modules';
+import { PATH } from '../config';
 
 const styles = theme => ({
   layout: {
@@ -32,6 +33,10 @@ class Top extends Component {
     if (!uid) return;
 
     const userSnapshot = await Authentication.fetchUserDataById(uid);
+    if (!userSnapshot.data()) {
+      history.push(`${PATH.REGISTRATION}/${uid}`);
+      return;
+    }
     const popularItem = await Saas.recentlyManyReviewed();
     this.setState({
       uid: uid,

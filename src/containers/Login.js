@@ -13,6 +13,7 @@ import icon from '../assets/icons-google.svg';
 import { Header, Email, Password, Message } from '../components';
 import { Authentication } from '../modules';
 import { ValidationUtil } from '../utils';
+import { PATH } from '../config';
 
 const styles = theme => ({
   main: {
@@ -84,8 +85,12 @@ class Login extends Component {
 
   async componentDidMount() {
     const { history } = this.props;
-    const isGoogleLogin = await Authentication.completeLoginWithGoogle(history);
-    if (isGoogleLogin) return;
+    const result = await Authentication.completeLoginWithGoogle();
+    if (result && result.isNewUser) {
+      history.push(`${PATH.REGISTRATION}/${result.user.uid}`);
+      return;
+    }
+
     await Authentication.transisionTopIfLogin(history);
     this.setState({ loading: false });
   }

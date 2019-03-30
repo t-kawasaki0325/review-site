@@ -11,6 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Authentication } from '../modules';
 import { MemberInfo, CompanyInfo, Header, Message } from '../components';
 import { ValidationUtil } from '../utils';
+import { PATH } from '../config';
 import icon from '../assets/icons-google.svg';
 
 const styles = theme => ({
@@ -101,8 +102,11 @@ class Registration extends Component {
 
   async componentDidMount() {
     const { history } = this.props;
-    const isGoogleLogin = await Authentication.completeLoginWithGoogle(history);
-    if (isGoogleLogin) return;
+    const result = await Authentication.completeLoginWithGoogle(history);
+    if (result && result.isNewUser) {
+      history.push(`${PATH.REGISTRATION}/${result.user.uid}`);
+      return;
+    }
     await Authentication.transisionTopIfLogin(history);
     this.setState({ loading: false });
   }
