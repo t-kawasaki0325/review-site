@@ -10,6 +10,7 @@ export const PATH = {
   MYPAGE: '/mypage',
   POINT_HISTORY: '/mypage/pointhistory',
   ADD_REVIEW: '/saas_review/add_review/:id',
+  EDIT_REVIEW: '/saas_review/edit/:id',
   CONFIRM_REVIEW: '/saas_review/add_review/confirm',
 };
 

@@ -253,22 +253,21 @@ class SaasDetail extends Component {
                     </Typography>
                   </Grid>
                 )}
-                {this.canReview() && (
-                  <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
-                    <Button
-                      className={classes.button}
-                      variant="contained"
-                      color="primary"
-                      onClick={() =>
-                        history.push(
-                          UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
-                        )
-                      }
-                    >
-                      レビューを書く
-                    </Button>
-                  </Grid>
-                )}
+                <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
+                  <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      const url = this.canReview()
+                        ? UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
+                        : UrlUtil.changeBaseUrl(PATH.EDIT_REVIEW, saasId);
+                      history.push(url);
+                    }}
+                  >
+                    {this.canReview() ? 'レビューを書く' : 'レビューを編集する'}
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </Paper>
