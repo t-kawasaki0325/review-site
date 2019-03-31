@@ -9,6 +9,10 @@ class Evaluation {
       message: result,
     });
   };
+
+  static getReviewById = async reviewId => {
+    return await Review.getDataById(reviewId).get();
+  };
 }
 
 export default Evaluation;

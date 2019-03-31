@@ -117,6 +117,15 @@ class SaasDetail extends Component {
     );
   };
 
+  getReviewId = () => {
+    const { user, saasId } = this.state;
+    if (!user || !saasId) return '';
+    const target = user.reviewed.find(element => {
+      return element.product_ref.id === saasId;
+    });
+    return { reviewId: target.review_ref.id };
+  };
+
   handleForView = async () => {
     const { history } = this.props;
     const { uid, saasId } = this.state;
@@ -262,7 +271,7 @@ class SaasDetail extends Component {
                       const url = this.canReview()
                         ? UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
                         : UrlUtil.changeBaseUrl(PATH.EDIT_REVIEW, saasId);
-                      history.push(url);
+                      history.push(url, this.getReviewId());
                     }}
                   >
                     {this.canReview() ? 'レビューを書く' : 'レビューを編集する'}
