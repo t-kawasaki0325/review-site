@@ -164,6 +164,57 @@ class AddReview extends Component {
         [key]: ValidationUtil.formValidate(type, value),
       },
     });
+    if (key === 'isAdmin' && value === 0) {
+      this.setState({
+        info: {
+          ...this.state.info,
+          isAdmin: 0,
+          contractStatus: '',
+          contractMonth: '',
+          contractYear: '',
+          contractPeriod: '',
+          price: '',
+          priceOption: '',
+          priceSatisfaction: '',
+          licenseNum: '',
+          isContinue: '',
+          reasonNotContinue: '',
+          satisfaction: '',
+        },
+      });
+    }
+    if (key === 'isParticipant' && value === 0) {
+      this.setState({
+        info: {
+          ...this.state.info,
+          isParticipant: 0,
+          firstContact: '',
+          reasonFirstContact: '',
+          considerationReason: '',
+          otherSaas: '',
+          considerationPeriod: '',
+          sales: '',
+          isDiscounted: '',
+          discountRate: '',
+          decision: '',
+          onboadingSystemA: false,
+          onboadingSystemB: false,
+          onboadingSystemC: false,
+          onboadingPeriod: '',
+          onboadingSatisfaction: '',
+        },
+      });
+    }
+    if (key === 'isOperationParticipant' && value === 0) {
+      this.setState({
+        info: {
+          ...this.state.info,
+          isOperationParticipant: 0,
+          support: '',
+          supportSatisfaction: '',
+        },
+      });
+    }
   };
 
   handleCheckChange = event => {
