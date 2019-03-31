@@ -123,7 +123,8 @@ class SaasDetail extends Component {
     const target = user.reviewed.find(element => {
       return element.product_ref.id === saasId;
     });
-    return { reviewId: target.review_ref.id };
+    if (target) return { reviewId: target.review_ref.id };
+    return '';
   };
 
   handleForView = async () => {
@@ -291,14 +292,14 @@ class SaasDetail extends Component {
                       </Typography>
                       <Grid item xs={12} sm={12}>
                         <StarRatings
-                          rating={element.point.total}
+                          rating={element.point_total}
                           starRatedColor="blue"
                           numberOfStars={5}
                           starDimension="25px"
                           starSpacing="2px"
                         />
                         <span className={classes.pointText}>
-                          {element.point.total.toFixed(1)}
+                          {element.point_total.toFixed(1)}
                         </span>
                       </Grid>
 
