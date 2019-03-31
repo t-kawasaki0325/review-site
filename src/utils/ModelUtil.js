@@ -56,18 +56,6 @@ class ModelUtil {
       satisfaction: newSatisfaction,
     };
   };
-  static getCurrentPoint = info => {
-    const { sales, support, utilization, recommendation, satisfaction } = info;
-    const average = ModelUtil.getCurrentAverage(info);
-    return {
-      total: ModelUtil.incrementIfNotEmpty(average),
-      sales: ModelUtil.incrementIfNotEmpty(sales),
-      support: ModelUtil.incrementIfNotEmpty(support),
-      utilization: ModelUtil.incrementIfNotEmpty(utilization),
-      recommendation: ModelUtil.incrementIfNotEmpty(recommendation),
-      satisfaction: ModelUtil.incrementIfNotEmpty(satisfaction),
-    };
-  };
   static getCurrentAverage = info => {
     const { sales, support, utilization, recommendation, satisfaction } = info;
     return ModelUtil.currentAverage([
@@ -93,9 +81,6 @@ class ModelUtil {
     // 配列のkeyは0から始まるが点数は1から始まるため+1する
     return (current * length + newer + 1) / (length + 1);
   };
-  static incrementIfNotEmpty = value => {
-    return value === '' ? value : value + 1;
-  };
   static incrementArgumentIfNotEmpty = (value, target) => {
     return value === '' ? target : target + 1;
   };
@@ -104,13 +89,19 @@ class ModelUtil {
     if (pointHistory.length > 10) pointHistory.shift();
     return pointHistory;
   };
-  static objectKeyToSnakeCase = object => {
+  static objectKeyChangeCase = (object, toCase = 'snake') => {
     let returnObject = {};
-    Object.keys(object).forEach(key => {
-      Object.assign(returnObject, {
-        [ModelUtil.toSnakeCase(key)]: object[key],
-      });
-    });
+    toCase === 'snake'
+      ? Object.keys(object).forEach(key => {
+          Object.assign(returnObject, {
+            [ModelUtil.toSnakeCase(key)]: object[key],
+          });
+        })
+      : Object.keys(object).forEach(key => {
+          Object.assign(returnObject, {
+            [ModelUtil.toCamelCase(key)]: object[key],
+          });
+        });
     return returnObject;
   };
   static toSnakeCase = camel => {
@@ -118,6 +109,9 @@ class ModelUtil {
       /[A-Z]/g,
       string => '_' + string.charAt(0).toLowerCase()
     );
+  };
+  static toCamelCase = snake => {
+    return snake.replace(/_./g, string => string.charAt(1).toUpperCase());
   };
 }
 

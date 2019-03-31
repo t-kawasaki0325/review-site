@@ -117,6 +117,16 @@ class SaasDetail extends Component {
     );
   };
 
+  getReviewId = () => {
+    const { user, saasId } = this.state;
+    if (!user || !saasId) return '';
+    const target = user.reviewed.find(element => {
+      return element.product_ref.id === saasId;
+    });
+    if (target) return { reviewId: target.review_ref.id };
+    return '';
+  };
+
   handleForView = async () => {
     const { history } = this.props;
     const { uid, saasId } = this.state;
@@ -253,22 +263,21 @@ class SaasDetail extends Component {
                     </Typography>
                   </Grid>
                 )}
-                {this.canReview() && (
-                  <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
-                    <Button
-                      className={classes.button}
-                      variant="contained"
-                      color="primary"
-                      onClick={() =>
-                        history.push(
-                          UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
-                        )
-                      }
-                    >
-                      レビューを書く
-                    </Button>
-                  </Grid>
-                )}
+                <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
+                  <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      const url = this.canReview()
+                        ? UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
+                        : UrlUtil.changeBaseUrl(PATH.EDIT_REVIEW, saasId);
+                      history.push(url, this.getReviewId());
+                    }}
+                  >
+                    {this.canReview() ? 'レビューを書く' : 'レビューを編集する'}
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </Paper>
@@ -283,14 +292,14 @@ class SaasDetail extends Component {
                       </Typography>
                       <Grid item xs={12} sm={12}>
                         <StarRatings
-                          rating={element.point.total}
+                          rating={element.point_total}
                           starRatedColor="blue"
                           numberOfStars={5}
                           starDimension="25px"
                           starSpacing="2px"
                         />
                         <span className={classes.pointText}>
-                          {element.point.total}
+                          {element.point_total.toFixed(1)}
                         </span>
                       </Grid>
 

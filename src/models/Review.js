@@ -66,13 +66,100 @@ class Review {
       point_history: history,
     });
 
-    const currentPoint = ModelUtil.getCurrentPoint(info);
-    const object = ModelUtil.objectKeyToSnakeCase(info);
-    batch.set(reviewRef, Object.assign(object, { point: currentPoint }));
+    const object = ModelUtil.objectKeyChangeCase(info);
+    batch.set(
+      reviewRef,
+      Object.assign(object, {
+        point_total: ModelUtil.getCurrentAverage(info) + 1,
+      })
+    );
 
     batch.commit();
 
     return '登録が完了しました';
+  };
+
+  static editReview = async (saasId, info, reviewId) => {
+    const batch = db.batch();
+
+    const reviewRef = db.collection('review').doc(reviewId);
+    const productRef = db.collection('product').doc(saasId);
+
+    const saasSnapshot = await productRef.get();
+    const reviewSnapshot = await reviewRef.get();
+    if (!saasSnapshot.exists || !reviewSnapshot.exists) return;
+
+    const saas = saasSnapshot.data();
+    const review = reviewSnapshot.data();
+
+    const pointObject = [
+      { key: 'sales', reviewNum: 'sales_review_num' },
+      { key: 'support', reviewNum: 'support_review_num' },
+      { key: 'recommendation', reviewNum: 'recommendation_review_num' },
+      { key: 'satisfaction', reviewNum: 'satisfaction_review_num' },
+      { key: 'utilization', reviewNum: 'utilization_review_num' },
+    ].map(element => {
+      let reviewNum = saas[element.reviewNum];
+      let average = saas.point[element.key];
+      let total = average * reviewNum;
+      if (info[element.key] !== '' && review[element.key] !== '') {
+        const diff = info[element.key] - review[element.key];
+        total += diff;
+        average = total / reviewNum;
+      }
+      if (info[element.key] === '' && review[element.key] !== '') {
+        reviewNum -= 1;
+        total = total - review[element.key] - 1;
+        average = reviewNum !== 0 ? total / reviewNum : 0;
+      }
+      if (info[element.key] !== '' && review[element.key] === '') {
+        reviewNum += 1;
+        total = total + info[element.key] + 1;
+        average = total / reviewNum;
+      }
+      return {
+        point: { [element.key]: average },
+        review: { [element.reviewNum]: reviewNum },
+      };
+    });
+    const point = {};
+    const reviewNum = {};
+    for (let index = 0; index < pointObject.length; index++) {
+      Object.assign(point, pointObject[index].point);
+      Object.assign(reviewNum, pointObject[index].review);
+    }
+    batch.update(productRef, {
+      ...reviewNum,
+      point: point,
+    });
+
+    const pointSum = Object.values(point).reduce((prev, current) => {
+      return prev + current;
+    });
+    const reviewSum = Object.values(reviewNum).reduce((prev, current) => {
+      return prev + current;
+    });
+
+    const pointTotal = pointSum / reviewSum;
+    batch.update(productRef, {
+      point_total: pointTotal,
+    });
+
+    const object = ModelUtil.objectKeyChangeCase(info);
+    batch.set(
+      reviewRef,
+      Object.assign(object, {
+        point_total: ModelUtil.getCurrentAverage(info) + 1,
+      })
+    );
+
+    batch.commit();
+
+    return '編集が完了しました';
+  };
+
+  static getDataById = id => {
+    return db.collection('review').doc(id);
   };
 }
 
