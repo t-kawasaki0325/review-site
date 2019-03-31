@@ -67,12 +67,16 @@ class Review {
     });
 
     const currentPoint = ModelUtil.getCurrentPoint(info);
-    const object = ModelUtil.objectKeyToSnakeCase(info);
+    const object = ModelUtil.objectKeyChangeCase(info);
     batch.set(reviewRef, Object.assign(object, { point: currentPoint }));
 
     batch.commit();
 
     return '登録が完了しました';
+  };
+
+  static getDataById = id => {
+    return db.collection('review').doc(id);
   };
 }
 

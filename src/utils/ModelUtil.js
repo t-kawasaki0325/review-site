@@ -104,13 +104,19 @@ class ModelUtil {
     if (pointHistory.length > 10) pointHistory.shift();
     return pointHistory;
   };
-  static objectKeyToSnakeCase = object => {
+  static objectKeyChangeCase = (object, toCase = 'snake') => {
     let returnObject = {};
-    Object.keys(object).forEach(key => {
-      Object.assign(returnObject, {
-        [ModelUtil.toSnakeCase(key)]: object[key],
-      });
-    });
+    toCase === 'snake'
+      ? Object.keys(object).forEach(key => {
+          Object.assign(returnObject, {
+            [ModelUtil.toSnakeCase(key)]: object[key],
+          });
+        })
+      : Object.keys(object).forEach(key => {
+          Object.assign(returnObject, {
+            [ModelUtil.toCamelCase(key)]: object[key],
+          });
+        });
     return returnObject;
   };
   static toSnakeCase = camel => {
@@ -118,6 +124,9 @@ class ModelUtil {
       /[A-Z]/g,
       string => '_' + string.charAt(0).toLowerCase()
     );
+  };
+  static toCamelCase = snake => {
+    return snake.replace(/_./g, string => string.charAt(1).toUpperCase());
   };
 }
 

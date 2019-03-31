@@ -12,9 +12,9 @@ import {
   ReviewUntilAdopt,
   ReviewAdopting,
 } from '../components';
-import { ValidationUtil, UrlUtil } from '../utils';
+import { ValidationUtil, UrlUtil, ModelUtil } from '../utils';
 import { PATH } from '../config';
-import { Saas, Authentication } from '../modules';
+import { Saas, Authentication, Evaluation } from '../modules';
 
 const styles = theme => ({
   layout: {
@@ -105,6 +105,8 @@ class AddReview extends Component {
       support: '',
       supportSatisfaction: '',
       utilization: '',
+      // other
+      point: '',
     },
     message: {
       // review
@@ -122,21 +124,30 @@ class AddReview extends Component {
     },
     uid: '',
     saasId: '',
+    reviewId: '',
     name: '',
     loading: false,
   };
 
   async componentDidMount() {
-    const { history } = this.props;
+    const { history, location } = this.props;
     const uid = await Authentication.transitionLoginIfNotLogin(history);
     if (!uid) return;
 
     const saasId = UrlUtil.baseUrl(history.location.pathname);
     const saas = await Saas.sassInfoById(saasId);
-    if (!saas.data()) {
+    const reviewId = location.state.reviewId;
+    const review = await Evaluation.getReviewById(reviewId);
+    if (!saas.data() || !review.data()) {
       return history.push(PATH.SAAS_LIST);
     }
-    this.setState({ saasId: saasId, name: saas.data().name, uid: uid });
+    this.setState({
+      saasId: saasId,
+      name: saas.data().name,
+      uid: uid,
+      reviewId: reviewId,
+      info: ModelUtil.objectKeyChangeCase(review.data(), 'camel'),
+    });
   }
 
   handleChange = event => {
