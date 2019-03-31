@@ -313,7 +313,7 @@ class ConfirmReview extends Component {
               onClick={() =>
                 !reviewId
                   ? Evaluation.addReview(uid, saasId, info, history)
-                  : Evaluation.editReview(uid, saasId, info, reviewId, history)
+                  : Evaluation.editReview(saasId, info, reviewId, history)
               }
               className={classes.button}
             >

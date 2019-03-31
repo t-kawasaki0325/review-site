@@ -75,18 +75,15 @@ class Review {
     return '登録が完了しました';
   };
 
-  static editReview = async (uid, saasId, info, reviewId) => {
+  static editReview = async (saasId, info, reviewId) => {
     const batch = db.batch();
 
     const reviewRef = db.collection('review').doc(reviewId);
     const productRef = db.collection('product').doc(saasId);
-    const userRef = db.collection('user').doc(uid);
 
     const saasSnapshot = await productRef.get();
-    const userSnapshot = await userRef.get();
     const reviewSnapshot = await reviewRef.get();
-    if (!saasSnapshot.exists || !userSnapshot.exists || !reviewSnapshot.exists)
-      return;
+    if (!saasSnapshot.exists || !reviewSnapshot.exists) return;
 
     const saas = saasSnapshot.data();
     const review = reviewSnapshot.data();

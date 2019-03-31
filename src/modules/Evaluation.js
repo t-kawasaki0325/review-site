@@ -15,13 +15,13 @@ class Evaluation {
     });
   };
 
-  static editReview = async (uid, saasId, info, reviewId, history) => {
-    if (!uid || !saasId || !info || !reviewId || !history) {
+  static editReview = async (saasId, info, reviewId, history) => {
+    if (!saasId || !info || !reviewId || !history) {
       history.push(UrlUtil.changeBaseUrl(PATH.SAAS_DETAIL, saasId), {
         message: 'エラーが発生しました。再度お試しください',
       });
     }
-    const result = await Review.editReview(uid, saasId, info, reviewId);
+    const result = await Review.editReview(saasId, info, reviewId);
     history.push(UrlUtil.changeBaseUrl(PATH.SAAS_DETAIL, saasId), {
       message: result,
     });
