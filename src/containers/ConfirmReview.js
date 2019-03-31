@@ -58,6 +58,7 @@ class ConfirmReview extends Component {
     uid: '',
     saasId: '',
     info: '',
+    reviewId: '',
     loading: false,
   };
 
@@ -68,13 +69,13 @@ class ConfirmReview extends Component {
       return;
     }
 
-    const { uid, saasId, info } = location.state.state;
-    this.setState({ info: info, saasId: saasId, uid: uid });
+    const { uid, saasId, info, reviewId } = location.state.state;
+    this.setState({ info: info, saasId: saasId, uid: uid, reviewId: reviewId });
   }
 
   render() {
     const { classes, history } = this.props;
-    const { uid, saasId, info, loading } = this.state;
+    const { uid, saasId, info, reviewId, loading } = this.state;
 
     const reviewCell = [
       {
@@ -309,7 +310,11 @@ class ConfirmReview extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => Evaluation.addReview(uid, saasId, info, history)}
+              onClick={() =>
+                !reviewId
+                  ? Evaluation.addReview(uid, saasId, info, history)
+                  : Evaluation.editReview(uid, saasId, info, reviewId, history)
+              }
               className={classes.button}
             >
               この内容で確定する

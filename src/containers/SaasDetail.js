@@ -298,7 +298,7 @@ class SaasDetail extends Component {
                           starSpacing="2px"
                         />
                         <span className={classes.pointText}>
-                          {element.point.total}
+                          {element.point.total.toFixed(1)}
                         </span>
                       </Grid>
 
