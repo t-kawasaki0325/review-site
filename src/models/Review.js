@@ -66,9 +66,8 @@ class Review {
       point_history: history,
     });
 
-    const currentPoint = ModelUtil.getCurrentPoint(info);
     const object = ModelUtil.objectKeyChangeCase(info);
-    batch.set(reviewRef, Object.assign(object, { point: currentPoint }));
+    batch.set(reviewRef, Object.assign(object));
 
     batch.commit();
 
@@ -228,11 +227,10 @@ class Review {
       point_total: pointTotal,
     });
 
-    const currentPoint = ModelUtil.getCurrentPoint(info);
     const object = ModelUtil.objectKeyChangeCase(info);
-    batch.set(reviewRef, Object.assign(object, { point: currentPoint }));
+    batch.set(reviewRef, Object.assign(object));
 
-    batch.commit();
+    // batch.commit();
 
     return '編集が完了しました';
   };

@@ -56,18 +56,6 @@ class ModelUtil {
       satisfaction: newSatisfaction,
     };
   };
-  static getCurrentPoint = info => {
-    const { sales, support, utilization, recommendation, satisfaction } = info;
-    const average = ModelUtil.getCurrentAverage(info);
-    return {
-      total: ModelUtil.incrementIfNotEmpty(average),
-      sales: ModelUtil.incrementIfNotEmpty(sales),
-      support: ModelUtil.incrementIfNotEmpty(support),
-      utilization: ModelUtil.incrementIfNotEmpty(utilization),
-      recommendation: ModelUtil.incrementIfNotEmpty(recommendation),
-      satisfaction: ModelUtil.incrementIfNotEmpty(satisfaction),
-    };
-  };
   static getCurrentAverage = info => {
     const { sales, support, utilization, recommendation, satisfaction } = info;
     return ModelUtil.currentAverage([
@@ -92,9 +80,6 @@ class ModelUtil {
     if (newer === '') return current;
     // 配列のkeyは0から始まるが点数は1から始まるため+1する
     return (current * length + newer + 1) / (length + 1);
-  };
-  static incrementIfNotEmpty = value => {
-    return value === '' ? value : value + 1;
   };
   static incrementArgumentIfNotEmpty = (value, target) => {
     return value === '' ? target : target + 1;
