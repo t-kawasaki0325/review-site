@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { SAAS } from '../config';
+import { SAAS, MESSAGE } from '../config';
 import { ModelUtil } from '../utils';
 
 class Product {
@@ -43,7 +43,7 @@ class Product {
 
     batch.commit();
 
-    return '登録が完了しました';
+    return MESSAGE.COMPLETE.REGISTRATION;
   }
 
   static getSearchData = sortBy => {

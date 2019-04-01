@@ -1,6 +1,6 @@
 import firebase, { providerGoogle } from '../firebase';
 import { User } from '../models';
-import { PATH } from '../config';
+import { PATH, MESSAGE } from '../config';
 
 class Authentication {
   static loginWithGoogle = () => {
@@ -39,11 +39,11 @@ class Authentication {
     } catch (e) {
       switch (e.code) {
         case 'auth/network-request-failed':
-          return 'ネットワーク接続がありません';
+          return MESSAGE.ERROR.NETWORK;
         case 'auth/email-already-in-use':
-          return '既にユーザーが存在します';
+          return MESSAGE.ERROR.ALREADY_EXIST;
         default:
-          return 'エラーが発生しました。再度お試しください';
+          return MESSAGE.ERROR.COMMON;
       }
     }
   };
@@ -60,11 +60,11 @@ class Authentication {
     } catch (e) {
       switch (e.code) {
         case 'auth/network-request-failed':
-          return 'ネットワーク接続がありません';
+          return MESSAGE.ERROR.NETWORK;
         case 'auth/wrong-password':
-          return 'メールアドレスとパスワードが一致しません';
+          return MESSAGE.ERROR.WRONG_PASSWORD;
         default:
-          return 'エラーが発生しました。再度お試しください';
+          return MESSAGE.ERROR.COMMON;
       }
     }
   };
@@ -112,7 +112,7 @@ class Authentication {
     if (!info) return;
     const { uid } = info;
     User.updateUser(uid, info);
-    return '登録が完了しました';
+    return MESSAGE.COMPLETE.REGISTRATION;
   };
 }
 
