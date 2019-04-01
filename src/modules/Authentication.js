@@ -19,11 +19,13 @@ class Authentication {
   };
 
   static createNewUser = (uid, info, history) => {
+    if (!uid || !info || !history) return;
     User.createUser(uid, info);
     history.push(PATH.TOP);
   };
 
   static signupWithEmail = async (info, history) => {
+    if (!info || !history) return;
     const { email, password } = info;
 
     try {
@@ -47,6 +49,7 @@ class Authentication {
   };
 
   static loginWithEmail = async (email, password, history) => {
+    if (!email || !password || !history) return;
     try {
       const { user } = await firebase
         .auth()
@@ -67,6 +70,7 @@ class Authentication {
   };
 
   static logout = history => {
+    if (!history) return;
     firebase.auth().signOut();
     history.push(PATH.ROOT);
   };
@@ -84,6 +88,7 @@ class Authentication {
   };
 
   static transitionLoginIfNotLogin = async history => {
+    if (!history) return;
     const uid = await Authentication.fetchUserId();
     if (uid) {
       return uid;
@@ -93,15 +98,18 @@ class Authentication {
   };
 
   static transisionTopIfLogin = async history => {
+    if (!history) return;
     const uid = await Authentication.fetchUserId();
     if (uid) history.push(PATH.TOP);
   };
 
   static fetchUserDataById = id => {
+    if (!id) return;
     return User.fetchUserRef(id).get();
   };
 
   static updateUserInfo = info => {
+    if (!info) return;
     const { uid } = info;
     User.updateUser(uid, info);
     return '登録が完了しました';

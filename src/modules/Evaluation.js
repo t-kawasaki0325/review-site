@@ -28,6 +28,7 @@ class Evaluation {
   };
 
   static getReviewById = async reviewId => {
+    if (!reviewId) return;
     return await Review.getDataById(reviewId).get();
   };
 }
