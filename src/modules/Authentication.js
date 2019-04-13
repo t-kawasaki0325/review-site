@@ -1,6 +1,6 @@
 import firebase, { providerGoogle } from '../firebase';
 import { User } from '../models';
-import { PATH } from '../config';
+import { PATH, MESSAGE } from '../config';
 
 class Authentication {
   static loginWithGoogle = () => {
@@ -19,11 +19,13 @@ class Authentication {
   };
 
   static createNewUser = (uid, info, history) => {
+    if (!uid || !info || !history) return;
     User.createUser(uid, info);
     history.push(PATH.TOP);
   };
 
   static signupWithEmail = async (info, history) => {
+    if (!info || !history) return;
     const { email, password } = info;
 
     try {
@@ -37,16 +39,17 @@ class Authentication {
     } catch (e) {
       switch (e.code) {
         case 'auth/network-request-failed':
-          return 'ネットワーク接続がありません';
+          return MESSAGE.ERROR.NETWORK;
         case 'auth/email-already-in-use':
-          return '既にユーザーが存在します';
+          return MESSAGE.ERROR.ALREADY_EXIST;
         default:
-          return 'エラーが発生しました。再度お試しください';
+          return MESSAGE.ERROR.COMMON;
       }
     }
   };
 
   static loginWithEmail = async (email, password, history) => {
+    if (!email || !password || !history) return;
     try {
       const { user } = await firebase
         .auth()
@@ -57,16 +60,17 @@ class Authentication {
     } catch (e) {
       switch (e.code) {
         case 'auth/network-request-failed':
-          return 'ネットワーク接続がありません';
+          return MESSAGE.ERROR.NETWORK;
         case 'auth/wrong-password':
-          return 'メールアドレスとパスワードが一致しません';
+          return MESSAGE.ERROR.WRONG_PASSWORD;
         default:
-          return 'エラーが発生しました。再度お試しください';
+          return MESSAGE.ERROR.COMMON;
       }
     }
   };
 
   static logout = history => {
+    if (!history) return;
     firebase.auth().signOut();
     history.push(PATH.ROOT);
   };
@@ -84,6 +88,7 @@ class Authentication {
   };
 
   static transitionLoginIfNotLogin = async history => {
+    if (!history) return;
     const uid = await Authentication.fetchUserId();
     if (uid) {
       return uid;
@@ -93,18 +98,21 @@ class Authentication {
   };
 
   static transisionTopIfLogin = async history => {
+    if (!history) return;
     const uid = await Authentication.fetchUserId();
     if (uid) history.push(PATH.TOP);
   };
 
   static fetchUserDataById = id => {
+    if (!id) return;
     return User.fetchUserRef(id).get();
   };
 
   static updateUserInfo = info => {
+    if (!info) return;
     const { uid } = info;
     User.updateUser(uid, info);
-    return '登録が完了しました';
+    return MESSAGE.COMPLETE.REGISTRATION;
   };
 }
 

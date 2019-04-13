@@ -3,10 +3,12 @@ import { now } from '../firebase';
 
 class Saas {
   static registerProduct = info => {
+    if (!info) return;
     return Product.registerProduct(info);
   };
 
   static searchSaas = async (sortBy, query) => {
+    if (!sortBy || !query) return;
     const {
       keyword,
       category,
@@ -36,6 +38,7 @@ class Saas {
   };
 
   static sassInfoById = id => {
+    if (!id) return;
     return Product.productRef(id).get();
   };
 
@@ -48,6 +51,7 @@ class Saas {
   };
 
   static updatePopularItemIfOld = async doc => {
+    if (!doc) return;
     const snapshot = await PopularItem.popularItemDocRef(doc).get();
     const { updated_at } = snapshot.data();
     if (now.seconds - updated_at.seconds > 3600) {
@@ -56,6 +60,7 @@ class Saas {
   };
 
   static viewCountUp = id => {
+    if (!id) return;
     return Product.viewCountUp(id);
   };
 }

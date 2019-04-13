@@ -1,6 +1,6 @@
 import { db } from '../firebase';
 import { ModelUtil } from '../utils';
-import { POINT } from '../config';
+import { POINT, MESSAGE } from '../config';
 
 class Review {
   static createNewReview = async (uid, saasId, info) => {
@@ -76,7 +76,7 @@ class Review {
 
     batch.commit();
 
-    return '登録が完了しました';
+    return MESSAGE.COMPLETE.REGISTRATION;
   };
 
   static editReview = async (saasId, info, reviewId) => {
@@ -155,7 +155,7 @@ class Review {
 
     batch.commit();
 
-    return '編集が完了しました';
+    return MESSAGE.COMPLETE.EDIT;
   };
 
   static getDataById = id => {

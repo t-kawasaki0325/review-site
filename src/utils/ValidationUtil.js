@@ -1,3 +1,5 @@
+import { MESSAGE } from '../config';
+
 class ValidationUtil {
   static formValidate = (type, value) => {
     switch (type) {
@@ -15,35 +17,35 @@ class ValidationUtil {
   };
 
   static emailValidation = email => {
-    if (!email) return 'メールアドレスを入力してください';
+    if (!email) return MESSAGE.VALIDATION.INVALID_INPUT;
 
     const regex = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
-    if (!regex.test(email)) return 'メールアドレスの形式が不正です';
+    if (!regex.test(email)) return MESSAGE.VALIDATION.MAIL;
 
     return '';
   };
 
   static passwordValidation = password => {
-    if (!password) return 'パスワードを入力してください';
-    if (password.length < 6) return 'パスワードは6文字以上で入力してください';
+    if (!password) return MESSAGE.VALIDATION.INVALID_INPUT;
+    if (password.length < 6) return MESSAGE.VALIDATION.PASSWORD;
 
     return '';
   };
 
   static textValidation = text => {
-    if (!text) return '不正な入力値です';
+    if (!text) return MESSAGE.VALIDATION.INVALID_INPUT;
 
     return '';
   };
 
   static textareaValidation = text => {
-    if (text.length < 30) return 'テキストは30文字以上で入力してください';
+    if (text.length < 30) return MESSAGE.VALIDATION.TEXTAREA;
 
     return '';
   };
 
   static selectValidation = option => {
-    if (option === 0) return '「選択なし」は選択できません';
+    if (option === 0) return MESSAGE.VALIDATION.NO_SELECT;
 
     return '';
   };
