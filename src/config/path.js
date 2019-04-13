@@ -2,6 +2,7 @@ export const PATH = {
   ROOT: '/',
   TOP: '/top',
   LOGIN: '/login',
+  FORGOT_PASSWORD: '/forgotpassword',
   REGISTRATION: '/registration',
   REGISTRATION_ADDTION: '/registration/:id',
   AUTHOR_REGISTER_SAAS: '/registersaas',

@@ -4,6 +4,7 @@ import {
   Root,
   Registration,
   Login,
+  ForgotPassword,
   UserInfo,
   Top,
   RegisterSaas,
@@ -24,6 +25,7 @@ const AppRouter = () => {
       <Switch>
         <Route path={PATH.ROOT} exact component={Root} />
         <Route path={PATH.LOGIN} exact component={Login} />
+        <Route path={PATH.FORGOT_PASSWORD} exact component={ForgotPassword} />
         <Route path={PATH.REGISTRATION} exact component={Registration} />
         <Route path={PATH.REGISTRATION_ADDTION} exact component={UserInfo} />
         <Route path={PATH.TOP} exact component={Top} />
