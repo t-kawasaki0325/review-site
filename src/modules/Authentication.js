@@ -75,6 +75,22 @@ class Authentication {
     history.push(PATH.ROOT);
   };
 
+  static resetPassword = async email => {
+    try {
+      await firebase.auth().sendPasswordResetEmail(email);
+      return { message: MESSAGE.COMPLETE.MAIL_SENT, type: 'info' };
+    } catch (e) {
+      switch (e.code) {
+        case 'auth/invalid-email':
+          return { message: MESSAGE.VALIDATION.MAIL, type: 'error' };
+        case 'auth/user-not-found':
+          return { message: MESSAGE.ERROR.USER_NOTO_EXISTS, type: 'error' };
+        default:
+          return { message: MESSAGE.ERROR.COMMON, type: 'error' };
+      }
+    }
+  };
+
   static fetchUserId = () => {
     return new Promise(resolve => {
       firebase.auth().onAuthStateChanged(user => {
