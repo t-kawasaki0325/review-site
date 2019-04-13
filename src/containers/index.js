@@ -13,3 +13,4 @@ export { default as ConfirmReview } from './ConfirmReview';
 export { default as PointHistory } from './PointHistory';
 export { default as NotFound } from './NotFound';
 export { default as ForgotPassword } from './ForgotPassword';
+export { default as Quit } from './Quit';
