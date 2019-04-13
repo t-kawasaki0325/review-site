@@ -209,7 +209,7 @@ class SaasInfo extends Component {
             <CircularProgress size={24} className={classes.buttonProgress} />
           )}
         </div>
-        {message && <Message type="info" error={message} />}
+        {message && <Message type="info" message={message} />}
       </React.Fragment>
     );
   }

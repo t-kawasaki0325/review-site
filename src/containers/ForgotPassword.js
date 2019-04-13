@@ -101,7 +101,7 @@ class ForgotPassword extends Component {
           <div className={classes.appBarSpacer} />
           <Paper className={classes.paper}>
             {messageTop && (
-              <Message error={messageTop.message} type={messageTop.type} />
+              <Message message={messageTop.message} type={messageTop.type} />
             )}
             <Typography component="h1" variant="h5" className={classes.title}>
               パスワードを忘れた方

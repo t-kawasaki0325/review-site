@@ -161,7 +161,7 @@ class Registration extends Component {
         <main className={classes.layout}>
           <CssBaseline />
           <Paper className={classes.paper}>
-            {error && <Message error={error} type="error" />}
+            {error && <Message message={error} type="error" />}
             <Typography
               component="h1"
               variant="h4"

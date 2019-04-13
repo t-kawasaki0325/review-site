@@ -193,7 +193,7 @@ class SaasDetail extends Component {
           <Grid container spacing={24}>
             {message && (
               <Grid item xs={12} sm={12}>
-                <Message type="info" error={message} />
+                <Message type="info" message={message} />
               </Grid>
             )}
             <Grid item xs={12} sm={12}>

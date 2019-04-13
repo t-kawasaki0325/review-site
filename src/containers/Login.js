@@ -143,7 +143,7 @@ class Login extends Component {
         <main className={classes.main}>
           <CssBaseline />
           <Paper className={classes.paper}>
-            {error && <Message error={error} type="error" />}
+            {error && <Message message={error} type="error" />}
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />
             </Avatar>
