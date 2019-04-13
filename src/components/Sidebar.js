@@ -34,6 +34,10 @@ const Sidebar = props => {
       label: 'ポイント履歴',
       link: PATH.POINT_HISTORY,
     },
+    {
+      label: '退会する',
+      link: PATH.QUIT,
+    },
   ];
   return (
     <React.Fragment>
