@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { Header, Email } from '../components';
+import { Header, Email, Message } from '../components';
 import { Authentication } from '../modules';
 import { ValidationUtil } from '../utils';
 
@@ -51,6 +51,7 @@ class ForgotPassword extends Component {
     message: {
       email: '',
     },
+    messageTop: '',
     loading: true,
   };
 
@@ -83,9 +84,14 @@ class ForgotPassword extends Component {
     return !info.email || !!message.email || loading;
   };
 
+  resetPasswordEmailSend = async email => {
+    const message = await Authentication.resetPassword(email);
+    this.setState({ messageTop: message });
+  };
+
   render() {
     const { history, classes } = this.props;
-    const { info, message, loading } = this.state;
+    const { info, message, loading, messageTop } = this.state;
 
     return (
       <React.Fragment>
@@ -94,6 +100,9 @@ class ForgotPassword extends Component {
           <CssBaseline />
           <div className={classes.appBarSpacer} />
           <Paper className={classes.paper}>
+            {messageTop && (
+              <Message error={messageTop.message} type={messageTop.type} />
+            )}
             <Typography component="h1" variant="h5" className={classes.title}>
               パスワードを忘れた方
             </Typography>
@@ -112,7 +121,7 @@ class ForgotPassword extends Component {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={() => Authentication.resetPassword(info.email)}
+                onClick={() => this.resetPasswordEmailSend(info.email)}
               >
                 送信する
               </Button>
