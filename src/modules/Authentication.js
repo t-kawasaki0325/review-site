@@ -130,6 +130,20 @@ class Authentication {
     User.updateUser(uid, info);
     return MESSAGE.COMPLETE.REGISTRATION;
   };
+
+  static quit = async (uid, history) => {
+    const user = firebase.auth().currentUser;
+    if (!uid || !user) return;
+
+    try {
+      await user.delete();
+
+      await User.deleteUser(uid);
+      history.push(PATH.LOGIN);
+    } catch (e) {
+      Authentication.logout();
+    }
+  };
 }
 
 export default Authentication;

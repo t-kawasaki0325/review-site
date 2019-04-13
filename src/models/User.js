@@ -94,6 +94,10 @@ class User {
       });
     });
   };
+
+  static deleteUser = uid => {
+    User.fetchUserRef(uid).delete();
+  };
 }
 
 export default User;

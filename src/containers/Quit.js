@@ -105,7 +105,10 @@ class Quit extends Component {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => {}}
+                    onClick={() => {
+                      if (window.confirm('本当に退会しますか？'))
+                        Authentication.quit(uid, history);
+                    }}
                     className={classes.button}
                   >
                     退会する
