@@ -131,6 +131,19 @@ class Authentication {
     return MESSAGE.COMPLETE.REGISTRATION;
   };
 
+  static invitation = async info => {
+    if (!info) return;
+
+    const { email } = info;
+    await firebase.auth().sendSignInLinkToEmail(email, {
+      url:
+        'https://' +
+        process.env.REACT_APP_FIREBASE_AUTH_DOMAIN +
+        PATH.REGISTRATION,
+      handleCodeInApp: true,
+    });
+  };
+
   static quit = async (uid, history) => {
     const user = firebase.auth().currentUser;
     if (!uid || !user) return;

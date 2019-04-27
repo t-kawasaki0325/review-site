@@ -110,7 +110,10 @@ class Invitation extends Component {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => {}}
+                    onClick={() => {
+                      if (window.confirm('招待メールを送信しますか？'))
+                        Authentication.invitation(info);
+                    }}
                   >
                     招待する
                   </Button>
