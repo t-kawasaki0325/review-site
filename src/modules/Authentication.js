@@ -21,6 +21,7 @@ class Authentication {
   static createNewUser = (uid, info, history) => {
     if (!uid || !info || !history) return;
     User.createUser(uid, info);
+    Authentication.addPointIfInvitationUser();
     history.push(PATH.TOP);
   };
 
@@ -154,6 +155,13 @@ class Authentication {
           return { type: 'error', message: MESSAGE.ERROR.COMMON };
       }
     }
+  };
+
+  static addPointIfInvitationUser = async () => {
+    const { email } = firebase.auth().currentUser;
+    if (!email) return;
+
+    Invitation.loginInvitationUser(email);
   };
 
   static quit = async (uid, history) => {
