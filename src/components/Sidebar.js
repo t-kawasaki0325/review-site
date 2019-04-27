@@ -35,6 +35,10 @@ const Sidebar = props => {
       link: PATH.POINT_HISTORY,
     },
     {
+      label: 'ユーザー招待',
+      link: PATH.INVITATION,
+    },
+    {
       label: '退会する',
       link: PATH.QUIT,
     },
