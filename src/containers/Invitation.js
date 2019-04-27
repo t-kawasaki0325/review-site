@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import { Header, Sidebar, Email } from '../components';
+import { Header, Sidebar, Email, Message } from '../components';
 import { Authentication } from '../modules';
 import { ValidationUtil } from '../utils';
 
@@ -45,6 +45,7 @@ class Invitation extends Component {
     user: '',
     info: { email: '' },
     message: { email: '' },
+    notification: '',
   };
 
   async componentDidMount() {
@@ -75,7 +76,7 @@ class Invitation extends Component {
 
   render() {
     const { history, classes } = this.props;
-    const { uid, user, info, message } = this.state;
+    const { uid, user, info, message, notification } = this.state;
 
     return (
       <React.Fragment>
@@ -90,6 +91,12 @@ class Invitation extends Component {
             </Grid>
             <Grid item xs={12} sm={8}>
               <Paper className={classes.paper}>
+                {notification && (
+                  <Message
+                    message={notification.message}
+                    type={notification.type}
+                  />
+                )}
                 <Typography
                   component="h1"
                   variant="h4"
@@ -110,9 +117,14 @@ class Invitation extends Component {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => {
-                      if (window.confirm('招待メールを送信しますか？'))
-                        Authentication.invitation(info);
+                    onClick={async () => {
+                      if (window.confirm('招待メールを送信しますか？')) {
+                        const message = await Authentication.invitation(
+                          uid,
+                          info
+                        );
+                        this.setState({ notification: message });
+                      }
                     }}
                   >
                     招待する

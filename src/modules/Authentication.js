@@ -1,5 +1,5 @@
 import firebase, { providerGoogle } from '../firebase';
-import { User } from '../models';
+import { User, Invitation } from '../models';
 import { PATH, MESSAGE } from '../config';
 
 class Authentication {
@@ -131,17 +131,19 @@ class Authentication {
     return MESSAGE.COMPLETE.REGISTRATION;
   };
 
-  static invitation = async info => {
+  static invitation = async (uid, info) => {
     if (!info) return;
 
     const { email } = info;
-    await firebase.auth().sendSignInLinkToEmail(email, {
+    firebase.auth().sendSignInLinkToEmail(email, {
       url:
         'https://' +
         process.env.REACT_APP_FIREBASE_AUTH_DOMAIN +
         PATH.REGISTRATION,
       handleCodeInApp: true,
     });
+    await Invitation.sendInvitation(uid, email);
+    return { type: 'info', message: MESSAGE.COMPLETE.MAIL_SENT };
   };
 
   static quit = async (uid, history) => {
