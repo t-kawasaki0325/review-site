@@ -34,6 +34,7 @@ class Authentication {
         .auth()
         .createUserWithEmailAndPassword(email, password);
       User.createUser(user.uid, info);
+      Authentication.addPointIfInvitationUser();
       if (user) {
         history.push(PATH.TOP);
       }
