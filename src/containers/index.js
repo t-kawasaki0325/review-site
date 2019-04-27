@@ -14,3 +14,4 @@ export { default as PointHistory } from './PointHistory';
 export { default as NotFound } from './NotFound';
 export { default as ForgotPassword } from './ForgotPassword';
 export { default as Quit } from './Quit';
+export { default as Invitation } from './Invitation';

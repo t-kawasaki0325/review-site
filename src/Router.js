@@ -17,6 +17,7 @@ import {
   NotFound,
   EditReview,
   Quit,
+  Invitation,
 } from './containers';
 import { PATH } from './config';
 
@@ -39,6 +40,7 @@ const AppRouter = () => {
         <Route path={PATH.SAAS_DETAIL} exact component={SaasDetail} />
         <Route path={PATH.MYPAGE} exact component={Mypage} />
         <Route path={PATH.POINT_HISTORY} exact component={PointHistory} />
+        <Route path={PATH.INVITATION} exact component={Invitation} />
         <Route path={PATH.CONFIRM_REVIEW} exact component={ConfirmReview} />
         <Route path={PATH.ADD_REVIEW} exact component={AddReview} />
         <Route path={PATH.EDIT_REVIEW} exact component={EditReview} />
