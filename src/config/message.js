@@ -10,6 +10,7 @@ const MESSAGE = {
     ALREADY_EXIST: '既にユーザーが存在します',
     WRONG_PASSWORD: 'メールアドレスとパスワードが一致しません',
     USER_NOTO_EXISTS: 'ユーザーが存在しません',
+    ALREADY_INVITED: '既にユーザーは招待済です',
   },
   VALIDATION: {
     INVALID_INPUT: '不正な入力値です',

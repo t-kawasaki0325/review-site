@@ -2,10 +2,13 @@ import { db } from '../firebase';
 import { User } from '../models';
 
 class Invitation {
-  static sendInvitation = (sender, receiver) => {
-    db.collection('invitation')
-      .doc(receiver)
-      .set({ uid: sender });
+  static sendInvitation = async (sender, receiver) => {
+    const invitation = db.collection('invitation').doc(receiver);
+    const data = await invitation.get();
+
+    if (data.data()) throw new Error('auth/email-already-invited');
+
+    invitation.set({ uid: sender });
   };
 
   static loginInvitationUser = async email => {

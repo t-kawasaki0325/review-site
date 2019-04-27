@@ -148,6 +148,9 @@ class Authentication {
       await Invitation.sendInvitation(uid, email);
       return { type: 'info', message: MESSAGE.COMPLETE.MAIL_SENT };
     } catch (e) {
+      if (e.message === 'auth/email-already-invited')
+        return { type: 'error', message: MESSAGE.ERROR.ALREADY_INVITED };
+
       switch (e.code) {
         case 'auth/network-request-failed':
           return { type: 'error', message: MESSAGE.ERROR.NETWORK };
