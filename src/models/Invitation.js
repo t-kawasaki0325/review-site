@@ -13,6 +13,7 @@ class Invitation {
     const document = await invitation.get();
 
     User.rewardForInviteUser(document.data().uid);
+    invitation.delete();
   };
 }
 
