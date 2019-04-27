@@ -135,15 +135,25 @@ class Authentication {
     if (!info) return;
 
     const { email } = info;
-    firebase.auth().sendSignInLinkToEmail(email, {
-      url:
-        'https://' +
-        process.env.REACT_APP_FIREBASE_AUTH_DOMAIN +
-        PATH.REGISTRATION,
-      handleCodeInApp: true,
-    });
-    await Invitation.sendInvitation(uid, email);
-    return { type: 'info', message: MESSAGE.COMPLETE.MAIL_SENT };
+
+    try {
+      await firebase.auth().sendSignInLinkToEmail(email, {
+        url:
+          'https://' +
+          process.env.REACT_APP_FIREBASE_AUTH_DOMAIN +
+          PATH.REGISTRATION,
+        handleCodeInApp: true,
+      });
+      await Invitation.sendInvitation(uid, email);
+      return { type: 'info', message: MESSAGE.COMPLETE.MAIL_SENT };
+    } catch (e) {
+      switch (e.code) {
+        case 'auth/network-request-failed':
+          return { type: 'error', message: MESSAGE.ERROR.NETWORK };
+        default:
+          return { type: 'error', message: MESSAGE.ERROR.COMMON };
+      }
+    }
   };
 
   static quit = async (uid, history) => {
