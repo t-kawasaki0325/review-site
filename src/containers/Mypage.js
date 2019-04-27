@@ -172,7 +172,7 @@ class Mypage extends Component {
             </Grid>
             <Grid item xs={12} sm={8}>
               <Paper className={classes.paper}>
-                {error && <Message type="info" error={error} />}
+                {error && <Message type="info" message={error} />}
                 <Typography
                   component="h1"
                   variant="h4"

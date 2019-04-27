@@ -1,5 +1,5 @@
 import firebase, { providerGoogle } from '../firebase';
-import { User } from '../models';
+import { User, Invitation } from '../models';
 import { PATH, MESSAGE } from '../config';
 
 class Authentication {
@@ -21,6 +21,7 @@ class Authentication {
   static createNewUser = (uid, info, history) => {
     if (!uid || !info || !history) return;
     User.createUser(uid, info);
+    Authentication.addPointIfInvitationUser();
     history.push(PATH.TOP);
   };
 
@@ -33,6 +34,7 @@ class Authentication {
         .auth()
         .createUserWithEmailAndPassword(email, password);
       User.createUser(user.uid, info);
+      Authentication.addPointIfInvitationUser();
       if (user) {
         history.push(PATH.TOP);
       }
@@ -75,6 +77,22 @@ class Authentication {
     history.push(PATH.ROOT);
   };
 
+  static resetPassword = async email => {
+    try {
+      await firebase.auth().sendPasswordResetEmail(email);
+      return { message: MESSAGE.COMPLETE.MAIL_SENT, type: 'info' };
+    } catch (e) {
+      switch (e.code) {
+        case 'auth/invalid-email':
+          return { message: MESSAGE.VALIDATION.MAIL, type: 'error' };
+        case 'auth/user-not-found':
+          return { message: MESSAGE.ERROR.USER_NOTO_EXISTS, type: 'error' };
+        default:
+          return { message: MESSAGE.ERROR.COMMON, type: 'error' };
+      }
+    }
+  };
+
   static fetchUserId = () => {
     return new Promise(resolve => {
       firebase.auth().onAuthStateChanged(user => {
@@ -113,6 +131,55 @@ class Authentication {
     const { uid } = info;
     User.updateUser(uid, info);
     return MESSAGE.COMPLETE.REGISTRATION;
+  };
+
+  static invitation = async (uid, info) => {
+    if (!info) return;
+
+    const { email } = info;
+
+    try {
+      await firebase.auth().sendSignInLinkToEmail(email, {
+        url:
+          'https://' +
+          process.env.REACT_APP_FIREBASE_AUTH_DOMAIN +
+          PATH.REGISTRATION,
+        handleCodeInApp: true,
+      });
+      await Invitation.sendInvitation(uid, email);
+      return { type: 'info', message: MESSAGE.COMPLETE.MAIL_SENT };
+    } catch (e) {
+      if (e.message === 'auth/email-already-invited')
+        return { type: 'error', message: MESSAGE.ERROR.ALREADY_INVITED };
+
+      switch (e.code) {
+        case 'auth/network-request-failed':
+          return { type: 'error', message: MESSAGE.ERROR.NETWORK };
+        default:
+          return { type: 'error', message: MESSAGE.ERROR.COMMON };
+      }
+    }
+  };
+
+  static addPointIfInvitationUser = async () => {
+    const { email } = firebase.auth().currentUser;
+    if (!email) return;
+
+    Invitation.loginInvitationUser(email);
+  };
+
+  static quit = async (uid, history) => {
+    const user = firebase.auth().currentUser;
+    if (!uid || !user) return;
+
+    try {
+      await user.delete();
+
+      await User.deleteUser(uid);
+      history.push(PATH.LOGIN);
+    } catch (e) {
+      Authentication.logout();
+    }
   };
 }
 

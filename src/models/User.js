@@ -94,6 +94,30 @@ class User {
       });
     });
   };
+
+  static rewardForInviteUser = uid => {
+    const userRef = User.fetchUserRef(uid);
+    if (!uid) return;
+
+    db.runTransaction(transaction => {
+      return transaction.get(userRef).then(doc => {
+        const data = doc.data();
+        const newPoint = data.point + POINT.INVITE_USER.value;
+        const history = ModelUtil.addPointHistory(
+          data.point_history,
+          POINT.INVITE_USER
+        );
+        transaction.update(userRef, {
+          point: newPoint,
+          point_history: history,
+        });
+      });
+    });
+  };
+
+  static deleteUser = uid => {
+    User.fetchUserRef(uid).delete();
+  };
 }
 
 export default User;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -142,7 +143,7 @@ class Login extends Component {
         <main className={classes.main}>
           <CssBaseline />
           <Paper className={classes.paper}>
-            {error && <Message error={error} type="error" />}
+            {error && <Message message={error} type="error" />}
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />
             </Avatar>
@@ -188,6 +189,14 @@ class Login extends Component {
                 <img src={icon} className={classes.icon} alt="icon" />
                 Googleでログイン
               </Button>
+              <Typography align="center" style={{ marginTop: 8 }}>
+                <Link
+                  to={PATH.FORGOT_PASSWORD}
+                  style={{ textDecoration: 'none' }}
+                >
+                  パスワードを忘れた方はこちら
+                </Link>
+              </Typography>
             </div>
           </Paper>
         </main>

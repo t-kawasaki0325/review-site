@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 
 const Message = props => {
-  const { error, type } = props;
+  const { message, type } = props;
   let color;
   let background;
   switch (type) {
@@ -28,7 +28,7 @@ const Message = props => {
         backgroundColor: background,
       }}
     >
-      {error}
+      {message}
     </Typography>
   );
 };
