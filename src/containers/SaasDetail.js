@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
 
 import {
   Header,
@@ -41,7 +42,7 @@ const styles = theme => ({
     marginLeft: 10,
   },
   buttonWrapper: {
-    margin: theme.spacing.unit * 4,
+    marginTop: theme.spacing.unit * 4,
     textAlign: 'center',
   },
   button: {
@@ -53,6 +54,13 @@ const styles = theme => ({
   reviewSubtitle: {
     marginTop: 10,
     fontSize: '1.1em',
+  },
+  modal: {
+    width: 500,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 200,
+    padding: 20,
   },
 });
 
@@ -66,6 +74,7 @@ class SaasDetail extends Component {
     canView: '',
     message: '',
     isReview: true,
+    modal: false,
   };
 
   async componentDidMount() {
@@ -164,6 +173,7 @@ class SaasDetail extends Component {
       saasId,
       message,
       isReview,
+      modal,
     } = this.state;
 
     const data = [
@@ -278,21 +288,41 @@ class SaasDetail extends Component {
                     </Typography>
                   </Grid>
                 )}
-                <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
-                  <Button
-                    className={classes.button}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      const url = this.canReview()
-                        ? UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
-                        : UrlUtil.changeBaseUrl(PATH.EDIT_REVIEW, saasId);
-                      history.push(url, this.getReviewId());
-                    }}
-                  >
-                    {this.canReview() ? 'レビューを書く' : 'レビューを編集する'}
-                  </Button>
+                <Grid container spacing={24}>
+                  <Grid item xs={12} sm={6} className={classes.buttonWrapper}>
+                    <Button
+                      className={classes.button}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        const url = this.canReview()
+                          ? UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
+                          : UrlUtil.changeBaseUrl(PATH.EDIT_REVIEW, saasId);
+                        history.push(url, this.getReviewId());
+                      }}
+                    >
+                      {this.canReview()
+                        ? 'レビューを書く'
+                        : 'レビューを編集する'}
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12} sm={6} className={classes.buttonWrapper}>
+                    <Button
+                      className={classes.button}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => this.setState({ modal: true })}
+                    >
+                      トピックを作成
+                    </Button>
+                  </Grid>
                 </Grid>
+                <Modal open={modal}>
+                  <Paper className={classes.modal}>
+                    <Typography variant="h6">トピックを作成</Typography>
+                    <Typography variant="subtitle1">タイトル</Typography>
+                  </Paper>
+                </Modal>
               </Grid>
             </Grid>
           </Paper>
