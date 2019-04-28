@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
+import TextField from '@material-ui/core/TextField';
 
 import {
   Header,
@@ -23,7 +24,7 @@ import {
   BoardList,
 } from '../components';
 import { Saas, Authentication, Point } from '../modules';
-import { UrlUtil } from '../utils';
+import { UrlUtil, ValidationUtil } from '../utils';
 import { SAAS, PATH } from '../config';
 
 const styles = theme => ({
@@ -66,6 +67,14 @@ const styles = theme => ({
 
 class SaasDetail extends Component {
   state = {
+    info: {
+      title: '',
+      content: '',
+    },
+    error: {
+      title: '',
+      content: '',
+    },
     uid: '',
     user: '',
     saasId: '',
@@ -163,6 +172,36 @@ class SaasDetail extends Component {
     });
   };
 
+  handleChange = event => {
+    const key = event.target.name;
+    const type = event.target.type;
+    const value = event.target.value;
+
+    this.setState({
+      info: { ...this.state.info, [key]: value },
+    });
+    this.setState({
+      error: {
+        ...this.state.error,
+        [key]: ValidationUtil.formValidate(type, value),
+      },
+    });
+  };
+
+  canSubmit = () => {
+    const { info, error } = this.state;
+    const allowInfo =
+      Object.keys(info).filter(key => {
+        return info[key] === '';
+      }).length === 0;
+    const allowMessage =
+      Object.keys(error).filter(key => {
+        return error[key] !== '';
+      }).length === 0;
+
+    return !allowInfo || !allowMessage;
+  };
+
   render() {
     const { history, classes } = this.props;
     const {
@@ -174,6 +213,8 @@ class SaasDetail extends Component {
       message,
       isReview,
       modal,
+      info,
+      error,
     } = this.state;
 
     const data = [
@@ -317,10 +358,57 @@ class SaasDetail extends Component {
                     </Button>
                   </Grid>
                 </Grid>
-                <Modal open={modal}>
+                <Modal
+                  open={modal}
+                  onClose={() => this.setState({ modal: false })}
+                >
                   <Paper className={classes.modal}>
                     <Typography variant="h6">トピックを作成</Typography>
                     <Typography variant="subtitle1">タイトル</Typography>
+                    <TextField
+                      style={{ width: '100%' }}
+                      name="title"
+                      label="タイトル"
+                      value={info.title}
+                      onChange={event => this.handleChange(event)}
+                    />
+                    {error.title && (
+                      <Typography style={{ color: '#d50000', marginTop: 5 }}>
+                        {error.title}
+                      </Typography>
+                    )}
+                    <Typography variant="subtitle1">本文</Typography>
+                    <TextField
+                      style={{ width: '100%' }}
+                      name="content"
+                      label="本文"
+                      value={info.content}
+                      onChange={event => this.handleChange(event)}
+                      multiline={true}
+                      rows={4}
+                      rowsMax={10}
+                    />
+                    {error.content && (
+                      <Typography style={{ color: '#d50000', marginTop: 5 }}>
+                        {error.content}
+                      </Typography>
+                    )}
+                    <Grid
+                      item
+                      xs={12}
+                      sm={12}
+                      className={classes.buttonWrapper}
+                    >
+                      <Button
+                        disabled={this.canSubmit()}
+                        className={classes.button}
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {}}
+                      >
+                        掲示板を作成する
+                      </Button>
+                    </Grid>
                   </Paper>
                 </Modal>
               </Grid>
