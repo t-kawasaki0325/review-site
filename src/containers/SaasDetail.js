@@ -14,7 +14,13 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import { Header, Message, ReviewList, SelectMenu } from '../components';
+import {
+  Header,
+  Message,
+  ReviewList,
+  SelectMenu,
+  BoardList,
+} from '../components';
 import { Saas, Authentication, Point } from '../modules';
 import { UrlUtil } from '../utils';
 import { SAAS, PATH } from '../config';
@@ -307,6 +313,7 @@ class SaasDetail extends Component {
               history={history}
             />
           )}
+          {!isReview && <BoardList history={history} board={saas.board} />}
         </main>
       </React.Fragment>
     );
