@@ -27,16 +27,15 @@ const BoardList = props => {
       <Table>
         <TableBody>
           {board.map((element, index) => {
-            const key = Object.keys(element);
             return (
               <TableRow key={index}>
                 <TableCell>
                   <Typography variant="h6" color="inherit">
                     <Link
-                      to={UrlUtil.changeBaseUrl(PATH.BOARD, key[0])}
+                      to={UrlUtil.changeBaseUrl(PATH.BOARD, element.board_id)}
                       style={{ textDecoration: 'none' }}
                     >
-                      {element[key[0]]}
+                      {element.title}
                     </Link>
                   </Typography>
                 </TableCell>
