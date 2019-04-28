@@ -13,11 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
 
-import { Header, Message, ReviewList } from '../components';
+import { Header, Message, ReviewList, SelectMenu } from '../components';
 import { Saas, Authentication, Point } from '../modules';
 import { UrlUtil } from '../utils';
 import { SAAS, PATH } from '../config';
@@ -50,10 +47,6 @@ const styles = theme => ({
   reviewSubtitle: {
     marginTop: 10,
     fontSize: '1.1em',
-  },
-  formControl: {
-    marginTop: 30,
-    minWidth: 200,
   },
 });
 
@@ -297,22 +290,14 @@ class SaasDetail extends Component {
               </Grid>
             </Grid>
           </Paper>
-          <FormControl className={classes.formControl}>
-            <Select
-              value={isReview}
-              onChange={e => {
-                this.setState({ isReview: e.target.value });
-              }}
-            >
-              {mainView.map((element, index) => {
-                return (
-                  <MenuItem key={index} value={element.value}>
-                    {element.title}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
+          <SelectMenu
+            style={{ marginTop: 30 }}
+            value={isReview}
+            menu={mainView}
+            handleChange={e => {
+              this.setState({ isReview: e.target.value });
+            }}
+          />
           {isReview && (
             <ReviewList
               review={review}
