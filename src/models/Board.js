@@ -23,6 +23,10 @@ class Board {
         return boardRef.id;
       });
   };
+
+  static getById = id => {
+    return db.collection('board').doc(id);
+  };
 }
 
 export default Board;
