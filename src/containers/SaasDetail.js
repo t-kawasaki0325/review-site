@@ -23,7 +23,7 @@ import {
   SelectMenu,
   BoardList,
 } from '../components';
-import { Saas, Authentication, Point } from '../modules';
+import { Saas, Authentication, Point, Discussion } from '../modules';
 import { UrlUtil, ValidationUtil } from '../utils';
 import { SAAS, PATH } from '../config';
 
@@ -404,7 +404,9 @@ class SaasDetail extends Component {
                         className={classes.button}
                         variant="contained"
                         color="primary"
-                        onClick={() => {}}
+                        onClick={() =>
+                          Discussion.createNewBoard(saasId, saas, info)
+                        }
                       >
                         掲示板を作成する
                       </Button>
