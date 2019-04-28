@@ -16,3 +16,4 @@ export { default as ReviewTotal } from './ReviewTotal';
 export { default as ReviewBasic } from './ReviewBasic';
 export { default as ReviewUntilAdopt } from './ReviewUntilAdopt';
 export { default as ReviewAdopting } from './ReviewAdopting';
+export { default as ReviewList } from './ReviewList';

@@ -17,7 +17,7 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { Header, UrgeViewReview, Message } from '../components';
+import { Header, Message, ReviewList } from '../components';
 import { Saas, Authentication, Point } from '../modules';
 import { UrlUtil } from '../utils';
 import { SAAS, PATH } from '../config';
@@ -43,11 +43,6 @@ const styles = theme => ({
   },
   button: {
     fontSize: 18,
-  },
-  reviewContainer: {
-    marginTop: theme.spacing.unit * 4,
-    marginBottom: theme.spacing.unit * 4,
-    padding: theme.spacing.unit * 4,
   },
   introduction: {
     backgroundColor: '#eaeaea',
@@ -318,54 +313,13 @@ class SaasDetail extends Component {
               })}
             </Select>
           </FormControl>
-          {!!review.length &&
-            isReview &&
-            review.map((element, index) => {
-              return (
-                <Paper key={index} className={classes.reviewContainer}>
-                  <Grid container spacing={24}>
-                    <Grid item xs={12} sm={12}>
-                      <Typography component="h1" variant="h5">
-                        {element.title}
-                      </Typography>
-                      <Grid item xs={12} sm={12}>
-                        <StarRatings
-                          rating={element.point_total}
-                          starRatedColor="blue"
-                          numberOfStars={5}
-                          starDimension="25px"
-                          starSpacing="2px"
-                        />
-                        <span className={classes.pointText}>
-                          {element.point_total.toFixed(1)}
-                        </span>
-                      </Grid>
-
-                      <Typography
-                        component="h1"
-                        className={classes.reviewSubtitle}
-                      >
-                        優れていると感じた点
-                      </Typography>
-                      <Typography component="h1">{element.good}</Typography>
-                      <Typography
-                        component="h1"
-                        className={classes.reviewSubtitle}
-                      >
-                        改善してほしいと感じた点
-                      </Typography>
-                      <Typography component="h1">{element.bad}</Typography>
-                    </Grid>
-                  </Grid>
-                </Paper>
-              );
-            })}
-          {!!review.length && !!(saas.num_of_reviews - 1) && !canView && (
-            <UrgeViewReview
+          {isReview && (
+            <ReviewList
+              review={review}
               uid={uid}
               saas={saas}
+              canView={canView}
               history={history}
-              handle={() => this.handleForView()}
             />
           )}
         </main>
