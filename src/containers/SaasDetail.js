@@ -13,6 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import { Header, UrgeViewReview, Message } from '../components';
 import { Saas, Authentication, Point } from '../modules';
@@ -53,6 +56,10 @@ const styles = theme => ({
     marginTop: 10,
     fontSize: '1.1em',
   },
+  formControl: {
+    marginTop: 30,
+    minWidth: 200,
+  },
 });
 
 class SaasDetail extends Component {
@@ -64,6 +71,7 @@ class SaasDetail extends Component {
     review: [],
     canView: '',
     message: '',
+    isReview: true,
   };
 
   async componentDidMount() {
@@ -154,7 +162,15 @@ class SaasDetail extends Component {
 
   render() {
     const { history, classes } = this.props;
-    const { uid, saas, review, canView, saasId, message } = this.state;
+    const {
+      uid,
+      saas,
+      review,
+      canView,
+      saasId,
+      message,
+      isReview,
+    } = this.state;
 
     const data = [
       {
@@ -181,6 +197,11 @@ class SaasDetail extends Component {
           saas.point.satisfaction.toFixed(1)}`,
         value: parseFloat(`${saas && saas.point.satisfaction}`),
       },
+    ];
+
+    const mainView = [
+      { title: 'レビュー一覧', value: true },
+      { title: '掲示板一覧', value: false },
     ];
 
     return (
@@ -281,7 +302,24 @@ class SaasDetail extends Component {
               </Grid>
             </Grid>
           </Paper>
+          <FormControl className={classes.formControl}>
+            <Select
+              value={isReview}
+              onChange={e => {
+                this.setState({ isReview: e.target.value });
+              }}
+            >
+              {mainView.map((element, index) => {
+                return (
+                  <MenuItem key={index} value={element.value}>
+                    {element.title}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
           {!!review.length &&
+            isReview &&
             review.map((element, index) => {
               return (
                 <Paper key={index} className={classes.reviewContainer}>
