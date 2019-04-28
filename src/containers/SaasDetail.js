@@ -405,7 +405,7 @@ class SaasDetail extends Component {
                         variant="contained"
                         color="primary"
                         onClick={() =>
-                          Discussion.createNewBoard(saasId, saas, info)
+                          Discussion.createNewBoard(history, saasId, saas, info)
                         }
                       >
                         掲示板を作成する
