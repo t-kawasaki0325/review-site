@@ -13,10 +13,18 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
+import TextField from '@material-ui/core/TextField';
 
-import { Header, UrgeViewReview, Message } from '../components';
-import { Saas, Authentication, Point } from '../modules';
-import { UrlUtil } from '../utils';
+import {
+  Header,
+  Message,
+  ReviewList,
+  SelectMenu,
+  BoardList,
+} from '../components';
+import { Saas, Authentication, Point, Discussion } from '../modules';
+import { UrlUtil, ValidationUtil } from '../utils';
 import { SAAS, PATH } from '../config';
 
 const styles = theme => ({
@@ -35,16 +43,11 @@ const styles = theme => ({
     marginLeft: 10,
   },
   buttonWrapper: {
-    margin: theme.spacing.unit * 4,
+    marginTop: theme.spacing.unit * 4,
     textAlign: 'center',
   },
   button: {
     fontSize: 18,
-  },
-  reviewContainer: {
-    marginTop: theme.spacing.unit * 4,
-    marginBottom: theme.spacing.unit * 4,
-    padding: theme.spacing.unit * 4,
   },
   introduction: {
     backgroundColor: '#eaeaea',
@@ -53,10 +56,25 @@ const styles = theme => ({
     marginTop: 10,
     fontSize: '1.1em',
   },
+  modal: {
+    width: 500,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 200,
+    padding: 20,
+  },
 });
 
 class SaasDetail extends Component {
   state = {
+    info: {
+      title: '',
+      content: '',
+    },
+    error: {
+      title: '',
+      content: '',
+    },
     uid: '',
     user: '',
     saasId: '',
@@ -64,6 +82,8 @@ class SaasDetail extends Component {
     review: [],
     canView: '',
     message: '',
+    isReview: true,
+    modal: false,
   };
 
   async componentDidMount() {
@@ -152,9 +172,51 @@ class SaasDetail extends Component {
     });
   };
 
+  handleChange = event => {
+    const key = event.target.name;
+    const type = event.target.type;
+    const value = event.target.value;
+
+    this.setState({
+      info: { ...this.state.info, [key]: value },
+    });
+    this.setState({
+      error: {
+        ...this.state.error,
+        [key]: ValidationUtil.formValidate(type, value),
+      },
+    });
+  };
+
+  canSubmit = () => {
+    const { info, error } = this.state;
+    const allowInfo =
+      Object.keys(info).filter(key => {
+        return info[key] === '';
+      }).length === 0;
+    const allowMessage =
+      Object.keys(error).filter(key => {
+        return error[key] !== '';
+      }).length === 0;
+
+    return !allowInfo || !allowMessage;
+  };
+
   render() {
     const { history, classes } = this.props;
-    const { uid, saas, review, canView, saasId, message } = this.state;
+    const {
+      uid,
+      user,
+      saas,
+      review,
+      canView,
+      saasId,
+      message,
+      isReview,
+      modal,
+      info,
+      error,
+    } = this.state;
 
     const data = [
       {
@@ -181,6 +243,11 @@ class SaasDetail extends Component {
           saas.point.satisfaction.toFixed(1)}`,
         value: parseFloat(`${saas && saas.point.satisfaction}`),
       },
+    ];
+
+    const mainView = [
+      { title: 'レビュー一覧', value: true },
+      { title: '掲示板一覧', value: false },
     ];
 
     return (
@@ -263,73 +330,115 @@ class SaasDetail extends Component {
                     </Typography>
                   </Grid>
                 )}
-                <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
-                  <Button
-                    className={classes.button}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      const url = this.canReview()
-                        ? UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
-                        : UrlUtil.changeBaseUrl(PATH.EDIT_REVIEW, saasId);
-                      history.push(url, this.getReviewId());
-                    }}
-                  >
-                    {this.canReview() ? 'レビューを書く' : 'レビューを編集する'}
-                  </Button>
+                <Grid container spacing={24}>
+                  <Grid item xs={12} sm={6} className={classes.buttonWrapper}>
+                    <Button
+                      className={classes.button}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        const url = this.canReview()
+                          ? UrlUtil.changeBaseUrl(PATH.ADD_REVIEW, saasId)
+                          : UrlUtil.changeBaseUrl(PATH.EDIT_REVIEW, saasId);
+                        history.push(url, this.getReviewId());
+                      }}
+                    >
+                      {this.canReview() ? 'レビューを書く' : 'レビューを編集'}
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12} sm={6} className={classes.buttonWrapper}>
+                    <Button
+                      className={classes.button}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => this.setState({ modal: true })}
+                    >
+                      トピックを作成
+                    </Button>
+                  </Grid>
                 </Grid>
+                <Modal
+                  open={modal}
+                  onClose={() => this.setState({ modal: false })}
+                >
+                  <Paper className={classes.modal}>
+                    <Typography variant="h6">トピックを作成</Typography>
+                    <Typography variant="subtitle1">タイトル</Typography>
+                    <TextField
+                      style={{ width: '100%' }}
+                      name="title"
+                      label="タイトル"
+                      value={info.title}
+                      onChange={event => this.handleChange(event)}
+                    />
+                    {error.title && (
+                      <Typography style={{ color: '#d50000', marginTop: 5 }}>
+                        {error.title}
+                      </Typography>
+                    )}
+                    <Typography variant="subtitle1">本文</Typography>
+                    <TextField
+                      style={{ width: '100%' }}
+                      name="content"
+                      label="本文"
+                      value={info.content}
+                      onChange={event => this.handleChange(event)}
+                      multiline={true}
+                      rows={4}
+                      rowsMax={10}
+                    />
+                    {error.content && (
+                      <Typography style={{ color: '#d50000', marginTop: 5 }}>
+                        {error.content}
+                      </Typography>
+                    )}
+                    <Grid
+                      item
+                      xs={12}
+                      sm={12}
+                      className={classes.buttonWrapper}
+                    >
+                      <Button
+                        disabled={this.canSubmit()}
+                        className={classes.button}
+                        variant="contained"
+                        color="primary"
+                        onClick={() =>
+                          Discussion.createNewBoard(
+                            history,
+                            saasId,
+                            saas,
+                            user,
+                            info
+                          )
+                        }
+                      >
+                        掲示板を作成する
+                      </Button>
+                    </Grid>
+                  </Paper>
+                </Modal>
               </Grid>
             </Grid>
           </Paper>
-          {!!review.length &&
-            review.map((element, index) => {
-              return (
-                <Paper key={index} className={classes.reviewContainer}>
-                  <Grid container spacing={24}>
-                    <Grid item xs={12} sm={12}>
-                      <Typography component="h1" variant="h5">
-                        {element.title}
-                      </Typography>
-                      <Grid item xs={12} sm={12}>
-                        <StarRatings
-                          rating={element.point_total}
-                          starRatedColor="blue"
-                          numberOfStars={5}
-                          starDimension="25px"
-                          starSpacing="2px"
-                        />
-                        <span className={classes.pointText}>
-                          {element.point_total.toFixed(1)}
-                        </span>
-                      </Grid>
-
-                      <Typography
-                        component="h1"
-                        className={classes.reviewSubtitle}
-                      >
-                        優れていると感じた点
-                      </Typography>
-                      <Typography component="h1">{element.good}</Typography>
-                      <Typography
-                        component="h1"
-                        className={classes.reviewSubtitle}
-                      >
-                        改善してほしいと感じた点
-                      </Typography>
-                      <Typography component="h1">{element.bad}</Typography>
-                    </Grid>
-                  </Grid>
-                </Paper>
-              );
-            })}
-          {!!review.length && !!(saas.num_of_reviews - 1) && !canView && (
-            <UrgeViewReview
+          <SelectMenu
+            style={{ marginTop: 30 }}
+            value={isReview}
+            menu={mainView}
+            handleChange={e => {
+              this.setState({ isReview: e.target.value });
+            }}
+          />
+          {isReview && (
+            <ReviewList
+              review={review}
               uid={uid}
               saas={saas}
+              canView={canView}
               history={history}
-              handle={() => this.handleForView()}
             />
           )}
+          {!isReview && <BoardList history={history} board={saas.board} />}
         </main>
       </React.Fragment>
     );

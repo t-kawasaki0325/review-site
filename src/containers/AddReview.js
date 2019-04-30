@@ -38,9 +38,6 @@ const styles = theme => ({
   container: {
     marginTop: 30,
   },
-  textField: {
-    minWidth: 220,
-  },
   textArea: {
     width: '100%',
   },

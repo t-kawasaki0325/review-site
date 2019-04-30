@@ -7,13 +7,16 @@ import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 
 import { Saas, Authentication } from '../modules';
 import { SAAS, COMPANY } from '../config';
-import { Header, SaasTable, TableSelect, TableText } from '../components';
+import {
+  Header,
+  SaasTable,
+  TableSelect,
+  TableText,
+  SelectMenu,
+} from '../components';
 
 const styles = theme => ({
   layout: {
@@ -104,9 +107,19 @@ class SaasList extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  formatSortList = () => {
+    const { sortList } = this.state;
+
+    if (!sortList) return [];
+
+    return sortList.map(element => {
+      return { title: SAAS.SORT[element], value: element };
+    });
+  };
+
   render() {
     const { classes, history } = this.props;
-    const { snapshotList, sortList } = this.state;
+    const { snapshotList } = this.state;
 
     const searchText = [
       {
@@ -181,24 +194,14 @@ class SaasList extends Component {
           <Typography component="h1" variant="h5" className={classes.title}>
             検索結果
           </Typography>
-          <FormControl className={classes.formControl}>
-            <Select
-              value={this.state.sortBy}
-              onChange={e => {
-                this.setState({ sortBy: e.target.value });
-                this.searchSaas();
-              }}
-            >
-              {sortList &&
-                sortList.map(element => {
-                  return (
-                    <MenuItem key={element} value={element}>
-                      {SAAS.SORT[element]}
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </FormControl>
+          <SelectMenu
+            value={this.state.sortBy}
+            handleChange={e => {
+              this.setState({ sortBy: e.target.value });
+              this.searchSaas();
+            }}
+            menu={this.formatSortList()}
+          />
           {snapshotList &&
             snapshotList.map(doc => {
               const saas = doc.data();

@@ -15,6 +15,7 @@ export const PATH = {
   ADD_REVIEW: '/saas_review/add_review/:id',
   EDIT_REVIEW: '/saas_review/edit/:id',
   CONFIRM_REVIEW: '/saas_review/add_review/confirm',
+  BOARD: '/board/:id',
 };
 
 export default PATH;
