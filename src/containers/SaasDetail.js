@@ -342,9 +342,7 @@ class SaasDetail extends Component {
                         history.push(url, this.getReviewId());
                       }}
                     >
-                      {this.canReview()
-                        ? 'レビューを書く'
-                        : 'レビューを編集する'}
+                      {this.canReview() ? 'レビューを書く' : 'レビューを編集'}
                     </Button>
                   </Grid>
                   <Grid item xs={12} sm={6} className={classes.buttonWrapper}>
