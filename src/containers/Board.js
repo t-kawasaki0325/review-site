@@ -7,10 +7,13 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 import { Header } from '../components';
 import { Authentication, Discussion } from '../modules';
-import { UrlUtil } from '../utils';
+import { UrlUtil, ValidationUtil } from '../utils';
 
 const styles = theme => ({
   layout: {
@@ -35,12 +38,19 @@ const styles = theme => ({
   title: {
     margin: theme.spacing.unit * 2,
   },
+  buttonWrapper: {
+    marginTop: theme.spacing.unit * 2,
+    textAlign: 'center',
+  },
 });
 
 class Board extends Component {
   state = {
     uid: '',
+    boardId: '',
     board: '',
+    content: '',
+    error: '',
   };
 
   async componentDidMount() {
@@ -49,12 +59,23 @@ class Board extends Component {
     const uid = await Authentication.fetchUserId();
     const boardId = UrlUtil.baseUrl(history.location.pathname);
     const board = await Discussion.getBoardById(boardId);
-    this.setState({ uid: uid, board: board.data() });
+    this.setState({ uid: uid, boardId: boardId, board: board.data() });
   }
+
+  handleChange = event => {
+    const key = event.target.name;
+    const type = event.target.type;
+    const value = event.target.value;
+
+    this.setState({
+      [key]: value,
+      error: ValidationUtil.formValidate(type, value),
+    });
+  };
 
   render() {
     const { history, classes } = this.props;
-    const { uid, board } = this.state;
+    const { uid, board, content, error } = this.state;
 
     return (
       <React.Fragment>
@@ -86,6 +107,33 @@ class Board extends Component {
                 </TableBody>
               </Table>
             )}
+          </Paper>
+          <Paper className={classes.paper}>
+            <TextField
+              style={{ width: '100%' }}
+              name="content"
+              label="このトピックにコメントする"
+              value={content}
+              onChange={event => this.handleChange(event)}
+              multiline={true}
+              rows={4}
+              rowsMax={10}
+            />
+            {error && (
+              <Typography style={{ color: '#d50000', marginTop: 5 }}>
+                {error}
+              </Typography>
+            )}
+            <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
+              <Button
+                disabled={error || !content}
+                variant="contained"
+                color="primary"
+                onClick={() => {}}
+              >
+                投稿する
+              </Button>
+            </Grid>
           </Paper>
         </main>
       </React.Fragment>
