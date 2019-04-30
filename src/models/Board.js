@@ -13,6 +13,7 @@ class Board {
 
           transaction.update(productRef, { board: board });
           transaction.set(boardRef, {
+            saas_id: saasId,
             saas: saas,
             title: title,
             content: [content],

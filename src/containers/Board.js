@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
@@ -41,6 +42,7 @@ const styles = theme => ({
   },
   buttonWrapper: {
     marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 1,
     textAlign: 'center',
   },
 });
@@ -153,6 +155,14 @@ class Board extends Component {
                 投稿する
               </Button>
             </Grid>
+            <Typography color="inherit" align="center">
+              <Link
+                to={UrlUtil.changeBaseUrl(PATH.SAAS_DETAIL, board.saas_id)}
+                style={{ textDecoration: 'none' }}
+              >
+                SaaS詳細ページに戻る
+              </Link>
+            </Typography>
           </Paper>
         </main>
       </React.Fragment>
