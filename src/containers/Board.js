@@ -37,6 +37,9 @@ const styles = theme => ({
       padding: theme.spacing.unit * 3,
     },
   },
+  body: {
+    fontSize: 16,
+  },
   title: {
     margin: theme.spacing.unit * 2,
   },
@@ -50,6 +53,7 @@ const styles = theme => ({
 class Board extends Component {
   state = {
     uid: '',
+    user: '',
     boardId: '',
     board: '',
     content: '',
@@ -60,9 +64,15 @@ class Board extends Component {
     const { history } = this.props;
 
     const uid = await Authentication.fetchUserId();
+    const user = await Authentication.fetchUserDataById(uid);
     const boardId = UrlUtil.baseUrl(history.location.pathname);
     const board = await Discussion.getBoardById(boardId);
-    this.setState({ uid: uid, boardId: boardId, board: board.data() });
+    this.setState({
+      uid: uid,
+      user: user,
+      boardId: boardId,
+      board: board.data(),
+    });
 
     Discussion.subscribeBoard(boardId, board => this.refreshBoard(board));
   }
@@ -115,11 +125,18 @@ class Board extends Component {
               <Table>
                 <TableBody>
                   {board.content.map((element, index) => {
+                    const date = element.created_at.toDate();
                     return (
                       <TableRow key={index}>
                         <TableCell>
-                          <Typography variant="h6" color="inherit">
-                            {element}
+                          <Typography color="inherit" gutterBottom>
+                            {index}. {element.user} {date.getFullYear()}/
+                            {date.getMonth() + 1}/{date.getDate()}{' '}
+                            {date.getHours()}:{date.getMinutes()}:
+                            {date.getSeconds()}
+                          </Typography>
+                          <Typography color="inherit" className={classes.body}>
+                            {element.body}
                           </Typography>
                         </TableCell>
                       </TableRow>

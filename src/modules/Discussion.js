@@ -3,12 +3,18 @@ import { PATH } from '../config';
 import { UrlUtil } from '../utils';
 
 class Discussion {
-  static createNewBoard = async (history, saasId, saas, info) => {
+  static createNewBoard = async (history, saasId, saas, user, info) => {
     const { title, content } = info;
     const { name } = saas;
-    if (!saasId || !title || !name || !content) return;
+    if (!saasId || !title || !name || !user || !content) return;
 
-    const boardId = await Board.createBoard(saasId, name, title, content);
+    const boardId = await Board.createBoard(
+      saasId,
+      name,
+      user.name,
+      title,
+      content
+    );
     history.push(UrlUtil.changeBaseUrl(PATH.BOARD, boardId));
   };
 

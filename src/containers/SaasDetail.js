@@ -206,6 +206,7 @@ class SaasDetail extends Component {
     const { history, classes } = this.props;
     const {
       uid,
+      user,
       saas,
       review,
       canView,
@@ -403,7 +404,13 @@ class SaasDetail extends Component {
                         variant="contained"
                         color="primary"
                         onClick={() =>
-                          Discussion.createNewBoard(history, saasId, saas, info)
+                          Discussion.createNewBoard(
+                            history,
+                            saasId,
+                            saas,
+                            user,
+                            info
+                          )
                         }
                       >
                         掲示板を作成する

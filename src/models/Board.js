@@ -1,7 +1,7 @@
-import { db } from '../firebase';
+import { db, now } from '../firebase';
 
 class Board {
-  static createBoard = (saasId, saas, title, content) => {
+  static createBoard = (saasId, saas, title, user, content) => {
     const boardRef = db.collection('board').doc();
     const productRef = db.collection('product').doc(saasId);
 
@@ -16,7 +16,13 @@ class Board {
             saas_id: saasId,
             saas: saas,
             title: title,
-            content: [content],
+            content: [
+              {
+                user: user,
+                body: content,
+                created_at: now,
+              },
+            ],
           });
         });
       })
