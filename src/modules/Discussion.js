@@ -18,6 +18,12 @@ class Discussion {
     const data = await Board.getById(id).get();
     return data;
   };
+
+  static postToBoard = (boardId, body) => {
+    if (!boardId || !body) return;
+
+    Board.post(boardId, body);
+  };
 }
 
 export default Discussion;

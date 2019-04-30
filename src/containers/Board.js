@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button';
 import { Header } from '../components';
 import { Authentication, Discussion } from '../modules';
 import { UrlUtil, ValidationUtil } from '../utils';
+import { PATH } from '../config';
 
 const styles = theme => ({
   layout: {
@@ -73,6 +74,18 @@ class Board extends Component {
     });
   };
 
+  submit = () => {
+    const { history } = this.props;
+    const { uid, boardId, content } = this.state;
+
+    if (!uid) {
+      history.push(PATH.LOGIN);
+      return;
+    }
+
+    Discussion.postToBoard(boardId, content);
+  };
+
   render() {
     const { history, classes } = this.props;
     const { uid, board, content, error } = this.state;
@@ -126,10 +139,10 @@ class Board extends Component {
             )}
             <Grid item xs={12} sm={12} className={classes.buttonWrapper}>
               <Button
-                disabled={error || !content}
+                disabled={!!error || !content}
                 variant="contained"
                 color="primary"
-                onClick={() => {}}
+                onClick={() => this.submit()}
               >
                 投稿する
               </Button>
