@@ -69,7 +69,7 @@ class Board extends Component {
     const board = await Discussion.getBoardById(boardId);
     this.setState({
       uid: uid,
-      user: user,
+      user: user.data(),
       boardId: boardId,
       board: board.data(),
     });
@@ -90,14 +90,14 @@ class Board extends Component {
 
   submit = () => {
     const { history } = this.props;
-    const { uid, boardId, content } = this.state;
+    const { uid, user, boardId, content } = this.state;
 
     if (!uid) {
       history.push(PATH.LOGIN);
       return;
     }
 
-    Discussion.postToBoard(boardId, content);
+    Discussion.postToBoard(boardId, user.name, content);
   };
 
   refreshBoard = board => {

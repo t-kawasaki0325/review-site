@@ -25,10 +25,10 @@ class Discussion {
     return data;
   };
 
-  static postToBoard = (boardId, body) => {
-    if (!boardId || !body) return;
+  static postToBoard = (boardId, user, body) => {
+    if (!boardId || !user || !body) return;
 
-    Board.post(boardId, body);
+    Board.post(boardId, user, body);
   };
 
   static subscribeBoard = (boardId, refreshBoard) => {

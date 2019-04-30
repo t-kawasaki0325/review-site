@@ -35,7 +35,7 @@ class Board {
     return db.collection('board').doc(id);
   };
 
-  static post = async (id, body) => {
+  static post = async (id, user, body) => {
     const ref = db.collection('board').doc(id);
     const snapshot = await ref.get();
     if (!snapshot.exists) return;
@@ -43,7 +43,7 @@ class Board {
     db.runTransaction(transaction => {
       return transaction.get(ref).then(doc => {
         const content = doc.data().content;
-        content.push(body);
+        content.push({ user: user, body: body, created_at: now });
 
         transaction.update(ref, { content: content });
       });
