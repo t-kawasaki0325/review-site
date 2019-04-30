@@ -61,6 +61,8 @@ class Board extends Component {
     const boardId = UrlUtil.baseUrl(history.location.pathname);
     const board = await Discussion.getBoardById(boardId);
     this.setState({ uid: uid, boardId: boardId, board: board.data() });
+
+    Discussion.subscribeBoard(boardId, board => this.refreshBoard(board));
   }
 
   handleChange = event => {
@@ -84,6 +86,10 @@ class Board extends Component {
     }
 
     Discussion.postToBoard(boardId, content);
+  };
+
+  refreshBoard = board => {
+    this.setState({ content: '', board: board });
   };
 
   render() {

@@ -42,6 +42,14 @@ class Board {
       });
     });
   };
+
+  static subscribe = (id, refreshBoard) => {
+    db.collection('board')
+      .doc(id)
+      .onSnapshot(snapshot => {
+        refreshBoard(snapshot.data());
+      });
+  };
 }
 
 export default Board;

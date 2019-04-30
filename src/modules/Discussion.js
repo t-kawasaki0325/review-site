@@ -24,6 +24,12 @@ class Discussion {
 
     Board.post(boardId, body);
   };
+
+  static subscribeBoard = (boardId, refreshBoard) => {
+    if (!boardId) return;
+
+    Board.subscribe(boardId, refreshBoard);
+  };
 }
 
 export default Discussion;
