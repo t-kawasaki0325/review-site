@@ -57,11 +57,15 @@ class Follow extends Component {
     const snapshot = await Authentication.fetchUserDataById(uid);
     this.setState({ uid: uid, user: snapshot.data() });
 
-    this.getFollowList(snapshot);
+    Saas.subscribeFollow(uid, data => {
+      this.setState({ user: data });
+      this.getFollowList(data);
+    });
   }
 
-  getFollowList = snapshot => {
-    snapshot.data().follow.forEach(async element => {
+  getFollowList = data => {
+    this.setState({ follow: [] });
+    data.follow.forEach(async element => {
       const saas = await element.ref.get();
       const data = { id: element.ref.id, saas: saas.data() };
       this.setState({
