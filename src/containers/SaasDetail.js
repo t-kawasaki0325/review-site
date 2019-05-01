@@ -118,6 +118,7 @@ class SaasDetail extends Component {
 
     // 閲覧数をcount up
     Saas.viewCountUp(saasId);
+    Saas.subscribeFollow(uid, data => this.setState({ user: data }));
   }
 
   canViewAll = saasId => {

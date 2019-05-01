@@ -64,6 +64,12 @@ class Saas {
     return Product.viewCountUp(id);
   };
 
+  static subscribeFollow = (uid, refreshData) => {
+    if (!uid) return;
+
+    User.subscribe(uid, refreshData);
+  };
+
   static followSaaS = (uid, saasId) => {
     if (!uid || !saasId) return;
 

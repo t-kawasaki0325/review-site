@@ -150,6 +150,12 @@ class User {
       });
     });
   };
+
+  static subscribe = (uid, refreshData) => {
+    User.fetchUserRef(uid).onSnapshot(snapshot => {
+      refreshData(snapshot.data());
+    });
+  };
 }
 
 export default User;
