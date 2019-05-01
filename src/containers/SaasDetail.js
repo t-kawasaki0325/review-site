@@ -206,7 +206,9 @@ class SaasDetail extends Component {
   isFollowing = () => {
     const { user, saasId } = this.state;
 
-    return user.follow.includes(saasId);
+    return user.follow.some(element => {
+      return element.ref.id === saasId;
+    });
   };
 
   render() {

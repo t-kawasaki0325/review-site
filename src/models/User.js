@@ -1,6 +1,7 @@
 import { db, now } from '../firebase';
 import { POINT } from '../config';
 import { ModelUtil } from '../utils';
+import { Product } from '../models';
 
 class User {
   static async createUser(uid, info) {
@@ -128,7 +129,7 @@ class User {
         if (!doc.exists) return;
 
         const followList = doc.data().follow;
-        followList.push(saasId);
+        followList.push({ ref: Product.productRef(saasId), isUpdate: false });
         transaction.update(userRef, {
           follow: followList,
         });
@@ -144,7 +145,9 @@ class User {
         if (!doc.exists) return;
 
         const followList = doc.data().follow;
-        const newFollowList = followList.filter(id => id !== saasId);
+        const newFollowList = followList.filter(
+          saas => saas.ref === Product.productRef(saasId)
+        );
         transaction.update(userRef, {
           follow: newFollowList,
         });
