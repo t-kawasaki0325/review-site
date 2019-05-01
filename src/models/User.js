@@ -160,6 +160,30 @@ class User {
       refreshData(snapshot.data());
     });
   };
+
+  static infoFollowUpdate = async saasId => {
+    const productRef = Product.productRef(saasId);
+
+    const saas = await productRef.get();
+    saas.data().followed.forEach(uid => {
+      db.runTransaction(transaction => {
+        const userRef = User.fetchUserRef(uid);
+        return transaction.get(userRef).then(doc => {
+          if (!doc.exists) return;
+
+          const follow = doc.data().follow;
+          const newFollow = follow.map(element => {
+            return element.ref.id === productRef.id
+              ? { isUpdate: true, ref: element.ref }
+              : element;
+          });
+          transaction.update(userRef, {
+            follow: newFollow,
+          });
+        });
+      });
+    });
+  };
 }
 
 export default User;
