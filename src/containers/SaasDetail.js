@@ -356,6 +356,16 @@ class SaasDetail extends Component {
                       トピックを作成
                     </Button>
                   </Grid>
+                  <Grid item xs={12} sm={6} className={classes.buttonWrapper}>
+                    <Button
+                      className={classes.button}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => Saas.followSaaS(uid, saasId)}
+                    >
+                      フォローする
+                    </Button>
+                  </Grid>
                 </Grid>
                 <Modal
                   open={modal}

@@ -87,6 +87,22 @@ class Product {
       });
     });
   };
+
+  static addFollowedList = (uid, saasId) => {
+    const productRef = Product.productRef(saasId);
+
+    db.runTransaction(transaction => {
+      return transaction.get(productRef).then(doc => {
+        if (!doc.exists) return;
+
+        const followedList = doc.data().followed;
+        followedList.push(uid);
+        transaction.update(productRef, {
+          followed: followedList,
+        });
+      });
+    });
+  };
 }
 
 export default Product;

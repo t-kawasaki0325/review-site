@@ -118,6 +118,22 @@ class User {
   static deleteUser = uid => {
     User.fetchUserRef(uid).delete();
   };
+
+  static addFollowList = (uid, saasId) => {
+    const userRef = User.fetchUserRef(uid);
+
+    db.runTransaction(transaction => {
+      return transaction.get(userRef).then(doc => {
+        if (!doc.exists) return;
+
+        const followList = doc.data().follow;
+        followList.push(saasId);
+        transaction.update(userRef, {
+          follow: followList,
+        });
+      });
+    });
+  };
 }
 
 export default User;
