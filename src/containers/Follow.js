@@ -40,6 +40,15 @@ const styles = theme => ({
   title: {
     margin: theme.spacing.unit * 2,
   },
+  newArrival: {
+    position: 'absolute',
+    marginLeft: -10,
+    marginTop: -5,
+    width: 10,
+    height: 10,
+    backgroundColor: '#ff0000',
+    borderRadius: 5,
+  },
 });
 
 class Follow extends Component {
@@ -67,7 +76,11 @@ class Follow extends Component {
     this.setState({ follow: [] });
     data.follow.forEach(async element => {
       const saas = await element.ref.get();
-      const data = { id: element.ref.id, saas: saas.data() };
+      const data = {
+        id: element.ref.id,
+        isNew: element.isUpdate,
+        saas: saas.data(),
+      };
       this.setState({
         follow: this.state.follow.concat(data),
       });
@@ -106,6 +119,9 @@ class Follow extends Component {
                         return (
                           <TableRow key={index}>
                             <TableCell component="th" scope="row">
+                              {element.isNew && (
+                                <span className={classes.newArrival} />
+                              )}
                               <Typography>
                                 <Link
                                   to={UrlUtil.changeBaseUrl(
