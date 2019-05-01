@@ -31,6 +31,10 @@ const Sidebar = props => {
       link: PATH.MYPAGE,
     },
     {
+      label: 'フォロー一覧',
+      link: PATH.FOLLOW,
+    },
+    {
       label: 'ポイント履歴',
       link: PATH.POINT_HISTORY,
     },
