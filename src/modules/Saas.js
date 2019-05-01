@@ -70,6 +70,13 @@ class Saas {
     User.addFollowList(uid, saasId);
     Product.addFollowedList(uid, saasId);
   };
+
+  static unfollowSaas = (uid, saasId) => {
+    if (!uid || !saasId) return;
+
+    User.removeFollowList(uid, saasId);
+    Product.removeFollowedList(uid, saasId);
+  };
 }
 
 export default Saas;

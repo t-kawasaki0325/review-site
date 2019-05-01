@@ -134,6 +134,22 @@ class User {
       });
     });
   };
+
+  static removeFollowList = (uid, saasId) => {
+    const userRef = User.fetchUserRef(uid);
+
+    db.runTransaction(transaction => {
+      return transaction.get(userRef).then(doc => {
+        if (!doc.exists) return;
+
+        const followList = doc.data().follow;
+        const newFollowList = followList.filter(id => id !== saasId);
+        transaction.update(userRef, {
+          follow: newFollowList,
+        });
+      });
+    });
+  };
 }
 
 export default User;

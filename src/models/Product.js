@@ -103,6 +103,22 @@ class Product {
       });
     });
   };
+
+  static removeFollowedList = (uid, saasId) => {
+    const productRef = Product.productRef(saasId);
+
+    db.runTransaction(transaction => {
+      return transaction.get(productRef).then(doc => {
+        if (!doc.exists) return;
+
+        const followedList = doc.data().followed;
+        const newFollowedList = followedList.filter(id => id !== uid);
+        transaction.update(productRef, {
+          followed: newFollowedList,
+        });
+      });
+    });
+  };
 }
 
 export default Product;
