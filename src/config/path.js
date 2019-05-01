@@ -11,6 +11,7 @@ export const PATH = {
   MYPAGE: '/mypage',
   INVITATION: '/mypage/invitation',
   POINT_HISTORY: '/mypage/pointhistory',
+  FOLLOW: '/mypage/follow',
   QUIT: '/mypage/quit',
   ADD_REVIEW: '/saas_review/add_review/:id',
   EDIT_REVIEW: '/saas_review/edit/:id',

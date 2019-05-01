@@ -16,3 +16,4 @@ export { default as ForgotPassword } from './ForgotPassword';
 export { default as Quit } from './Quit';
 export { default as Invitation } from './Invitation';
 export { default as Board } from './Board';
+export { default as Follow } from './Follow';
