@@ -145,9 +145,7 @@ class User {
         if (!doc.exists) return;
 
         const followList = doc.data().follow;
-        const newFollowList = followList.filter(
-          saas => saas.ref === Product.productRef(saasId)
-        );
+        const newFollowList = followList.filter(saas => saas.ref.id !== saasId);
         transaction.update(userRef, {
           follow: newFollowList,
         });
