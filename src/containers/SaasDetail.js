@@ -431,13 +431,15 @@ class SaasDetail extends Component {
                         variant="contained"
                         color="primary"
                         onClick={() =>
-                          Discussion.createNewBoard(
-                            history,
-                            saasId,
-                            saas,
-                            user,
-                            info
-                          )
+                          uid
+                            ? Discussion.createNewBoard(
+                                history,
+                                saasId,
+                                saas,
+                                user,
+                                info
+                              )
+                            : history.push(PATH.LOGIN)
                         }
                       >
                         掲示板を作成する
