@@ -11,8 +11,8 @@ class Discussion {
     const boardId = await Board.createBoard(
       saasId,
       name,
-      user.name,
       title,
+      user.name,
       content
     );
     history.push(UrlUtil.changeBaseUrl(PATH.BOARD, boardId));

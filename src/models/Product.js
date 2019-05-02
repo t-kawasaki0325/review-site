@@ -40,6 +40,7 @@ class Product {
       recently_viewed: 0,
       num_of_reviews: 0,
       followed: [],
+      board: [],
     });
 
     batch.commit();
