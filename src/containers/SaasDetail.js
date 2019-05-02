@@ -103,15 +103,16 @@ class SaasDetail extends Component {
     // reviewの取得
     if (snapshot.data().review.length === 0) {
       this.setState({ review: [] });
-      return;
-    }
-    const canView = this.canViewAll(saasId);
-    if (canView) {
-      this.updateReview(snapshot);
     } else {
-      const review = await snapshot.data().review[0].get();
-      this.setState({ review: [review.data()], canView: false });
+      const canView = this.canViewAll(saasId);
+      if (canView) {
+        this.updateReview(snapshot);
+      } else {
+        const review = await snapshot.data().review[0].get();
+        this.setState({ review: [review.data()], canView: false });
+      }
     }
+
     if (location.state) {
       this.setState({ message: location.state.message });
     }
