@@ -184,6 +184,26 @@ class User {
       });
     });
   };
+
+  static isUpdateToFalse = (uid, saasId) => {
+    const userRef = User.fetchUserRef(uid);
+
+    db.runTransaction(transaction => {
+      return transaction.get(userRef).then(doc => {
+        if (!doc.exists) return;
+
+        const follow = doc.data().follow;
+        const newFollow = follow.map(element => {
+          return element.ref.id === saasId
+            ? { isUpdate: false, ref: element.ref }
+            : element;
+        });
+        transaction.update(userRef, {
+          follow: newFollow,
+        });
+      });
+    });
+  };
 }
 
 export default User;

@@ -83,6 +83,12 @@ class Saas {
     User.removeFollowList(uid, saasId);
     Product.removeFollowedList(uid, saasId);
   };
+
+  static openSaasDetail = (uid, saasId) => {
+    if (!uid || !saasId) return;
+
+    User.isUpdateToFalse(uid, saasId);
+  };
 }
 
 export default Saas;
