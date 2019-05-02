@@ -76,6 +76,8 @@ class Follow extends Component {
     this.setState({ follow: [] });
     data.follow.forEach(async element => {
       const saas = await element.ref.get();
+      if (!saas.exists) return;
+
       const data = {
         id: element.ref.id,
         isNew: element.isUpdate,

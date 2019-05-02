@@ -68,11 +68,15 @@ class Board extends Component {
     const boardId = UrlUtil.baseUrl(history.location.pathname);
     const board = await Discussion.getBoardById(boardId);
     this.setState({
-      uid: uid,
-      user: user.data(),
       boardId: boardId,
       board: board.data(),
     });
+    if (uid) {
+      this.setState({
+        uid: uid,
+        user: user.data(),
+      });
+    }
 
     Discussion.subscribeBoard(boardId, board => this.refreshBoard(board));
   }
