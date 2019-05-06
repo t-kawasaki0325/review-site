@@ -15,6 +15,8 @@ class Invitation {
     const invitation = db.collection('invitation').doc(email);
     const document = await invitation.get();
 
+    if (!document.exists) return;
+
     User.rewardForInviteUser(document.data().uid);
     invitation.delete();
   };

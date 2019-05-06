@@ -20,7 +20,22 @@ const styles = () => ({
   title: {
     marginTop: 20,
   },
+  icon: {
+    padding: 4,
+    backgroundColor: '#ff0000',
+    borderRadius: 5,
+    fontSize: 10,
+    color: '#fff',
+  },
 });
+
+const existNewData = user => {
+  if (!user) return false;
+
+  return user.follow.some(saas => {
+    return saas.isUpdate;
+  });
+};
 
 const Sidebar = props => {
   const { user, classes, snapshot, link } = props;
@@ -29,6 +44,10 @@ const Sidebar = props => {
     {
       label: 'マイページトップ',
       link: PATH.MYPAGE,
+    },
+    {
+      label: 'フォロー一覧',
+      link: PATH.FOLLOW,
     },
     {
       label: 'ポイント履歴',
@@ -54,6 +73,14 @@ const Sidebar = props => {
         >
           ようこそ {user.name} さん！
         </Typography>
+        {existNewData(user) && (
+          <Typography className={classes.title}>
+            <span className={classes.icon}>NEW!</span>{' '}
+            <Link to={PATH.FOLLOW} styles={{ textDecoration: 'none' }}>
+              フォローリストに新着情報があります
+            </Link>
+          </Typography>
+        )}
         <Typography className={classes.title}>
           ポイント: {user.point}
         </Typography>

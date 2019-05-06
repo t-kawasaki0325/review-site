@@ -103,21 +103,24 @@ class SaasDetail extends Component {
     // reviewの取得
     if (snapshot.data().review.length === 0) {
       this.setState({ review: [] });
-      return;
-    }
-    const canView = this.canViewAll(saasId);
-    if (canView) {
-      this.updateReview(snapshot);
     } else {
-      const review = await snapshot.data().review[0].get();
-      this.setState({ review: [review.data()], canView: false });
+      const canView = this.canViewAll(saasId);
+      if (canView) {
+        this.updateReview(snapshot);
+      } else {
+        const review = await snapshot.data().review[0].get();
+        this.setState({ review: [review.data()], canView: false });
+      }
     }
+
     if (location.state) {
       this.setState({ message: location.state.message });
     }
 
     // 閲覧数をcount up
     Saas.viewCountUp(saasId);
+    Saas.subscribeFollow(uid, data => this.setState({ user: data }));
+    Saas.openSaasDetail(uid, saasId);
   }
 
   canViewAll = saasId => {
@@ -200,6 +203,14 @@ class SaasDetail extends Component {
       }).length === 0;
 
     return !allowInfo || !allowMessage;
+  };
+
+  isFollowing = () => {
+    const { user, saasId } = this.state;
+
+    return user.follow.some(element => {
+      return element.ref.id === saasId;
+    });
   };
 
   render() {
@@ -356,6 +367,22 @@ class SaasDetail extends Component {
                       トピックを作成
                     </Button>
                   </Grid>
+                  {!!uid && (
+                    <Grid item xs={12} sm={6} className={classes.buttonWrapper}>
+                      <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="primary"
+                        onClick={() =>
+                          this.isFollowing()
+                            ? Saas.unfollowSaas(uid, saasId)
+                            : Saas.followSaaS(uid, saasId)
+                        }
+                      >
+                        {this.isFollowing() ? 'フォロー解除' : 'フォローする'}
+                      </Button>
+                    </Grid>
+                  )}
                 </Grid>
                 <Modal
                   open={modal}
@@ -404,13 +431,15 @@ class SaasDetail extends Component {
                         variant="contained"
                         color="primary"
                         onClick={() =>
-                          Discussion.createNewBoard(
-                            history,
-                            saasId,
-                            saas,
-                            user,
-                            info
-                          )
+                          uid
+                            ? Discussion.createNewBoard(
+                                history,
+                                saasId,
+                                saas,
+                                user,
+                                info
+                              )
+                            : history.push(PATH.LOGIN)
                         }
                       >
                         掲示板を作成する

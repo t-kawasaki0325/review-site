@@ -1,4 +1,4 @@
-import { Product, PopularItem } from '../models';
+import { Product, PopularItem, User } from '../models';
 import { now } from '../firebase';
 
 class Saas {
@@ -62,6 +62,32 @@ class Saas {
   static viewCountUp = id => {
     if (!id) return;
     return Product.viewCountUp(id);
+  };
+
+  static subscribeFollow = (uid, refreshData) => {
+    if (!uid) return;
+
+    User.subscribe(uid, refreshData);
+  };
+
+  static followSaaS = (uid, saasId) => {
+    if (!uid || !saasId) return;
+
+    User.addFollowList(uid, saasId);
+    Product.addFollowedList(uid, saasId);
+  };
+
+  static unfollowSaas = (uid, saasId) => {
+    if (!uid || !saasId) return;
+
+    User.removeFollowList(uid, saasId);
+    Product.removeFollowedList(uid, saasId);
+  };
+
+  static openSaasDetail = (uid, saasId) => {
+    if (!uid || !saasId) return;
+
+    User.isUpdateToFalse(uid, saasId);
   };
 }
 

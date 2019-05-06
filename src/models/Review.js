@@ -1,6 +1,7 @@
 import { db } from '../firebase';
 import { ModelUtil } from '../utils';
 import { POINT, MESSAGE } from '../config';
+import { User } from '../models';
 
 class Review {
   static createNewReview = async (uid, saasId, info) => {
@@ -75,6 +76,8 @@ class Review {
     );
 
     batch.commit();
+
+    User.infoFollowUpdate(saasId);
 
     return MESSAGE.COMPLETE.REGISTRATION;
   };

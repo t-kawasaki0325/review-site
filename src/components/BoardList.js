@@ -24,26 +24,32 @@ const BoardList = props => {
 
   return (
     <Paper className={classes.container}>
-      <Table>
-        <TableBody>
-          {board.map((element, index) => {
-            return (
-              <TableRow key={index}>
-                <TableCell>
-                  <Typography variant="h6" color="inherit">
-                    <Link
-                      to={UrlUtil.changeBaseUrl(PATH.BOARD, element.board_id)}
-                      style={{ textDecoration: 'none' }}
-                    >
-                      {element.title}
-                    </Link>
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      {board.length > 0 ? (
+        <Table>
+          <TableBody>
+            {board.map((element, index) => {
+              return (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Typography variant="h6" color="inherit">
+                      <Link
+                        to={UrlUtil.changeBaseUrl(PATH.BOARD, element.board_id)}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        {element.title}
+                      </Link>
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      ) : (
+        <Typography variant="h6" color="inherit">
+          現在表示するトピックはありません
+        </Typography>
+      )}
     </Paper>
   );
 };

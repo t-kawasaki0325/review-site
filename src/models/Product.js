@@ -39,6 +39,8 @@ class Product {
       recently_reviewed: 0,
       recently_viewed: 0,
       num_of_reviews: 0,
+      followed: [],
+      board: [],
     });
 
     batch.commit();
@@ -84,6 +86,38 @@ class Product {
       return transaction.get(ref).then(doc => {
         const viewCount = doc.data().recently_viewed + 1;
         transaction.update(ref, { recently_viewed: viewCount });
+      });
+    });
+  };
+
+  static addFollowedList = (uid, saasId) => {
+    const productRef = Product.productRef(saasId);
+
+    db.runTransaction(transaction => {
+      return transaction.get(productRef).then(doc => {
+        if (!doc.exists) return;
+
+        const followedList = doc.data().followed;
+        followedList.push(uid);
+        transaction.update(productRef, {
+          followed: followedList,
+        });
+      });
+    });
+  };
+
+  static removeFollowedList = (uid, saasId) => {
+    const productRef = Product.productRef(saasId);
+
+    db.runTransaction(transaction => {
+      return transaction.get(productRef).then(doc => {
+        if (!doc.exists) return;
+
+        const followedList = doc.data().followed;
+        const newFollowedList = followedList.filter(id => id !== uid);
+        transaction.update(productRef, {
+          followed: newFollowedList,
+        });
       });
     });
   };
