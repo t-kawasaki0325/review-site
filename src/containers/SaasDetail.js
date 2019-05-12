@@ -465,6 +465,7 @@ class SaasDetail extends Component {
               saas={saas}
               canView={canView}
               history={history}
+              handleForView={() => this.handleForView()}
             />
           )}
           {!isReview && <BoardList history={history} board={saas.board} />}
