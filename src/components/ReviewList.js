@@ -16,7 +16,7 @@ const styles = theme => ({
 });
 
 const ReviewList = props => {
-  const { classes, review, uid, saas, canView, history } = props;
+  const { classes, review, uid, saas, canView, history, handleForView } = props;
 
   return (
     <React.Fragment>
@@ -60,7 +60,7 @@ const ReviewList = props => {
           uid={uid}
           saas={saas}
           history={history}
-          handle={() => this.handleForView()}
+          handle={() => handleForView()}
         />
       )}
     </React.Fragment>
